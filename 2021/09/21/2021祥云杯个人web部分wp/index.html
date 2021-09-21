@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="前言题目质量很高 被吊打 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类 1234567891011121314151617181920212223242526272829303132&lt;?phpnamespace Codeception\Extension;class RunProcess&amp;#123;    protected $output">
+  <meta name="description" content="前言体验还行 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类 1234567891011121314151617181920212223242526272829303132&lt;?phpnamespace Codeception\Extension;class RunProcess&amp;#123;    protected $output;    p">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2021祥云杯个人web部分wp">
 <meta property="og:url" content="https://fmyyy.gitee.io/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="前言题目质量很高 被吊打 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类 1234567891011121314151617181920212223242526272829303132&lt;?phpnamespace Codeception\Extension;class RunProcess&amp;#123;    protected $output">
+<meta property="og:description" content="前言体验还行 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类 1234567891011121314151617181920212223242526272829303132&lt;?phpnamespace Codeception\Extension;class RunProcess&amp;#123;    protected $output;    p">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/null">
 <meta property="article:published_time" content="2021-09-21T13:14:04.000Z">
-<meta property="article:modified_time" content="2021-09-21T13:52:19.314Z">
+<meta property="article:modified_time" content="2021-09-21T13:56:58.535Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/null">
@@ -179,7 +179,7 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1632232339314"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1632232618535"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
@@ -187,7 +187,7 @@
                 </div>
             
             <hr />
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>题目质量很高 被吊打</p>
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>体验还行</p>
 <h1 id="ezyii"><a href="#ezyii" class="headerlink" title="ezyii"></a>ezyii</h1><p>说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路<br>看到RunProcess类</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Codeception</span>\<span class="title">Extension</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RunProcess</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$output</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$config</span> = [<span class="string">&#x27;sleep&#x27;</span> =&gt; <span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">static</span> <span class="variable">$events</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$processes</span> = [];</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;stopProcess();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">stopProcess</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">foreach</span> (array_reverse(<span class="keyword">$this</span>-&gt;processes) <span class="keyword">as</span> <span class="variable">$process</span>) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!<span class="variable">$process</span>-&gt;isRunning()) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output-&gt;debug(<span class="string">&#x27;[RunProcess] Stopping &#x27;</span> . <span class="variable">$process</span>-&gt;getCommandLine());</span><br><span class="line">            <span class="variable">$process</span>-&gt;stop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;processes = [];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -283,9 +283,9 @@
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://fmyyy.gitee.io/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/";
             const title         = "「2021祥云杯个人web部分wp」";
-            const excerpt       = `前言题目质量很高 被吊打
+            const excerpt       = `前言体验还行
 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类
-1234567891011121314151617181920212223242526272829303132...`;
+1234567891011121314151617181920212223242526272829303132&lt;?p...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
