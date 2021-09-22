@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="">
+  <title>java反射学习-1 | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="学习java反序列化之前少不了学习反射，虽然之前学过，还是再学一遍 java反射机制的定义Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制 java的反序列化问题都基于反射机制 Java 反射机制的功能1.在运行时判断任意一个对象所属的类。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java反射学习-1">
+<meta property="og:url" content="https://fmyyy.gitee.io/2021/08/25/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-1/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="学习java反序列化之前少不了学习反射，虽然之前学过，还是再学一遍 java反射机制的定义Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制 java的反序列化问题都基于反射机制 Java 反射机制的功能1.在运行时判断任意一个对象所属的类。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/null">
+<meta property="article:published_time" content="2021-08-25T13:14:04.000Z">
+<meta property="article:modified_time" content="2021-09-22T01:19:23.317Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/null">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/zzy2.jpg');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">java反射学习-1</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-08-25</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~3.50K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1632273563317"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">java反射机制的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">2.</span> <span class="toc-text">Java 反射机制的功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">3.</span> <span class="toc-text">Java 反射机制的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">反射常见使用的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96class%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">获取class对象三种方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%B1%BB%E7%9A%84-class%E5%B1%9E%E6%80%A7"><span class="toc-number">5.1.</span> <span class="toc-text">1、类的.class属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AF%B9%E8%B1%A1%E7%9A%84getClass-%E6%96%B9%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">2、实例化对象的getClass()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81Class-forName-String-className-%EF%BC%9A%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E7%B1%BB"><span class="toc-number">5.3.</span> <span class="toc-text">3、Class.forName(String className)：动态加载类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E5%8F%98%E9%87%8FField"><span class="toc-number">6.</span> <span class="toc-text">获取成员变量Field</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95Method"><span class="toc-number">7.</span> <span class="toc-text">获取成员方法Method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">获取构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8F%8D%E5%B0%84%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%AF%B9%E8%B1%A1%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">9.</span> <span class="toc-text">利用反射创建类对象（重点）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%B9%B6%E6%89%A7%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="toc-number">10.</span> <span class="toc-text">利用反射机制创建类并执行方法</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <p>学习java反序列化之前少不了学习反射，虽然之前学过，还是再学一遍</p>
+<h2 id="java反射机制的定义"><a href="#java反射机制的定义" class="headerlink" title="java反射机制的定义"></a>java反射机制的定义</h2><p>Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制</p>
+<p>java的反序列化问题都基于反射机制</p>
+<h2 id="Java-反射机制的功能"><a href="#Java-反射机制的功能" class="headerlink" title="Java 反射机制的功能"></a>Java 反射机制的功能</h2><p>1.在运行时判断任意一个对象所属的类。<br>2.在运行时构造任意一个类的对象。<br>3.在运行时判断任意一个类所具有的成员变量和方法。<br>4.在运行时调用任意一个对象的方法。<br>5.生成动态代理。</p>
+<h2 id="Java-反射机制的应用场景"><a href="#Java-反射机制的应用场景" class="headerlink" title="Java 反射机制的应用场景"></a>Java 反射机制的应用场景</h2><p>1.逆向代码 ，例如反编译<br>2.与注解相结合的框架 例如Retrofit<br>3.单纯的反射机制应用框架 例如EventBus<br>4.动态生成类框架 例如Gson</p>
+<h2 id="反射常见使用的方法"><a href="#反射常见使用的方法" class="headerlink" title="反射常见使用的方法"></a>反射常见使用的方法</h2><p>获取类的方法：forname<br>实例化类对象的方法：newInstance<br>获取函数的方法：getMethod<br>执行函数的方法：invoke</p>
+<p><strong>只有JVM能够创建Class对象</strong></p>
+<h2 id="获取class对象三种方法"><a href="#获取class对象三种方法" class="headerlink" title="获取class对象三种方法"></a>获取class对象三种方法</h2><p>一般我们获取class对象就有以下三种方法</p>
+<h3 id="1、类的-class属性"><a href="#1、类的-class属性" class="headerlink" title="1、类的.class属性"></a>1、类的.class属性</h3><p>第一种就是最简单明了的方式，我们可以通过类名的属性class获取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class c1=ReflectDemo.class;</span><br></pre></td></tr></table></figure>
+<h3 id="2、实例化对象的getClass-方法"><a href="#2、实例化对象的getClass-方法" class="headerlink" title="2、实例化对象的getClass()方法"></a>2、实例化对象的getClass()方法</h3><p>第二种我们可以先实例化一个对象，之后在调用getClass()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ReflectDemo demo2= <span class="keyword">new</span> ReflectDemo();</span><br><span class="line">Class c2 = demo2.getClass();</span><br></pre></td></tr></table></figure>
+<h3 id="3、Class-forName-String-className-：动态加载类"><a href="#3、Class-forName-String-className-：动态加载类" class="headerlink" title="3、Class.forName(String className)：动态加载类"></a>3、Class.forName(String className)：动态加载类</h3><p>第三种则是调用Class类中的forName方法，将字节码文件加载进内存，返回Class对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class c3 = Class.forName(<span class="string">&quot;reflectdemo.ReflectDemo&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>总的来看</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetClassNmae</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException</span>&#123;</span><br><span class="line">        <span class="comment">// 类的.class属性</span></span><br><span class="line">        Class c1 = GetClassNmae.class;</span><br><span class="line">        System.out.println(c1.getName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化对象的getClass()方法</span></span><br><span class="line">        GetClassNmae demo = <span class="keyword">new</span> GetClassNmae();</span><br><span class="line">        Class c2 = demo.getClass();</span><br><span class="line">        System.out.println(c2.getName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Class.forName(String className): 动态加载类</span></span><br><span class="line">        Class c3 = Class.forName(<span class="string">&quot;com.company.GetClassNmae&quot;</span>);</span><br><span class="line">        System.out.println(c3.getName());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">com.company.GetClassNmae</span><br><span class="line">com.company.GetClassNmae</span><br><span class="line">com.company.GetClassNmae</span><br></pre></td></tr></table></figure>
+<p>但在这三种获取CLass类方式中，我们一般使用第三种通过Class.forName方法去动态加载类。且使用forName就不需要import导入其他类，可以加载我们任意的类。</p>
+<p>而使用类.class属性，需要导入类的包，依赖性太强，在大型项目中容易抛出编译错误；</p>
+<p>而使用实例化对象的getClass()方法，需要本身创建一个对象，本身就没有了使用反射机制意义。</p>
+<p>所以我们在获取class对象中，一般使用Class.forName方法去获取。</p>
+<h2 id="获取成员变量Field"><a href="#获取成员变量Field" class="headerlink" title="获取成员变量Field"></a>获取成员变量Field</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">获取成员变量Field位于java.lang.reflect.Field包中</span><br><span class="line"></span><br><span class="line">Field[] getFields() ：获取所有<span class="keyword">public</span>修饰的成员变量</span><br><span class="line"></span><br><span class="line">Field[] getDeclaredFields() 获取所有的成员变量，不考虑修饰符</span><br><span class="line"></span><br><span class="line"><span class="function">Field <span class="title">getField</span><span class="params">(String name)</span> 获取指定名称的 <span class="keyword">public</span>修饰的成员变量</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">Field <span class="title">getDeclaredField</span><span class="params">(String name)</span> 获取指定的成员变量</span></span><br></pre></td></tr></table></figure>
+<h2 id="获取成员方法Method"><a href="#获取成员方法Method" class="headerlink" title="获取成员方法Method"></a>获取成员方法Method</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Method <span class="title">getMethod</span><span class="params">(String name, 类&lt;?&gt;... parameterTypes)</span> <span class="comment">//返回该类所声明的public方法</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">Method <span class="title">getDeclaredMethod</span><span class="params">(String name, 类&lt;?&gt;... parameterTypes)</span> <span class="comment">//返回该类所声明的所有方法</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//第一个参数获取该方法的名字，第二个参数获取标识该方法的参数类型</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">Method[] <span class="title">getMethods</span><span class="params">()</span> <span class="comment">//获取所有的public方法，包括类自身声明的public方法，父类中的public方法、实现的接口方法</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">Method[] <span class="title">getDeclaredMethods</span><span class="params">()</span> <span class="comment">// 获取该类中的所有方法</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="获取构造函数"><a href="#获取构造函数" class="headerlink" title="获取构造函数"></a>获取构造函数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Constructor&lt;?&gt;[] getConstructors() ：只返回<span class="keyword">public</span>构造函数</span><br><span class="line"></span><br><span class="line">Constructor&lt;?&gt;[] getDeclaredConstructors() ：返回所有构造函数</span><br><span class="line"></span><br><span class="line">Constructor&lt;&gt; getConstructor(类&lt;?&gt;... parameterTypes) : 匹配和参数配型相符的<span class="keyword">public</span>构造函数</span><br><span class="line"></span><br><span class="line">Constructor&lt;&gt; getDeclaredConstructor(类&lt;?&gt;... parameterTypes) ： 匹配和参数配型相符的构造函数</span><br></pre></td></tr></table></figure>
+
+<h2 id="利用反射创建类对象（重点）"><a href="#利用反射创建类对象（重点）" class="headerlink" title="利用反射创建类对象（重点）"></a>利用反射创建类对象（重点）</h2><p>在前面我们获取了Class对象，之后展示了一系列获取成员变量、成员方法和成员函数的方式后，我们现在可以通过反射来生成实例化对象，一般我们使用Class对象的newInstance()方法来进行创建类对象。</p>
+<p>使用的方式也特别简单，只需要通过forname方法获取到的class对象中进行newInstance方法创建即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class c = Class.forName(<span class="string">&quot;com.reflect.MethodTest&quot;</span>); <span class="comment">// 创建Class对象</span></span><br><span class="line">Object m1 =  c.newInstance(); <span class="comment">// 创建类对象</span></span><br></pre></td></tr></table></figure>
+<h2 id="利用反射机制创建类并执行方法"><a href="#利用反射机制创建类并执行方法" class="headerlink" title="利用反射机制创建类并执行方法"></a>利用反射机制创建类并执行方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reflectMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;反射测试成功!!!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class c = Class.forName(<span class="string">&quot;com.reflect.ReflectTest&quot;</span>); <span class="comment">// 创建Class对象</span></span><br><span class="line">            Object m = c.newInstance(); <span class="comment">// 创建类实例对象</span></span><br><span class="line">            Method method = c.getMethod(<span class="string">&quot;reflectMethod&quot;</span>); <span class="comment">// 获取reflectMethod方法</span></span><br><span class="line">            method.invoke(m); <span class="comment">// 调用类实例对象方法</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2021/08/25/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-1/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2021/08/25/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-1/";
+            const title         = "「java反射学习-1」";
+            const excerpt       = `学习java反序列化之前少不了学习反射，虽然之前学过，还是再学一遍
+java反射机制的定义Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2021-09-22</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" java反射学习-2" href="/2021/08/26/java反射学习-2/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">这个ctfer好废物</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">java反射机制的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-text">Java 反射机制的功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">Java 反射机制的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">反射常见使用的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96class%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-text">获取class对象三种方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%B1%BB%E7%9A%84-class%E5%B1%9E%E6%80%A7"><span class="toc-text">1、类的.class属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AF%B9%E8%B1%A1%E7%9A%84getClass-%E6%96%B9%E6%B3%95"><span class="toc-text">2、实例化对象的getClass()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81Class-forName-String-className-%EF%BC%9A%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E7%B1%BB"><span class="toc-text">3、Class.forName(String className)：动态加载类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E5%8F%98%E9%87%8FField"><span class="toc-text">获取成员变量Field</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95Method"><span class="toc-text">获取成员方法Method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">获取构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8F%8D%E5%B0%84%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%AF%B9%E8%B1%A1%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-text">利用反射创建类对象（重点）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%B9%B6%E6%89%A7%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="toc-text">利用反射机制创建类并执行方法</span></a></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/09/21/2021%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4webakwp/"><i class="fa  fa-book"></i> 2021第五空间webakwp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/09/21/2021%E7%A5%A5%E4%BA%91%E6%9D%AF%E4%B8%AA%E4%BA%BAweb%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> 2021祥云杯web部分wp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/08/29/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-3/"><i class="fa  fa-book"></i> java反射学习-3</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/08/26/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-2/"><i class="fa  fa-book"></i> java反射学习-2</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/08/25/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-1/"><i class="fa  fa-book"></i> java反射学习-1</a>
+            
+          
+        
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
