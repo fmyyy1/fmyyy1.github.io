@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>fmyyy</title>
+  <title>java JNDI | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -17,14 +17,14 @@
   
   <meta name="description" content="JNDI定义JNDI(Java Naming and Directory Interface)，是SUN公司提供的一种标准的Java命名系统接口。为 开发人员提供了查找和访问各种命名和目录服务的通用、统一的接口，类似JDBC都是构建在抽象层上。 现在JNDI已经成为J2EE的标准之一，所有的J2EE容器都必须提供一个JNDI的服务。 看这篇文章了解一下RMI工厂模式 https:&#x2F;&#x2F;blog.cs">
 <meta property="og:type" content="article">
-<meta property="og:title" content="fmyyy">
+<meta property="og:title" content="java JNDI">
 <meta property="og:url" content="https://fmyyy.gitee.io/2021/11/16/JNDI%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="fmyyy">
 <meta property="og:description" content="JNDI定义JNDI(Java Naming and Directory Interface)，是SUN公司提供的一种标准的Java命名系统接口。为 开发人员提供了查找和访问各种命名和目录服务的通用、统一的接口，类似JDBC都是构建在抽象层上。 现在JNDI已经成为J2EE的标准之一，所有的J2EE容器都必须提供一个JNDI的服务。 看这篇文章了解一下RMI工厂模式 https:&#x2F;&#x2F;blog.cs">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2021-11-16T09:31:59.260Z">
-<meta property="article:modified_time" content="2021-11-16T09:31:42.392Z">
+<meta property="article:published_time" content="2021-11-16T01:14:04.000Z">
+<meta property="article:modified_time" content="2021-11-16T09:43:49.648Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,6 +171,8 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
+                <h1 class="kratos-entry-title text-center">java JNDI</h1>
+            
             
             <ul class="kratos-post-meta text-center">
                 <li><i class="fa fa-calendar"></i> 2021-11-16</li>
@@ -188,8 +190,12 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1637055102392"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1637055829648"></time> 前，其中的内容可能需要更新。
             </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JNDI%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">JNDI定义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JNDI%E6%B3%A8%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">JNDI注入</span></a></li></ol>
+                </div>
             
             <hr />
             <h1 id="JNDI定义"><a href="#JNDI定义" class="headerlink" title="JNDI定义"></a>JNDI定义</h1><p>JNDI(Java Naming and Directory Interface)，是SUN公司提供的一种标准的Java命名系统接口。为 开发人员提供了查找和访问各种命名和目录服务的通用、统一的接口，类似JDBC都是构建在抽象层上。 现在JNDI已经成为J2EE的标准之一，所有的J2EE容器都必须提供一个JNDI的服务。</p>
@@ -285,7 +291,7 @@
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://fmyyy.gitee.io/2021/11/16/JNDI%E6%B3%A8%E5%85%A5/";
-            const title         = "「」";
+            const title         = "「java JNDI」";
             const excerpt       = `JNDI定义JNDI(Java Naming and Directory Interface)，是SUN公司提供的一种标准的Java命名系统接口。为 开发人员提供了查找和访问各种命名和目录服务的通用、统一的接口，类似JDBC都是构建在...`;
             let _URL;
             switch (dest) {
@@ -317,9 +323,13 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" java fastjson基础" href="/2021/11/16/fastjson基础/">&lt; 上一篇</a>
+                <a title=" java RMI基础" href="/2021/11/14/RMI基础/">&lt; 上一篇</a>
             </div>
             
+            
+            <div class="nav-next clearfix">
+                <a title=" java fastjson基础" href="/2021/11/16/fastjson基础/">下一篇 &gt;</a>
+            </div>
             
         </nav>
     
@@ -353,12 +363,24 @@
             
                     <div class="sticky-area">
                 
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JNDI%E5%AE%9A%E4%B9%89"><span class="toc-text">JNDI定义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JNDI%E6%B3%A8%E5%85%A5"><span class="toc-text">JNDI注入</span></a></li></ol>
+    </div>
+</aside>
+                
                     <div class="sticky-area">
                 
                 
   <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
     <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li></ul>
   </aside>
 
 
@@ -374,10 +396,13 @@
         
           
           
+            <a class="list-group-item" href="/2021/11/16/fastjson%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> java fastjson基础</a>
+            
+          
         
           
           
-            <a class="list-group-item" href="/2021/11/16/fastjson%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> java fastjson基础</a>
+            <a class="list-group-item" href="/2021/11/16/JNDI%E6%B3%A8%E5%85%A5/"><i class="fa  fa-book"></i> java JNDI</a>
             
           
         
@@ -400,11 +425,7 @@
           
         
           
-          
-            <a class="list-group-item" href="/2021/11/09/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%20rome%E9%93%BE%E4%BB%A5%E5%8F%8A%E9%99%87%E5%8E%9F%E6%88%98%E7%96%AB%E7%9A%84java%E9%A2%98/"><i class="fa  fa-book"></i> java反序列化 rome链以及陇原战疫的java题</a>
             
-          
-        
           
             
           
