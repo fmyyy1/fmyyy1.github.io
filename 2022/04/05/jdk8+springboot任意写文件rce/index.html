@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico">
+  <title>jdk8+spring原生场景任意写文件rce | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="jdk8+spring原生场景任意写文件rce逛了一下三梦师傅的博客看到的，写一篇笔记。 写文件springboot把所有资源打包进jar，我们无法在运行时往classpath等目录写入内容。但是我们可以往系统的classpath目录写内容，即 JDK HOME 思路jvm不会把JDK HOME下的jar文件一次性全部加载进来。配合任意写文件的漏洞，我们可以替换JDK HOME目录下的系统 jar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jdk8+spring原生场景任意写文件rce">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/04/05/jdk8+springboot%E4%BB%BB%E6%84%8F%E5%86%99%E6%96%87%E4%BB%B6rce/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="jdk8+spring原生场景任意写文件rce逛了一下三梦师傅的博客看到的，写一篇笔记。 写文件springboot把所有资源打包进jar，我们无法在运行时往classpath等目录写入内容。但是我们可以往系统的classpath目录写内容，即 JDK HOME 思路jvm不会把JDK HOME下的jar文件一次性全部加载进来。配合任意写文件的漏洞，我们可以替换JDK HOME目录下的系统 jar">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta property="article:published_time" content="2022-04-05T13:14:04.000Z">
+<meta property="article:modified_time" content="2022-04-05T08:47:46.227Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">jdk8+spring原生场景任意写文件rce</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2022-04-05</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~4.60K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1649148466227"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#jdk8-spring%E5%8E%9F%E7%94%9F%E5%9C%BA%E6%99%AF%E4%BB%BB%E6%84%8F%E5%86%99%E6%96%87%E4%BB%B6rce"><span class="toc-number">1.</span> <span class="toc-text">jdk8+spring原生场景任意写文件rce</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">写文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">1.2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.3.</span> <span class="toc-text">实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E5%B1%95"><span class="toc-number">1.4.</span> <span class="toc-text">拓展</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="jdk8-spring原生场景任意写文件rce"><a href="#jdk8-spring原生场景任意写文件rce" class="headerlink" title="jdk8+spring原生场景任意写文件rce"></a>jdk8+spring原生场景任意写文件rce</h1><p>逛了一下三梦师傅的博客看到的，写一篇笔记。</p>
+<h2 id="写文件"><a href="#写文件" class="headerlink" title="写文件"></a>写文件</h2><p>springboot把所有资源打包进jar，我们无法在运行时往classpath等目录写入内容。但是我们可以往系统的classpath目录写内容，即 JDK HOME</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>jvm不会把JDK HOME下的jar文件一次性全部加载进来。配合任意写文件的漏洞，我们可以替换JDK HOME目录下的系统 jar 文件，再主动触发 jar 文件里的类初始化来达到执行任意代码的方法。</p>
+<p>覆盖哪一个jar文件呢？</p>
+<p>如果程序代码中没有使用<code>Charset.forName(&quot;GBK&quot;)</code>类似的代码，就不会加载到<code>/jre/lib/charsets.jar</code></p>
+<p>所以</p>
+<p>覆盖charsets,jar即可，接下来要解决的是如何主动加载这个jar。</p>
+<p>在<code>org.springframework.web.accept.HeaderContentNegotiationStrategy#resolveMediaTypes</code></p>
+<p><img src="https://img.le1a.com/2022/04/05/02adc4cd284b3.png" alt="1649144875511.png"></p>
+<p>spring都会尝试解析请求头中的ACCEPT，进入parseMediaTypes，经过一系列调用会来到<code>MimeTypeUtils#parseMimeTypeInternal</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> MimeType <span class="title">parseMimeTypeInternal</span><span class="params">(String mimeType)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> index = mimeType.indexOf(<span class="string">&#x27;;&#x27;</span>);</span><br><span class="line">		String fullType = (index &gt;= <span class="number">0</span> ? mimeType.substring(<span class="number">0</span>, index) : mimeType).trim();</span><br><span class="line">		<span class="keyword">if</span> (fullType.isEmpty()) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> InvalidMimeTypeException(mimeType, <span class="string">&quot;&#x27;mimeType&#x27; must not be empty&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// java.net.HttpURLConnection returns a *; q=.2 Accept header</span></span><br><span class="line">		<span class="keyword">if</span> (MimeType.WILDCARD_TYPE.equals(fullType)) &#123;</span><br><span class="line">			fullType = <span class="string">&quot;*/*&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> subIndex = fullType.indexOf(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">		<span class="keyword">if</span> (subIndex == -<span class="number">1</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> InvalidMimeTypeException(mimeType, <span class="string">&quot;does not contain &#x27;/&#x27;&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (subIndex == fullType.length() - <span class="number">1</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> InvalidMimeTypeException(mimeType, <span class="string">&quot;does not contain subtype after &#x27;/&#x27;&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		String type = fullType.substring(<span class="number">0</span>, subIndex);</span><br><span class="line">		String subtype = fullType.substring(subIndex + <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">if</span> (MimeType.WILDCARD_TYPE.equals(type) &amp;&amp; !MimeType.WILDCARD_TYPE.equals(subtype)) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> InvalidMimeTypeException(mimeType, <span class="string">&quot;wildcard type is legal only in &#x27;*/*&#x27; (all mime types)&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		Map&lt;String, String&gt; parameters = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">do</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> nextIndex = index + <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">boolean</span> quoted = <span class="keyword">false</span>;</span><br><span class="line">			<span class="keyword">while</span> (nextIndex &lt; mimeType.length()) &#123;</span><br><span class="line">				<span class="keyword">char</span> ch = mimeType.charAt(nextIndex);</span><br><span class="line">				<span class="keyword">if</span> (ch == <span class="string">&#x27;;&#x27;</span>) &#123;</span><br><span class="line">					<span class="keyword">if</span> (!quoted) &#123;</span><br><span class="line">						<span class="keyword">break</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (ch == <span class="string">&#x27;&quot;&#x27;</span>) &#123;</span><br><span class="line">					quoted = !quoted;</span><br><span class="line">				&#125;</span><br><span class="line">				nextIndex++;</span><br><span class="line">			&#125;</span><br><span class="line">			String parameter = mimeType.substring(index + <span class="number">1</span>, nextIndex).trim();</span><br><span class="line">			<span class="keyword">if</span> (parameter.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="keyword">if</span> (parameters == <span class="keyword">null</span>) &#123;</span><br><span class="line">					parameters = <span class="keyword">new</span> LinkedHashMap&lt;&gt;(<span class="number">4</span>);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">int</span> eqIndex = parameter.indexOf(<span class="string">&#x27;=&#x27;</span>);</span><br><span class="line">				<span class="keyword">if</span> (eqIndex &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">					String attribute = parameter.substring(<span class="number">0</span>, eqIndex).trim();</span><br><span class="line">					String value = parameter.substring(eqIndex + <span class="number">1</span>).trim();</span><br><span class="line">					parameters.put(attribute, value);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			index = nextIndex;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">while</span> (index &lt; mimeType.length());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> MimeType(type, subtype, parameters);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (UnsupportedCharsetException ex) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> InvalidMimeTypeException(mimeType, <span class="string">&quot;unsupported charset &#x27;&quot;</span> + ex.getCharsetName() + <span class="string">&quot;&#x27;&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (IllegalArgumentException ex) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> InvalidMimeTypeException(mimeType, ex.getMessage());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>关键是<code>return new MimeType(type, subtype, parameters);</code>，解析了ACCEPT后生成MimeType实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MimeType</span><span class="params">(String type, String subtype, <span class="meta">@Nullable</span> Map&lt;String, String&gt; parameters)</span> </span>&#123;</span><br><span class="line">		Assert.hasLength(type, <span class="string">&quot;&#x27;type&#x27; must not be empty&quot;</span>);</span><br><span class="line">		Assert.hasLength(subtype, <span class="string">&quot;&#x27;subtype&#x27; must not be empty&quot;</span>);</span><br><span class="line">		checkToken(type);</span><br><span class="line">		checkToken(subtype);</span><br><span class="line">		<span class="keyword">this</span>.type = type.toLowerCase(Locale.ENGLISH);</span><br><span class="line">		<span class="keyword">this</span>.subtype = subtype.toLowerCase(Locale.ENGLISH);</span><br><span class="line">		<span class="keyword">if</span> (!CollectionUtils.isEmpty(parameters)) &#123;</span><br><span class="line">			Map&lt;String, String&gt; map = <span class="keyword">new</span> LinkedCaseInsensitiveMap&lt;&gt;(parameters.size(), Locale.ENGLISH);</span><br><span class="line">			parameters.forEach((parameter, value) -&gt; &#123;</span><br><span class="line">				checkParameters(parameter, value);</span><br><span class="line">				map.put(parameter, value);</span><br><span class="line">			&#125;);</span><br><span class="line">			<span class="keyword">this</span>.parameters = Collections.unmodifiableMap(map);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">this</span>.parameters = Collections.emptyMap();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进入checkParameters</p>
+<p><img src="https://img.le1a.com/2022/04/05/26bbb3f55bee1.png" alt="1649145758822.png"></p>
+<p>看到了Charset.forName</p>
+<p>举例来说：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Accept: text/plain, */*; q=0.01</span><br></pre></td></tr></table></figure>
+
+<p>会执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Charset.forName(<span class="string">&quot;0.01&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>Landgrey大佬的项目地址</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/LandGrey/spring-boot-upload-file-lead-to-rce-tricks">https://github.com/LandGrey/spring-boot-upload-file-lead-to-rce-tricks</a></p>
+<p>也为我们准备好了jar文件，直接用就行</p>
+<p><img src="https://img.le1a.com/2022/04/05/2c83eebf5101f.png" alt="1649147979495.png"></p>
+<p>之后发包</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Accept: text/html;charset=GBK</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://img.le1a.com/2022/04/05/ebcdf6d1883f1.png" alt="1649148071224.png"></p>
+<p>看到log文件创建就说明成功</p>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><p><a target="_blank" rel="noopener" href="https://threedr3am.github.io/2021/04/14/JDK8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%9A%84SpringBoot%20RCE/">https://threedr3am.github.io/2021/04/14/JDK8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%9A%84SpringBoot%20RCE/</a></p>
+<p>三梦师傅给了另外的一种思路，相比于覆盖charset.jar来说更稳定</p>
+<p><img src="https://img.le1a.com/2022/04/05/b7a1695ef32c1.png" alt="1649148259925.png"></p>
+<p>是从Charset.forName的原理上来探究，最后找到了<code>lookupViaProviders(charsetName)</code>利用SPI机制加载类。</p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2022/04/05/jdk8+springboot%E4%BB%BB%E6%84%8F%E5%86%99%E6%96%87%E4%BB%B6rce/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2022/04/05/jdk8+springboot%E4%BB%BB%E6%84%8F%E5%86%99%E6%96%87%E4%BB%B6rce/";
+            const title         = "「jdk8+spring原生场景任意写文件rce」";
+            const excerpt       = `jdk8+spring原生场景任意写文件rce逛了一下三梦师傅的博客看到的，写一篇笔记。
+写文件springboot把所有资源打包进jar，我们无法在运行时往classpath等目录写入内容。但是我们可以往系统的classpath目录...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-04-05</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" codeql学习小记-数据流" href="/2022/03/25/codeql学习-4-数据流/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">这个ctfer好废物</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#jdk8-spring%E5%8E%9F%E7%94%9F%E5%9C%BA%E6%99%AF%E4%BB%BB%E6%84%8F%E5%86%99%E6%96%87%E4%BB%B6rce"><span class="toc-text">jdk8+spring原生场景任意写文件rce</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E6%96%87%E4%BB%B6"><span class="toc-text">写文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-text">实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E5%B1%95"><span class="toc-text">拓展</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PWN/">PWN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/codeql/">codeql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">41</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><span class="category-list-count">2</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2022/04/05/jdk8+springboot%E4%BB%BB%E6%84%8F%E5%86%99%E6%96%87%E4%BB%B6rce/"><i class="fa  fa-book"></i> jdk8+spring原生场景任意写文件rce</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/25/codeql%E5%AD%A6%E4%B9%A0-4-%E6%95%B0%E6%8D%AE%E6%B5%81/"><i class="fa  fa-book"></i> codeql学习小记-数据流</a>
+            
+          
+        
+          
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/14/Instrument%D1%A7%CF%B0/"><i class="fa  fa-book"></i> Instrument 学习</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/12/%E5%AD%97%E8%8A%82%E7%A0%81%E6%93%8D%E4%BD%9C/"><i class="fa  fa-book"></i> 字节码操作</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/08/d%5E3CTF%20web%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> D^3CTF web部分wp</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
