@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>java反射学习-2 | fmyyy</title>
+  <title>codeqk-jndiBypass-factory | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="上一篇学完了反射的基础，接下来深入学习一下。 在正常情况下，除了系统类，如果我们想拿到一个类，需要先 import 才能使用。而使用forName就不 需要，这样对于我们的攻击者来说就十分有利，我们可以加载任意类 同时，forName()还可以获取内部类 我们通过forName获得类之后用newInstance()来调用这个类的无参构造函数，但有时这个方法会失败，原因可能是：  你使用的类没有无参">
+  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java反射学习-2">
-<meta property="og:url" content="https://fmyyy.gitee.io/2021/08/26/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-2/index.html">
+<meta property="og:title" content="codeqk-jndiBypass-factory">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/04/30/codeql-jdniBypass-factory/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="上一篇学完了反射的基础，接下来深入学习一下。 在正常情况下，除了系统类，如果我们想拿到一个类，需要先 import 才能使用。而使用forName就不 需要，这样对于我们的攻击者来说就十分有利，我们可以加载任意类 同时，forName()还可以获取内部类 我们通过forName获得类之后用newInstance()来调用这个类的无参构造函数，但有时这个方法会失败，原因可能是：  你使用的类没有无参">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2021-08-26T13:14:04.000Z">
-<meta property="article:modified_time" content="2021-09-22T01:19:28.000Z">
+<meta property="article:published_time" content="2022-04-30T07:14:04.000Z">
+<meta property="article:modified_time" content="2022-04-30T07:38:08.655Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,17 +171,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">java反射学习-2</h1>
+                <h1 class="kratos-entry-title text-center">codeqk-jndiBypass-factory</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-08-26</li>
+                <li><i class="fa fa-calendar"></i> 2022-04-30</li>
                 <li><i class="fa fa-user"></i> 作者 fmyyy</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~1.73K
+                        ~9.39K
                     
                     字
                 </li>
@@ -190,24 +190,22 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1632273568000"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1651304288655"></time> 前，其中的内容可能需要更新。
             </div>
             
             <hr />
-            <p>上一篇学完了反射的基础，接下来深入学习一下。</p>
-<p>在正常情况下，除了系统类，如果我们想拿到一个类，需要先 import 才能使用。而使用forName就不 需要，这样对于我们的攻击者来说就十分有利，我们可以加载任意类</p>
-<p>同时，forName()还可以获取内部类</p>
-<p>我们通过forName获得类之后用newInstance()来调用这个类的无参构造函数，但有时这个方法会失败，原因可能是：</p>
-<ol>
-<li>你使用的类没有无参构造函数</li>
-<li>你使用的类构造函数是私有的<br>常见的情况就是 java.lang.Runtime ，这个类在我们构造命令执行Payload的时候很常见，但 我们不能直接这样来执行命令：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>); clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(clazz.newInstance(), <span class="string">&quot;id&quot;</span>);</span><br></pre></td></tr></table></figure>
-因为Runtime类的构造方法是私有的。<br>但还是有方法获取到这个类的，这涉及到单例模式。<br>比如，对于Web应用来说，数据库连接只需要建立一次，而不是每次用到数据库的时候再新建立一个连 接，此时作为开发者你就可以将数据库连接使用的类的构造函数设置为私有，然后编写一个静态方法来 获取：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrainDB</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> TrainDB instance = <span class="keyword">new</span> TrainDB();</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TrainDB <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> instance;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TrainDB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 建立连接的代码...</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-之后获取这个类的方法为getInstance。<br>Runtime类就是单例模式，我们只能通过 Runtime.getRuntime() 来获取到 Runtime 对 象。我们将上述Payload进行修改即可正常执行命令了：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>); </span><br><span class="line">clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(clazz.getMethod(<span class="string">&quot;getRuntime&quot;</span>).invoke(clazz), <span class="string">&quot;calc.exe&quot;</span>);</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>Runtime.exec有6个重载，第一个重载，它只有一个参数，类型是String，所以我们使用 getMethod(“exec”, String.class) 来获取 Runtime.exec 方法。<br>invoke 的作用是执行方法，它的第一个参数是：<br>1.如果这个方法是一个普通方法，那么第一个参数是类对象<br>2.如果这个方法是一个静态方法，那么第一个参数是类</p>
-<p>这也比较好理解了，我们正常执行方法是 [1].method([2], [3], [4]…) ，其实在反射里就是 method.invoke([1], [2], [3], [4]…) 。</p>
-<p>所以我们将上述命令执行的Payload分解一下就是：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line">Method execMethod = clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class);</span><br><span class="line">Method getRuntimeMethod = clazz.getMethod(<span class="string">&quot;getRuntime&quot;</span>);<span class="comment">//获取getRuntime方法</span></span><br><span class="line">Object runtime = getRuntimeMethod.invoke(clazz);<span class="comment">//执行getRuntime方法获取Runtime对象</span></span><br><span class="line">execMethod.invoke(runtime, <span class="string">&quot;calc.exe&quot;</span>);</span><br></pre></td></tr></table></figure>
+            <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="532cc646b8624abb55816d1f30e02574bcd6a95be19633c08de4198d394a9dd7">adda23cb817452ecdafc3f3f7d30fbb15401cffd93a5d761075787a5fd87e638b68922087dfc1f3c67729ef1b6f63871c2abd400157329370f52daebfe43d5df1352cb87cf4f4439c3254e1fc424b99d39492f36ca87ab5d5eed64b1d97947aad72b5f1822d53925cad85a7cf3a10ce7d4b700e9221bd1960791e3c6ed05e6c007071b4ce0787047e5be3756d7ce91df22a5ebc793b36ed73367a11f43fa2560b4eb41c18fe1239599f893afc1b986a059a4e9d3fdaf2cbb8e6695c767e7b048a9908c14ecb13e5199e219cf148290ac4a3b245de8039af815d0ab7ab2e7ae4b27733cdca84dfb9a8db311eeac545d3753362f4520cf0372a763cd609693e253f0ca95f772eec6a4c0c04e097a8f47cf8b65f79db67c653d2141cabd9ecdbdce415b5578c1e752e7d22389f47db61b34aa9d7674ba42ca10919aa605b873fd6bba7530cc83fcf7d306ec58b72d7db146156babedb6618b22ad44e12187e772c20cf6ca37e4b0ef7241d02b3c52ef0461637c06777d03316d42d88870854a57e4ab3c7bfc3d3e3adc10d0e7d537294540fbab0986c177a15b7fa6ad87dcd0d41efcab7d5c3c05229a4617aded63ab1c4743c4e1c076af2c0580a2bd2aa8e0a0bb4e813925c088a908e4d474ed8854bdc74b9ff49669608d120f7f3d9cf187f7894b3c52bafaa9a768b55f268c146b3c51f5183dd1cf21ca0481fe20c5cc12c9bb0e2fef5c1e670f2db2b70ea16b11ce716082f5aa7b140b9ba4c65594f063a063da74e683edd77acb85a1506f2b930640146893f1de29f923c2c008872d6821d7874584eecb39a0c0d8a99018a1f88c08912acfb6ae07145df5990359dd9ee537baf56ab392ac01e647c6d89abf70c51e3038f97b9f996c22fb538704b502d338729d15604248219808bbda1ceb8c659de4e685ba4046a728f8c230da131bcd0af0505c45bbf5d7fcf229ad02ca4ae0c7c7379930f378db9d239be461b3ed907577b4dc5aa441a0f4b6c67b5500a9c872aa0089c4580a2544db59b3084dd401b2a0d2a652989d730241c40d42043cd77315bdb37a193f7674a5b1057899a485891742d321becafc49ab48a9e504a4092e962f3bab294f15240905af1a3bef173b4f2e200c70d38186842db61f9779178a022d0cbfcba0d51c0824f84eaaf11f47dadabf4ab88576074e77215b3e426f56eb3d70ea2ff904472942a617fbc4ecd134cddea80f156e79378e7ccdc4ea1ca6668126fc00f821917f223bbf9122c728232ca0a1bdacc8dbbe74cc7f4c42da0a9645d5beaa1eb3e661cc1953e88d7913b97ee06a4b0296dccac080877344235c67d8b3d21dea8a09d8d2de82ea4a26241df217421818ad941d84a6fbc5406c4d2e1d649ff0aa85171cff91eb3d9e1813920f99268fbf68bfe503235a15a0bd845a22eb927c6574498cc3044d6efe318df7c4656fb112c616e1b697f95e8a3b01e3f25c716143708f42e9ff7691e4213464f24d68504672357d44f0753057a6d6933bc562131589410c0fbbb310d8a534f393c182c99aee780d879c99304d57ccd1b61ebc90569ad0713466a9b875be1ebef3fe484496631c2a70944931d9061de0fda6b862c0c1427417e418486971ee753893ad44a3546bea4623ec2d418d4e3f5620d9153f7e09501f247f2d90955899ebb81220d1cfe2d4b935bdd4cce4c4c85b16d912ea4c155c98b4002ee8a13f6782f41ba643c52f8ffcc4678fd78f53268f3c081c9fa117a4698d17ba33682e0073dde7aa5318e39841a900920d5eb249dddd3318d5c8e54886ba37fd5defdd3a5a5b0038e3f1652aa0ed83a5e65813b3340c4e05b8d5104c51061e59b4b8e070e9a7b8b7dc4012bcc32d81c5838ab5d7fd8ead392344b7c6372d48607c46027461764ee34f149b05b63da2c7604a740c1ed8ed6827c041d1f7a9db063d1288653bad3873aec228605943157b89112127d9614370dd36c6b2f86c5d5b4df07f5f7840d3e26c7ea3d40668bc84940a3ed6016ee837d52518e2a1f30a1ff4f25f86d96b8ce71002326a2923c584ae77aa3a86be5cc78e2602b8cca796dadf6a420ff714badbe87f793a065cda06bc1a95c7644518d49f50de2065e7a214493b11e1cd39db6875f219be78e54d7a4d094791859e910eaea900b52def3fc154d01307fdd969a0a782ce343cf606ec37df272ddea1e1fe841af9d5a22bcb65859115ef7d96eee8951e2e2d6212f2af5d4615c50ae053b09dc0c2a47fb39b1aa1cd795bf807d968cc62fb23eb8fc7118def1533b005eb520f6f83ebfad6347d6e7e35c49720d212c784841fd7a47c01f418ccf2676c9b809fc616fdf83db84e255b3a8e6ed793424a68b535a002af268e97f7e4eee88a6533bf897fe57b815782efce86ad9252c28b5d6ac3a326ff77b5a7a12a4cfcc2f114f245dd824a96c97d369a4040d4f51613c5802e6b65d646626d5e61a8df6fce7fdfa9e6d033360c24885188b63b2f4b0059d32062af9885c07136216213bac3f77670330f44f3c6d02f4278d8c7b90618c199ebc9cfac6601de53abf96e96330eba7f1e9f0c2dff28a91b4ad122dc7ae45972f07083806c3cb8352c1232d5f644078c2aef94d495222a0b03b9d4de5a3c145947493b83cbc4c8db806d003a0aa74981fb91977120bd52901bb6611a85eeff7d1aafc1a94f44a4856ce7a4b8b0ece44aa04f49d44fefd57e556229476b57430f36b2d817a9c7d3feba178206ea69858f88a6eeff93d33ec0e8e9881459e396f4941de6ace96ce6b5966cd7646581dbddc1e0388d7e05752922548402d750f57609bb35ed9ad4aa3551c616d8cf9fb8ac20a42f13b210010af64b3ee226d20d6c9ff597210474c35b6ae97504a7e7a67ef256e1229b27fe3d33c6e6e8e6f56dedcffc5d1e0118fb3ee0ba454441a3f06a8b5d9335cef2e2c70f026143077b7eddf1ab12fdb82512998702113dfacc9bc382efd2cb5fda29f2d29f63a3508c74a338a59c9a1151a2d5dd63e967ea821b93ab413a3e33c0196e2fcef5b4f383512f81ba7e56c59327b0aadc0e72990484343f870bd4fa6d0009a359804d453c99840c36748299677c1b2c602e9026e2a03c9544bde52b8e377f7cb6477e27c0d2e1f25b70ccfa2477b0f372c2a7e72d6ce4c54495aea5e771e6b087601a457d5402c626fdbdb1035e643d334a4b7c5a2650e18746c486cfde650381f9818186bd174117a27531186ca3ed13e1500743ae4a957ea247374a1745b984fe0e58b2de4ebefc4ce61846f25ea39665c7eb65a2c67180eba570935703c1ad688adc4d2e11250461a9f105ce2e538dcfade451140fb3d47f6430158058ee07ac0b3700404228ca693e6db8191bc06b2a32800b95e753bf4ce54550e5dcf9955339ff3a94345d0826dbd71d77a29999bdd867dfe88694927114c909fe9ce3bd49e52286ed25e82a79138dcf6d0093f7b1357896fe686d44bf4df839602819dbd7d322a4127d3e132d03ebd5e4f12c76d5681baacafea52544732e042b215b091f9da71fed899bd94e05e92b0cf046a2e384c010b9547dfc0521e2a553cf6f7dc2ff214c75fc281e4aa1b2c2c92075f88c6d0c75119d61ef156473c7b7e3e2fc65cf6f0ffae82e30b4f865378a86b3e0f79797cad1ed82c9948a4a68449240a14e0b4c84cdb039e8782c9b87d99a22a3c6438248a345e297c1abe687b7fd353b8ed531d9983adf649b06ce914dcba5352bdd78861a11b4b4d70dbf2ec0358828eb97e47f0a5ac33afa84246ed8b30ad02c8e980c46bbf71e95e07be65b042029f0003738aff23e3f493d455182f35c044c4178bb96f34cf749d2fbc1bc5d84fec1b43b84accf37de31e886f227266f2b457afd7e879b1fa82879367b87d64d05f18da495a2b0825532896dda6f7411050cefbdf9168fa6ce2e3f00986bb4ae9e29cf3445ddf47b99f3342ee06053ac4e0b882713f8cd5320118f25b8acc1b84ab0ce14371e70f345fd4d675024ff46660b597bf44b94e2197d61cb64b004ac3d3b01f036891389af54cec923a48ff3f1e2bb48d12370d67801d878ab1b5b2f038fd954805fea4dfe1ba35958558919d81f80599c85920175491e0fd5faf9a2e3fde42dd404a8190af43f5a5b0800aa57cff5f03e6bf48df252c13850941ad977c2a7fe7a515b560ec747425f4ffd9102fab06b0055296f45cba6956fd249bb0f6b569290210470c3d7ea2c70a8ba7c1f11a51d44615fd658fb251693658b847951a40034716f78833e86a05b5f797db264450bf2f116dbc55840d90d984a14aac188d8514e5a3963f8923d96a2016a75058f1a15fd31f07db13c3a6c2a82d458996d03f8e8b8e49d216b271d88ab41aaa443911a47fe95f54f551ce30e5a450f98f510ecaab628f67e8f33d208cd4da85b03057d71ae8024800e7a5abcf21b56e6b8f893f7ec35f7f9b0f4d18354f204666f6b9c5400bcea7b40ef20cf38365115a0bcfd20842037f570224d63b15877903726f0e0bc62f25d7abf2947cf2586e58d00199b43db4a2e97014d1d57f279185d839e892b1da301a89559e87210f5f811bf7d46e3e7018875fc07b97fbdbcde4d79b658dba180e41fbdc76e4a9a780e9897a6e120762f57d672203f7bb6ec83baff5487fd509a788387119ab3a0f38f14fb1cec47f1959fbe76035756cba135fd7c358c4021827747f6e9e73b0a2c4aec796ef8549a13fe6e984f30a977e6acfd4cb63cd1702d52a7d4b4b4cc4e478bbd9bad7c21f4fa1ab938e49eaa91396f7dcc609ff0d0586c90db547e769ce074e43071fea314b64b0705c225d8a30e5b75966a130f35b68957ae9a2248322c06e6e2553ad7254c52ae187d86bcbd3d313d471d438496219ac5d4bafa117f17aa6643ad6315952f96eb2ead2c7fc8d9c2a015eec5dc4f38727793154195643d526ff4050553b09f0958d56d908f4dd40dd319270e7f752dccee58c656306382d0b9a5632d927369a0a04407b75f707b74fd489ddc75095203ce8f351cde0b8584420aa451bd40bba2629741b1599687ce65f39ce950084bf244bc4455eac053cf09db3ae578bcff3d4e33f0f9b701bdd04d6ba170fe9488a76d3ac0e66788c906195430dfa2a8a8377335d8f8450d57ee5372bab7b9418fc0d9b92576adfc48357dc023f3cd5e494c3880da42304971a3f6855a4c49c6320b05950a58462a6897a9ea609199a21670e6b878a0080448dd0a1d20c593878be0560c2a239f6e60c159165be4790472b559995f693cef470691802c664fe2bc13f6713be8865ecfd49f066e7340d2572703f367b0371356afd9c40a215f7053fe23b10d3592c88603acaa03e3bb5443e1c40c40496dbe1e93ff2b3eca980227894a3fb2c2259324e6237f42bc9925f7c47b736f04e28f09a289deaceb911509dd2380433aa9abcd949d71b03105f0d97989fa74766dd6961eaebca91a81426ba3e99647aabea82adaabbdbceaeac1d0d00baaf276607c4ba65a5ff52bf8df945fee1de64aeb496734878a3fd710da0c944c4e7333b6cd6b0e9184447678b075d3fb856d57acd5d6959b11a5c87c5ada683e33d718588bbcf0212caa87ab2c11dce9f3b3321e372cbb9844e7a627093319121e9e50fec006e560d8db2bd9585c4f38df4440ac4b6e0e4a64a73236ce6714580a1c5f1fda6854e4b1d1c95144d6b864e3c88e12a5ebfd4bae1069e93551f010aed15e18908fdd60db2e192ede57af96f63ada59809b503b3a5a268c9bbce82e8e30d91886c74f4eb15bd7f9f7d399f3a1c14d1bdde997350e4c50d74287f6397e88c0130e759021cd2ebd534790118d9d2606c8d7177f9cf0a909ad89e87dd7fe2f8885266e96771b15c466e2ed3c02726f62a96a1adf79094cf4c2d1db614dc4f22f743b930b9539f278f8e8492a5f1096d482e25ac00544c5219b2e31e81e19cbeb10d3ee8bac10183c954878812ff21ba260f654265a236b6b08d6f4765129af0d8c196afdaaac0f7803812b81a77a6e6ffb02715713e63fc3d8164f46a05932837805277d9c2018edda24c524adc2a53e82b424c9a111fb5d9d9e3bd22097e7d3142a504cafe19a7a0ce2ae8c8fbac7ae4d2ad759a8b4c8fd875e532bd07a628438e854f63c62e8d3e497fc888eaf21e5f91f0f8a669f33bc2fcffdc0dd57cb895fed57f537c0f8d6b7ce17797bdbd1dfe1ee69b111b530350e4786d7285d9b18903255e7c569978b718e869117aa4ee4443a020580d95c9dfb24e82cecd48165ffb5dfb7959cf65b31333fb46492707b01e639ba73bf12275faf0a6e0974e3ab6535f9bc2f90eb156afde81aaba9fcc4f6d354b190cfd5640787ec9a60af8b6c56a43058f848a49b9212930f8a3d0b70734b870a73e91cbcd332abd457302d34ccff3eec925fa3404c708d1df6332ca77a149d13fd73cb9f1617982902a651bd6723f2b487ef6e6a0b299b44bca9a3da17248adee2c92d46c29e1239525474ce640a0bce78d07c39fd0c19b8e91686db29cd6272632462f921aef576f042e3642a1d082a9faad8f5068a22baf019052a16087ebaca42200be58148cb4badf16e63</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
         </div>
         
             <div class="kratos-copyright text-center clearfix">
@@ -260,7 +258,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2021/08/26/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-2/",
+                text: "https://fmyyy.gitee.io/2022/04/30/codeql-jdniBypass-factory/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -272,11 +270,9 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2021/08/26/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-2/";
-            const title         = "「java反射学习-2」";
-            const excerpt       = `上一篇学完了反射的基础，接下来深入学习一下。
-在正常情况下，除了系统类，如果我们想拿到一个类，需要先 import 才能使用。而使用forName就不 需要，这样对于我们的攻击者来说就十分有利，我们可以加载任意类
-同时，forName...`;
+            const hostUrl       = "https://fmyyy.gitee.io/2022/04/30/codeql-jdniBypass-factory/";
+            const title         = "「codeqk-jndiBypass-factory」";
+            const excerpt       = `Here's something encrypted, password is required to continue reading.`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -298,7 +294,7 @@
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2021-09-22</span>
+                <span>最后编辑：2022-04-30</span>
                 </div>
             </div>
         </footer>
@@ -307,13 +303,9 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" java反射学习-1" href="/2021/08/25/java反射学习-1/">&lt; 上一篇</a>
+                <a title=" RASP-waf命令执行" href="/2022/04/28/使用RASP对java命令执行进行WAF/">&lt; 上一篇</a>
             </div>
             
-            
-            <div class="nav-next clearfix">
-                <a title=" java反射学习-3" href="/2021/08/29/java反射学习-3/">下一篇 &gt;</a>
-            </div>
             
         </nav>
     
