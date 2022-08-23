@@ -15,16 +15,16 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="dddddddd">
+  <meta name="description" content="记录一些EL加载字节码的方式 spel">
 <meta property="og:type" content="article">
 <meta property="og:title" content="fmyyy">
 <meta property="og:url" content="https://fmyyy.gitee.io/2022/06/29/EL/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="dddddddd">
+<meta property="og:description" content="记录一些EL加载字节码的方式 spel">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
 <meta property="article:published_time" content="2022-06-29T08:36:28.519Z">
-<meta property="article:modified_time" content="2022-06-29T08:36:28.519Z">
+<meta property="article:modified_time" content="2022-08-02T07:53:18.143Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -179,7 +179,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        0
+                        19
                     
                     字
                 </li>
@@ -188,11 +188,12 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1656491788519"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1659426798143"></time> 前，其中的内容可能需要更新。
             </div>
             
             <hr />
-            
+            <p>记录一些EL加载字节码的方式</p>
+<h2 id="spel"><a href="#spel" class="headerlink" title="spel"></a>spel</h2>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
@@ -259,7 +260,8 @@
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://fmyyy.gitee.io/2022/06/29/EL/";
             const title         = "「」";
-            const excerpt       = ``;
+            const excerpt       = `记录一些EL加载字节码的方式
+spel`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -281,7 +283,7 @@
                     
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-06-29</span>
+                <span>最后编辑：2022-08-02</span>
                 </div>
             </div>
         </footer>
@@ -293,6 +295,10 @@
                 <a title=" JfinalEcho&amp;&amp;memoryshell" href="/2022/05/19/JfinalEcho&&memoryshell/">&lt; 上一篇</a>
             </div>
             
+            
+            <div class="nav-next clearfix">
+                <a title=" hackerplayground2022_OnlineNotepad_wp" href="/2022/08/23/hackerplayground2022/">下一篇 &gt;</a>
+            </div>
             
         </nav>
     
@@ -331,7 +337,7 @@
                 
   <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
     <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PWN/">PWN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/codeql/">codeql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/diary/">diary</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">52</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PWN/">PWN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/codeql/">codeql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/diary/">diary</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">52</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><span class="category-list-count">2</span></li></ul>
   </aside>
 
 
@@ -344,6 +350,12 @@
   <div class="tab-content">
       <ul class="list-group">
         
+        
+          
+          
+            <a class="list-group-item" href="/2022/08/23/hackerplayground2022/"><i class="fa  fa-book"></i> hackerplayground2022_OnlineNotepad_wp</a>
+            
+          
         
           
           
@@ -373,11 +385,7 @@
           
         
           
-          
-            <a class="list-group-item" href="/2022/05/08/weblogicEcho/"><i class="fa  fa-book"></i> weblogicEcho&&memoryshell</a>
             
-          
-        
           
             
           
